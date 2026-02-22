@@ -1,0 +1,13 @@
+[project]
+name = "my-lib"
+version = "0.1.0"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-xdist"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.pyright]
+typeCheckingMode = "strict"

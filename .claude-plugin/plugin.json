@@ -1,0 +1,16 @@
+{
+  "name": "scientific-software-playbook",
+  "version": "0.1.0",
+  "description": "Plugin scaffold for scientific software: architecture-first planning, ingress-to-canonical JAX objects, validation-first pipelines, and thin numerics shells.",
+  "commands": [
+    "./commands/start-scientific-architecture.md",
+    "./commands/new-design-plan.md",
+    "./commands/set-design-plan-status.md",
+    "./commands/validate-design-plan.md"
+  ],
+  "agents": [
+    "./agents/scientific-architecture-planner.md",
+    "./agents/scientific-architecture-reviewer.md",
+    "./agents/numerics-interface-auditor.md"
+  ]
+}

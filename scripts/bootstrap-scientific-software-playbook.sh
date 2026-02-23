@@ -85,16 +85,24 @@ copy_path() {
 
 copy_path "${bundle_root}/agents" "${target_root}/agents"
 copy_path "${bundle_root}/commands" "${target_root}/commands"
+copy_path "${bundle_root}/hooks" "${target_root}/hooks"
 
 copy_path "${bundle_root}/scripts/new-design-plan.sh" "${target_root}/scripts/new-design-plan.sh"
 copy_path "${bundle_root}/scripts/set-design-plan-status.sh" "${target_root}/scripts/set-design-plan-status.sh"
 copy_path "${bundle_root}/scripts/validate-design-plan-readiness.sh" "${target_root}/scripts/validate-design-plan-readiness.sh"
+copy_path "${bundle_root}/scripts/hooks/session-start.sh" "${target_root}/scripts/hooks/session-start.sh"
+copy_path "${bundle_root}/scripts/hooks/post-edit.sh" "${target_root}/scripts/hooks/post-edit.sh"
+copy_path "${bundle_root}/scripts/hooks/stop.sh" "${target_root}/scripts/hooks/stop.sh"
 
 copy_path "${bundle_root}/docs/design-plans/templates" "${target_root}/docs/design-plans/templates"
+copy_path "${bundle_root}/docs/implementation-plans/templates" "${target_root}/docs/implementation-plans/templates"
 copy_path "${bundle_root}/docs/reviews/review-template.md" "${target_root}/docs/reviews/review-template.md"
 copy_path "${bundle_root}/docs/checklists/skill-agent-io-checklist.md" "${target_root}/docs/checklists/skill-agent-io-checklist.md"
 
 chmod +x \
+  "${target_root}/scripts/hooks/session-start.sh" \
+  "${target_root}/scripts/hooks/post-edit.sh" \
+  "${target_root}/scripts/hooks/stop.sh" \
   "${target_root}/scripts/new-design-plan.sh" \
   "${target_root}/scripts/set-design-plan-status.sh" \
   "${target_root}/scripts/validate-design-plan-readiness.sh"
@@ -112,8 +120,16 @@ This project was bootstrapped from:
 \`${bundle_root}\`
 
 ### Global skills (installed in CODEX_HOME)
+- \`install-scientific-software-playbook-home\`: \`${codex_home}/skills/install-scientific-software-playbook-home/SKILL.md\`
 - \`bootstrap-scientific-software-playbook\`: \`${codex_home}/skills/bootstrap-scientific-software-playbook/SKILL.md\`
+- \`new-design-plan\`: \`${codex_home}/skills/new-design-plan/SKILL.md\`
+- \`validate-design-plan\`: \`${codex_home}/skills/validate-design-plan/SKILL.md\`
+- \`set-design-plan-status\`: \`${codex_home}/skills/set-design-plan-status/SKILL.md\`
+- \`start-scientific-implementation-plan\`: \`${codex_home}/skills/start-scientific-implementation-plan/SKILL.md\`
+- \`execute-scientific-implementation-plan\`: \`${codex_home}/skills/execute-scientific-implementation-plan/SKILL.md\`
+- \`scientific-internet-research-pass\`: \`${codex_home}/skills/scientific-internet-research-pass/SKILL.md\`
 - \`scientific-software-architecture\`: \`${codex_home}/skills/scientific-software-architecture/SKILL.md\`
+- \`simulation-for-inference-validation\`: \`${codex_home}/skills/simulation-for-inference-validation/SKILL.md\`
 - \`ingress-to-canonical-jax\`: \`${codex_home}/skills/ingress-to-canonical-jax/SKILL.md\`
 - \`validation-first-pipeline-api\`: \`${codex_home}/skills/validation-first-pipeline-api/SKILL.md\`
 - \`jax-equinox-core-numerics-shell\`: \`${codex_home}/skills/jax-equinox-core-numerics-shell/SKILL.md\`
@@ -122,8 +138,10 @@ This project was bootstrapped from:
 ### Local playbook assets (this repository)
 - Agents: \`agents/\`
 - Commands: \`commands/\`
-- Scripts: \`scripts/\`
+- Hooks: \`hooks/\` (runtime hook definitions)
+- Scripts: \`scripts/\` (internal utilities invoked by commands/skills/hooks)
 - Templates: \`docs/design-plans/templates/\`
+- Templates: \`docs/implementation-plans/templates/\`
 - Review template: \`docs/reviews/review-template.md\`
 - IO checklist: \`docs/checklists/skill-agent-io-checklist.md\`
 
@@ -131,12 +149,19 @@ This project was bootstrapped from:
 1. Start with \`scientific-software-architecture\`.
    - Note: \`bootstrap-scientific-software-playbook\` is only for one-time project initialization.
 2. Create a plan:
-   - \`bash scripts/new-design-plan.sh <slug>\`
+   - choose model path (\`provided-model\` or \`suggested-model\`).
+   - invoke \`simulation-for-inference-validation\` when simulation-based inference validation is in scope.
+   - invoke \`new-design-plan\` with a slug.
+   - invoke \`scientific-internet-research-pass\` when external facts are uncertain.
 3. Validate draft readiness:
-   - \`bash scripts/validate-design-plan-readiness.sh <plan-path> --phase in-review\`
+   - invoke \`validate-design-plan\` with phase \`in-review\`.
 4. Approve after explicit user sign-off:
-   - \`bash scripts/set-design-plan-status.sh <plan-path> approved-for-implementation\`
-5. Implement in order:
+   - invoke \`set-design-plan-status\` with \`approved-for-implementation\`.
+5. Create implementation orchestration artifacts:
+   - invoke \`start-scientific-implementation-plan\`.
+6. Execute implementation phases:
+   - invoke \`execute-scientific-implementation-plan\`.
+7. During phase execution, apply layer skills in order when relevant:
    - \`ingress-to-canonical-jax\`
    - \`validation-first-pipeline-api\`
    - \`jax-equinox-core-numerics-shell\`
@@ -150,5 +175,7 @@ echo "Created:"
 echo "  ${target_root}/AGENTS.md"
 echo "  ${target_root}/agents/"
 echo "  ${target_root}/commands/"
+echo "  ${target_root}/hooks/"
 echo "  ${target_root}/scripts/"
 echo "  ${target_root}/docs/design-plans/templates/"
+echo "  ${target_root}/docs/implementation-plans/templates/"

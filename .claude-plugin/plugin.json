@@ -4,13 +4,21 @@
   "description": "Plugin scaffold for scientific software: architecture-first planning, ingress-to-canonical JAX objects, validation-first pipelines, and thin numerics shells.",
   "commands": [
     "./commands/start-scientific-architecture.md",
+    "./commands/start-simulation-validation.md",
     "./commands/new-design-plan.md",
     "./commands/set-design-plan-status.md",
-    "./commands/validate-design-plan.md"
+    "./commands/validate-design-plan.md",
+    "./commands/start-scientific-implementation-plan.md",
+    "./commands/execute-scientific-implementation-plan.md"
   ],
   "agents": [
     "./agents/scientific-architecture-planner.md",
     "./agents/scientific-architecture-reviewer.md",
-    "./agents/numerics-interface-auditor.md"
+    "./agents/scientific-simulation-designer.md",
+    "./agents/numerics-interface-auditor.md",
+    "./agents/scientific-internet-researcher.md",
+    "./agents/scientific-task-implementor-fast.md",
+    "./agents/scientific-task-bug-fixer.md",
+    "./agents/scientific-test-analyst.md"
   ]
 }

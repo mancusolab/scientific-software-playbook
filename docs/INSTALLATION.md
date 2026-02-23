@@ -1,13 +1,16 @@
 # Installation and Usage Guide
 
-This guide is for GitHub distribution. It installs reusable assets into Codex home
-and bootstraps any downstream project with local playbook files.
+This repository is a single playbook plugin installation target (plan-and-execute
+style), not a plugin catalog.
+
+Day-to-day usage is command/skill driven inside Claude or Codex. The only
+user-facing shell command is the Codex install step (`install-codex-home.sh`).
+All other scripts are internal and invoked by commands, skills, hooks, or agents.
 
 ## Prerequisites
 
 1. `git`
-2. `bash`
-3. Codex and/or Claude
+2. Codex and/or Claude
 
 ## Clone
 
@@ -16,111 +19,72 @@ git clone <your-repo-url>
 cd <your-repo-directory>
 ```
 
-## Codex Installation (Global, Reusable)
+## Claude Installation (Native)
 
-Install skills and playbook assets into Codex home:
+1. Install plugin from inside Claude:
+- `/plugin install file:///absolute/path/to/<your-repo-directory>`
+2. Reload plugin:
+- `/plugin reload`
+3. Start workflow:
+- `/start-scientific-architecture <slug>`
 
+## Codex Installation (Native)
+
+1. Open this repository in Codex.
+2. Run installation from repository root:
 ```bash
 bash scripts/install-codex-home.sh --force
 ```
+3. Open the downstream target project root in Codex.
+4. Invoke `bootstrap-scientific-software-playbook`.
 
-What this installs:
-1. Skills to `${CODEX_HOME:-$HOME/.codex}/skills/`
-   - `bootstrap-scientific-software-playbook`
-   - `scientific-software-architecture`
-   - `ingress-to-canonical-jax`
-   - `validation-first-pipeline-api`
-   - `jax-equinox-core-numerics-shell`
-   - `scientific-cli-thin-shell`
-2. Bundle assets to `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/`
-   - `agents/`
-   - `commands/`
-   - `scripts/`
-   - `docs/design-plans/templates/`
-   - review/checklist templates
-
-## Bootstrap a Downstream Project
-
-After global install, run:
-
-```bash
-bash "${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/scripts/bootstrap-scientific-software-playbook.sh" /path/to/project --force
-```
-
-This copies project-local assets and writes `/path/to/project/AGENTS.md` that
-references globally installed skills in Codex home.
-
-### Codex Skill Shortcut (Current Directory)
-
-After global install, users can call the `bootstrap-scientific-software-playbook` skill from
-the target project's current directory. The skill runs:
-
-```bash
-bash "${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/scripts/bootstrap-scientific-software-playbook.sh"
-```
-
-Use `--force` only when replacing existing playbook files.
-
-### What `bootstrap-scientific-software-playbook` Is For
-
-`bootstrap-scientific-software-playbook` is a one-time project initialization wrapper. It:
-1. Copies playbook assets into the current project.
-2. Writes project `AGENTS.md` with global skill paths.
-3. Verifies expected files exist.
-
-It does not design or implement scientific workflows by itself.
-
-## Claude Installation (Plugin)
-
-Claude uses:
-
-- `.claude-plugin/plugin.json`
-
-Register the manifest using your Claude client's local plugin workflow.
-
-## Verify Codex Install
-
-```bash
-CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"
-ls "$CODEX_ROOT/skills/scientific-software-architecture/SKILL.md"
-ls "$CODEX_ROOT/scientific-software-playbook/scripts/bootstrap-scientific-software-playbook.sh"
-ls "$CODEX_ROOT/skills/bootstrap-scientific-software-playbook/SKILL.md"
-```
-
-## Verify Downstream Bootstrap
-
-```bash
-cd /path/to/project
-ls AGENTS.md
-ls scripts/new-design-plan.sh
-ls docs/design-plans/templates/scientific-architecture-plan-template.md
-```
+What Codex install/bootstrap provides:
+1. Skills in `${CODEX_HOME:-$HOME/.codex}/skills/`
+2. Bundle assets in `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/`
+3. Downstream project assets:
+- `AGENTS.md`
+- `agents/`
+- `commands/`
+- `hooks/`
+- `scripts/` (internal utilities)
+- `docs/design-plans/templates/`
+- `docs/implementation-plans/templates/`
 
 ## Usage Example (Downstream Project)
 
-```bash
-cd /path/to/project
-bash scripts/new-design-plan.sh genetics-infer
-PLAN_PATH="$(ls -1 docs/design-plans/*-genetics-infer.md)"
-bash scripts/validate-design-plan-readiness.sh "$PLAN_PATH" --phase in-review
-```
+Claude path:
+1. `/start-scientific-architecture genetics-infer`
+2. Choose model path early: `provided-model` or `suggested-model`.
+3. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
+4. `scientific-internet-research-pass` (when external facts are uncertain or model suggestions need citations)
+5. `/validate-design-plan <plan-path> --phase in-review`
+6. `/set-design-plan-status <plan-path> approved-for-implementation`
+7. `/start-scientific-implementation-plan <plan-path> genetics-infer`
+8. Start a fresh session/context (recommended).
+9. `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
 
-After explicit approval:
-
-```bash
-bash scripts/set-design-plan-status.sh "$PLAN_PATH" approved-for-implementation
-```
+Codex path:
+1. Invoke `scientific-software-architecture`.
+2. Choose model path early: `provided-model` or `suggested-model`.
+3. Invoke `simulation-for-inference-validation` when simulation-based inference checks are in scope.
+4. Invoke `new-design-plan` with slug `genetics-infer` when plan scaffolding is needed.
+5. Invoke `scientific-internet-research-pass` when external facts are uncertain or model suggestions need citations.
+6. Invoke `validate-design-plan` with phase `in-review`.
+7. Invoke `set-design-plan-status` with `approved-for-implementation`.
+8. Invoke `start-scientific-implementation-plan`.
+9. Start a fresh session/context (recommended).
+10. Invoke `execute-scientific-implementation-plan` with the absolute implementation plan directory path.
 
 ## Upgrade / Reinstall
 
-From a newer checkout of this repository:
-
+Codex:
+1. Re-open latest repository checkout in Codex.
+2. Re-run:
 ```bash
 bash scripts/install-codex-home.sh --force
 ```
+3. Re-run `bootstrap-scientific-software-playbook` in any downstream project that should receive updates.
 
-Then re-bootstrap downstream projects that should receive updated assets:
-
-```bash
-bash "${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/scripts/bootstrap-scientific-software-playbook.sh" /path/to/project --force
-```
+Claude:
+1. Re-install plugin from the updated checkout (`/plugin install ...`) if needed.
+2. Run `/plugin reload`.

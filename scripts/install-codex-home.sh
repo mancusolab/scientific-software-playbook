@@ -7,7 +7,7 @@ Usage: scripts/install-codex-home.sh [--codex-home <path>] [--force]
 
 Installs this playbook into Codex home:
 1. Skills -> <codex-home>/skills/
-2. Playbook bundle (agents/commands/scripts/templates) ->
+2. Playbook bundle (agents/commands/hooks/scripts/templates) ->
    <codex-home>/scientific-software-playbook/
 
 Options:
@@ -52,11 +52,12 @@ repo_root="$(cd "${script_dir}/.." && pwd)"
 skills_src="${repo_root}/skills"
 agents_src="${repo_root}/agents"
 commands_src="${repo_root}/commands"
+hooks_src="${repo_root}/hooks"
 scripts_src="${repo_root}/scripts"
 docs_src="${repo_root}/docs"
 
-if [[ ! -d "$skills_src" || ! -d "$agents_src" || ! -d "$commands_src" || ! -d "$scripts_src" ]]; then
-  echo "error: script must be run from a repository checkout with skills/agents/commands/scripts" >&2
+if [[ ! -d "$skills_src" || ! -d "$agents_src" || ! -d "$commands_src" || ! -d "$hooks_src" || ! -d "$scripts_src" ]]; then
+  echo "error: script must be run from a repository checkout with skills/agents/commands/hooks/scripts" >&2
   exit 1
 fi
 
@@ -64,8 +65,16 @@ skills_dst="${codex_home}/skills"
 bundle_dst="${codex_home}/scientific-software-playbook"
 
 skill_dirs=(
+  "install-scientific-software-playbook-home"
   "bootstrap-scientific-software-playbook"
+  "new-design-plan"
+  "validate-design-plan"
+  "set-design-plan-status"
+  "start-scientific-implementation-plan"
+  "execute-scientific-implementation-plan"
+  "scientific-internet-research-pass"
   "scientific-software-architecture"
+  "simulation-for-inference-validation"
   "ingress-to-canonical-jax"
   "validation-first-pipeline-api"
   "jax-equinox-core-numerics-shell"
@@ -109,14 +118,19 @@ mkdir -p "$bundle_dst"
 
 copy_tree "$agents_src" "${bundle_dst}/agents"
 copy_tree "$commands_src" "${bundle_dst}/commands"
+copy_tree "$hooks_src" "${bundle_dst}/hooks"
 copy_tree "$scripts_src" "${bundle_dst}/scripts"
 
-mkdir -p "${bundle_dst}/docs/design-plans" "${bundle_dst}/docs/reviews" "${bundle_dst}/docs/checklists"
+mkdir -p "${bundle_dst}/docs/design-plans" "${bundle_dst}/docs/implementation-plans" "${bundle_dst}/docs/reviews" "${bundle_dst}/docs/checklists"
 copy_tree "${docs_src}/design-plans/templates" "${bundle_dst}/docs/design-plans/templates"
+copy_tree "${docs_src}/implementation-plans/templates" "${bundle_dst}/docs/implementation-plans/templates"
 cp -f "${docs_src}/reviews/review-template.md" "${bundle_dst}/docs/reviews/review-template.md"
 cp -f "${docs_src}/checklists/skill-agent-io-checklist.md" "${bundle_dst}/docs/checklists/skill-agent-io-checklist.md"
 
 chmod +x \
+  "${bundle_dst}/scripts/hooks/session-start.sh" \
+  "${bundle_dst}/scripts/hooks/post-edit.sh" \
+  "${bundle_dst}/scripts/hooks/stop.sh" \
   "${bundle_dst}/scripts/new-design-plan.sh" \
   "${bundle_dst}/scripts/set-design-plan-status.sh" \
   "${bundle_dst}/scripts/validate-design-plan-readiness.sh" \
@@ -132,4 +146,4 @@ echo "Installed playbook bundle:"
 echo "  - ${bundle_dst}"
 echo
 echo "Next step (per downstream project):"
-echo "  bash \"${bundle_dst}/scripts/bootstrap-scientific-software-playbook.sh\" /path/to/project"
+echo "  Open target project root in Codex and invoke: bootstrap-scientific-software-playbook"

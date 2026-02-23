@@ -28,8 +28,12 @@ It is a one-time initializer and should not be treated as an architecture or imp
 - `AGENTS.md`
 - `agents/`
 - `commands/`
+- `hooks/hooks.json`
+- `commands/start-simulation-validation.md`
 - `scripts/new-design-plan.sh`
 - `docs/design-plans/templates/scientific-architecture-plan-template.md`
+- `docs/implementation-plans/templates/scientific-implementation-plan-template.md`
+- `docs/implementation-plans/templates/phase-simulation-validation-template.md`
 
 ## Output
 
@@ -37,4 +41,4 @@ Report:
 1. Whether bootstrap succeeded.
 2. Which files/directories were created or overwritten.
 3. Next command to start planning:
-- `bash scripts/new-design-plan.sh <slug>`
+- invoke `scientific-software-architecture` (Codex), or run `/start-scientific-architecture <slug>` (Claude).

@@ -16,6 +16,13 @@ steps from `docs/INSTALLATION.md` first.
   - If this repo is not bootstrapped yet, invoke `bootstrap-scientific-software-playbook`.
   - Use `scientific-software-architecture` directly (see `AGENTS.md`).
   - `bootstrap-scientific-software-playbook` is a one-time project initializer, not an implementation stage.
+- Choose one model path early:
+  - `provided-model`: user supplies model artifacts/update rules.
+  - `suggested-model`: planner proposes literature-backed model options and user selects.
+- If inference validation should include synthetic-data checks, define simulation contract:
+  - Claude: `/start-simulation-validation <plan-path>`
+  - Codex: invoke `simulation-for-inference-validation`
+- If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
 - Outcome: design plan in `docs/design-plans/YYYY-MM-DD-<slug>.md`.
 - Typical status flow: `Draft` (initial scaffold) -> `In Review` (after first planning pass).
 
@@ -24,20 +31,41 @@ steps from `docs/INSTALLATION.md` first.
   - `model-symbol-table.md`
   - `equation-to-code-map.md`
   - `solver-feasibility-matrix.md`
+  - `Simulation And Inference-Consistency Validation` section in the design plan (when in scope)
 - Validate readiness before approval:
-`scripts/validate-design-plan-readiness.sh <plan-path> --phase in-review`
+- Claude: `/validate-design-plan <plan-path> --phase in-review`
+- Codex: invoke `validate-design-plan` with phase `in-review`
 - Move status to approved only when architecture and math checks are acceptable:
-`scripts/set-design-plan-status.sh <plan-path> approved-for-implementation`
+- Claude: `/set-design-plan-status <plan-path> approved-for-implementation`
+- Codex: invoke `set-design-plan-status` with `approved-for-implementation`
 - If approved plans are revised later, move back to review:
-`scripts/set-design-plan-status.sh <plan-path> in-review`
+- Claude: `/set-design-plan-status <plan-path> in-review`
+- Codex: invoke `set-design-plan-status` with `in-review`
 
-3. Implementation sequence
+3. Build implementation orchestration artifacts
+- Claude: `/start-scientific-implementation-plan <design-plan-path> [slug]`
+- Codex: invoke `start-scientific-implementation-plan`
+- Outcome:
+  - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
+  - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
+  - `docs/implementation-plans/YYYY-MM-DD-<slug>/phase_XX.md`
+  - simulation phase file from `docs/implementation-plans/templates/phase-simulation-validation-template.md` (when simulation scope is `yes`)
+  - absolute implementation plan path for execution handoff
+- Recommended: start a fresh session/context before execution.
+
+4. Execute implementation phases
+- Claude: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
+- Codex: invoke `execute-scientific-implementation-plan` with the same absolute path
+- Outcome: phase-by-phase implementation with TDD, reviewer/fix loops, and traceability coverage checks.
+- During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
+
+5. During phase execution, apply layer skills in order when relevant
 - `ingress-to-canonical-jax`
 - `validation-first-pipeline-api`
 - `jax-equinox-core-numerics-shell`
 - `scientific-cli-thin-shell`
 
-4. Review and completion
+6. Review and completion
 - Run `scientific-architecture-reviewer`.
 - Run `numerics-interface-auditor`.
 - Verify fresh test/check command evidence before claiming completion.
@@ -45,17 +73,38 @@ steps from `docs/INSTALLATION.md` first.
 ## Plan Utilities
 
 1. Create plan + artifact stubs:
-`scripts/new-design-plan.sh <slug>`
+- Claude: `/new-design-plan <slug>`
+- Codex: invoke `new-design-plan` with a slug
 
 2. Change plan status:
-`scripts/set-design-plan-status.sh <plan-path> <draft|in-review|approved-for-implementation>`
+- Claude: `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
+- Codex: invoke `set-design-plan-status`
 
 3. Validate plan readiness:
-`scripts/validate-design-plan-readiness.sh <plan-path> --phase in-review`
+- Claude: `/validate-design-plan <plan-path> --phase in-review`
+- Codex: invoke `validate-design-plan` with phase `in-review`
+
+4. Run external research pass when triggered:
+- Claude/Codex: invoke `scientific-internet-research-pass`
+
+5. Define simulation contract when in scope:
+- Claude: `/start-simulation-validation <plan-path>`
+- Codex: invoke `simulation-for-inference-validation`
+
+6. Start implementation planning:
+- Claude: `/start-scientific-implementation-plan <design-plan-path> [slug]`
+- Codex: invoke `start-scientific-implementation-plan`
+
+7. Execute implementation plan:
+- Claude: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
+- Codex: invoke `execute-scientific-implementation-plan`
 
 ## Non-Negotiable Gates
 
 1. No implementation before explicit plan approval.
 2. If model artifacts exist, math sanity checks are required.
-3. If update rules exist, solver strategy decision is required.
-4. TDD and fresh verification evidence are required before completion.
+3. Model path must be explicit: `provided-model` with concrete sources/rules, or `suggested-model` with literature-backed candidates plus user selection.
+4. If simulation-based validation is in scope, simulation contract (`simulate` API + alignment checks + validation experiments) is required.
+5. If update rules exist, solver strategy decision is required.
+6. TDD and fresh verification evidence are required before completion.
+7. Implementation phases are blocked unless AC-to-task-to-test traceability is complete.

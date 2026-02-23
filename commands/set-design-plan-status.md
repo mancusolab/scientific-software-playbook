@@ -16,12 +16,10 @@ Update plan status with transition checks.
 - `draft`
 - `in-review`
 - `approved-for-implementation`
-3. Run:
-`!bash scripts/set-design-plan-status.sh "$1" "$2"`
+3. Use the `set-design-plan-status` skill with the plan path and target status token.
 4. Report old and new status.
 
 ## Hard Stop
 
 When target status is `approved-for-implementation`, the command must fail unless
-the plan passes readiness validation via:
-`scripts/validate-design-plan-readiness.sh <plan-path> --phase approval`.
+the plan passes readiness validation via the `validate-design-plan` skill (phase `approval`).

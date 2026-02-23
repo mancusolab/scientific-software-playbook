@@ -15,6 +15,5 @@ Run readiness validation checks for a plan and its companion artifacts.
 2. Optional phase arguments:
 - default: `approval`
 - draft review: `--phase in-review`
-3. Run:
-`!bash scripts/validate-design-plan-readiness.sh "$@"`
+3. Use the `validate-design-plan` skill with the plan path and phase.
 4. Report pass/fail and any listed gaps/placeholders.

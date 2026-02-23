@@ -29,10 +29,25 @@ List concrete outcomes that must be true for completion.
 - Non-goal 1
 - Non-goal 2
 
+## Model Acquisition Path
+- Path: `provided-model` | `suggested-model`
+- Why this path:
+- User selection confirmation:
+
 ## Model Specification Sources
 | Source ID | Path/Link | Type | Notes | Confidence (high/med/low) |
 | --- | --- | --- | --- | --- |
 | SRC-1 | | | | |
+
+## Model Option Analysis (Required When `suggested-model`)
+| Candidate ID | Model Family | When It Fits | Key Assumptions | Failure Modes | Supporting Citation(s) | Selection Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| MOD-1 | | | | | | selected/rejected |
+
+## External Research Findings (When Triggered)
+| Claim ID | Claim | Source URL | Source Type | Access Date | Confidence (high/med/low) |
+| --- | --- | --- | --- | --- | --- |
+| EXT-1 | | | official-doc/paper/standard/reference-implementation/secondary | | |
 
 ## Mathematical Sanity Checks
 - Summary:
@@ -85,6 +100,23 @@ For each source format, record copy mode (`zero-copy`, `mmap`, `single-copy fall
 - TDD scope:
 - Regression strategy:
 - Verification commands:
+
+## Simulation And Inference-Consistency Validation
+- In scope: yes|no
+- Simulate entrypoint/signature:
+- Inputs:
+- Outputs:
+- Seed/RNG policy:
+
+### Assumption Alignment
+| Inference Assumption | Simulation Rule | Mismatch Risk | Mitigation |
+| --- | --- | --- | --- |
+| | | | |
+
+### Planned Validation Experiments
+| Experiment ID | Type (recovery/SBC/PPC) | Success Criterion | Notes |
+| --- | --- | --- | --- |
+| SIM-1 | | | |
 
 ## Risks and Open Questions
 | ID | Risk or Question | Severity | Mitigation or Next Step | Owner |

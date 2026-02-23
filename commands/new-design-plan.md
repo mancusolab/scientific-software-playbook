@@ -12,7 +12,6 @@ Create a new design plan file and companion artifact templates.
 ## Workflow
 
 1. Require a slug in `$1` (`lowercase-hyphenated`).
-2. Run:
-`!bash scripts/new-design-plan.sh "$1"`
+2. Use the `new-design-plan` skill with the provided slug.
 3. Report created files and instruct user to begin with status `Draft`.
 4. If plan already exists, stop and ask whether to reuse it.

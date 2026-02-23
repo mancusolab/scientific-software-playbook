@@ -5,12 +5,20 @@ This repository can be used in two modes:
 1. Local repository mode (open this repo directly in Codex).
 2. Global install mode (install into `CODEX_HOME` and bootstrap downstream projects).
 
-Scope note: this is a single playbook plugin (plan-and-execute style), not a
-multi-plugin catalog.
+Scope note: this repository now hosts two plugins:
+1. `scientific-plan-execute`
+2. `scientific-house-style`
+
+Operational workflow remains centered on `scientific-plan-execute`.
+
+Dependency contract:
+1. `scientific-plan-execute` is required for bootstrap and orchestration flow.
+2. `scientific-house-style` is optional and provides reusable guidance.
+3. If house-style skills are unavailable, workflow should continue without blocking.
 
 ## Local Repository Mode
 
-### Local skills
+### Local skills (`scientific-plan-execute`)
 - `install-scientific-software-playbook-home`: `skills/install-scientific-software-playbook-home/SKILL.md`
 - `bootstrap-scientific-software-playbook`: `skills/bootstrap-scientific-software-playbook/SKILL.md`
 - `new-design-plan`: `skills/new-design-plan/SKILL.md`
@@ -26,6 +34,10 @@ multi-plugin catalog.
 - `jax-equinox-core-numerics-shell`: `skills/jax-equinox-core-numerics-shell/SKILL.md`
 - `scientific-cli-thin-shell`: `skills/scientific-cli-thin-shell/SKILL.md`
 
+### Local skills (`scientific-house-style`)
+- `jax-equinox-numerics`: `skills/jax-equinox-numerics/SKILL.md`
+- `project-engineering`: `skills/project-engineering/SKILL.md`
+
 ### Local assets
 - Agents: `agents/`
 - Commands: `commands/`
@@ -33,6 +45,10 @@ multi-plugin catalog.
 - Scripts: `scripts/` (internal utilities invoked by commands/skills/hooks)
 - Templates: `docs/design-plans/templates/`
 - Templates: `docs/implementation-plans/templates/`
+
+Compatibility note:
+1. Legacy root paths (`agents/`, `commands/`, `hooks/`, most `skills/`) are compatibility links to plugin-owned assets under `plugins/`.
+2. Version compatibility and shim deprecation timeline are defined in `docs/COMPATIBILITY.md`.
 
 Execution delegates:
 1. `scientific-task-implementor-fast`
@@ -57,17 +73,26 @@ Install globally:
 bash scripts/install-codex-home.sh --force
 ```
 
+Optional selective install:
+
+```bash
+bash scripts/install-codex-home.sh --plugin scientific-plan-execute --force
+bash scripts/install-codex-home.sh --plugin scientific-house-style --force
+```
+
 Bootstrap a downstream project:
 
 1. Open the target project root in Codex.
 2. Invoke `bootstrap-scientific-software-playbook`.
 
-The bootstrap command installs project-local assets and writes project `AGENTS.md`
-that references globally installed skills in `CODEX_HOME`.
+The bootstrap command writes project `AGENTS.md` only. It references globally
+installed skills/assets in `CODEX_HOME` and keeps the downstream repository
+footprint minimal.
 
 `bootstrap-scientific-software-playbook` is a convenience wrapper for Codex users:
 from the current project root, it runs the installed bootstrap script and verifies
-required playbook files are present. It is only needed once per downstream project.
+that `AGENTS.md` exists. It is only needed once per downstream project (or when
+you want to refresh `AGENTS.md`).
 
 ## Workflow
 

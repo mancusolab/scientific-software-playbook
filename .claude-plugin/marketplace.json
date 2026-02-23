@@ -1,0 +1,27 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "scientific-software-playbook",
+  "owner": {
+    "name": "Scientific Software Playbook Maintainers"
+  },
+  "metadata": {
+    "description": "Marketplace for Scientific Software Playbook plugins",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "scientific-plan-execute",
+      "source": "./plugins/scientific-plan-execute",
+      "description": "Scientific workflow loop: architecture, planning, execution, validation, and review orchestration.",
+      "version": "0.1.0",
+      "category": "scientific-computing"
+    },
+    {
+      "name": "scientific-house-style",
+      "source": "./plugins/scientific-house-style",
+      "description": "House-style engineering guidance for JAX/Equinox scientific software.",
+      "version": "0.1.0",
+      "category": "scientific-computing"
+    }
+  ]
+}

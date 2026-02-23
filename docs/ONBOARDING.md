@@ -8,6 +8,12 @@ Before running this flow on a fresh clone, complete setup in:
 For Codex reuse across repositories, use the global install + downstream bootstrap
 steps from `docs/INSTALLATION.md` first.
 
+Plugin prerequisite:
+1. This onboarding flow requires `scientific-plan-execute`.
+2. `scientific-house-style` is optional and supplements numerics/project-engineering guidance.
+3. If only `scientific-house-style` is installed, bootstrap and workflow commands in this guide will not resolve.
+4. Compatibility/deprecation policy is documented in `docs/COMPATIBILITY.md`.
+
 ## Phase Workflow
 
 1. Architecture kickoff
@@ -15,7 +21,8 @@ steps from `docs/INSTALLATION.md` first.
 - Codex path:
   - If this repo is not bootstrapped yet, invoke `bootstrap-scientific-software-playbook`.
   - Use `scientific-software-architecture` directly (see `AGENTS.md`).
-  - `bootstrap-scientific-software-playbook` is a one-time project initializer, not an implementation stage.
+  - `bootstrap-scientific-software-playbook` is a one-time initializer that writes `AGENTS.md` only.
+  - Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
 - Choose one model path early:
   - `provided-model`: user supplies model artifacts/update rules.
   - `suggested-model`: planner proposes literature-backed model options and user selects.
@@ -49,7 +56,7 @@ steps from `docs/INSTALLATION.md` first.
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/phase_XX.md`
-  - simulation phase file from `docs/implementation-plans/templates/phase-simulation-validation-template.md` (when simulation scope is `yes`)
+  - simulation phase file based on the installed template (when simulation scope is `yes`)
   - absolute implementation plan path for execution handoff
 - Recommended: start a fresh session/context before execution.
 

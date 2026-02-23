@@ -1,11 +1,23 @@
 # Installation and Usage Guide
 
-This repository is a single playbook plugin installation target (plan-and-execute
-style), not a plugin catalog.
+This repository hosts two plugins in one codebase:
+
+1. `scientific-plan-execute`
+2. `scientific-house-style`
 
 Day-to-day usage is command/skill driven inside Claude or Codex. The only
 user-facing shell command is the Codex install step (`install-codex-home.sh`).
 All other scripts are internal and invoked by commands, skills, hooks, or agents.
+
+## Plugin Selection and Dependency Contract
+
+1. `scientific-plan-execute` is required for bootstrap and workflow orchestration.
+2. `scientific-house-style` is optional and provides reusable numerics/project
+   engineering guidance.
+3. Default install (`--force` with no `--plugin`) installs both plugins.
+4. If only `scientific-house-style` is installed, workflow/bootstrap commands are not available.
+5. If only `scientific-plan-execute` is installed, workflow remains fully usable
+   and house-style guidance is simply absent.
 
 ## Prerequisites
 
@@ -21,11 +33,15 @@ cd <your-repo-directory>
 
 ## Claude Installation (Native)
 
-1. Install plugin from inside Claude:
-- `/plugin install file:///absolute/path/to/<your-repo-directory>`
-2. Reload plugin:
+1. Add this repository as a marketplace from inside Claude:
+- `/plugin marketplace add file:///absolute/path/to/<your-repo-directory>`
+2. Install workflow plugin:
+- `/plugin install scientific-plan-execute@scientific-software-playbook`
+3. Optional: install house-style plugin:
+- `/plugin install scientific-house-style@scientific-software-playbook`
+4. Reload plugin:
 - `/plugin reload`
-3. Start workflow:
+5. Start workflow:
 - `/start-scientific-architecture <slug>`
 
 ## Codex Installation (Native)
@@ -35,20 +51,45 @@ cd <your-repo-directory>
 ```bash
 bash scripts/install-codex-home.sh --force
 ```
+Optional selective installs:
+```bash
+bash scripts/install-codex-home.sh --plugin scientific-plan-execute --force
+bash scripts/install-codex-home.sh --plugin scientific-house-style --force
+```
 3. Open the downstream target project root in Codex.
 4. Invoke `bootstrap-scientific-software-playbook`.
 
 What Codex install/bootstrap provides:
 1. Skills in `${CODEX_HOME:-$HOME/.codex}/skills/`
-2. Bundle assets in `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/`
-3. Downstream project assets:
-- `AGENTS.md`
-- `agents/`
-- `commands/`
-- `hooks/`
-- `scripts/` (internal utilities)
-- `docs/design-plans/templates/`
-- `docs/implementation-plans/templates/`
+2. Plugin bundles in `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/`
+3. Downstream project footprint after bootstrap:
+- `AGENTS.md` (only)
+4. Runtime behavior:
+- Plan-execute assets are resolved from the installed plugin bundle in `CODEX_HOME`.
+- For compatibility, plan-execute assets are also exposed at `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/`.
+- Workflow outputs (design plans, implementation plans, reviews) are written into the downstream project under `docs/`.
+
+## Installed Skill Inventory (Exact)
+
+`scientific-plan-execute` installs:
+1. `install-scientific-software-playbook-home`
+2. `bootstrap-scientific-software-playbook`
+3. `new-design-plan`
+4. `validate-design-plan`
+5. `set-design-plan-status`
+6. `start-scientific-implementation-plan`
+7. `execute-scientific-implementation-plan`
+8. `scientific-internet-research-pass`
+9. `scientific-software-architecture`
+10. `simulation-for-inference-validation`
+11. `ingress-to-canonical-jax`
+12. `validation-first-pipeline-api`
+13. `jax-equinox-core-numerics-shell`
+14. `scientific-cli-thin-shell`
+
+`scientific-house-style` installs:
+1. `jax-equinox-numerics`
+2. `project-engineering`
 
 ## Usage Example (Downstream Project)
 
@@ -75,6 +116,13 @@ Codex path:
 9. Start a fresh session/context (recommended).
 10. Invoke `execute-scientific-implementation-plan` with the absolute implementation plan directory path.
 
+## Compatibility Policy
+
+For version compatibility mapping and deprecation timeline for legacy path shims,
+see:
+
+- `docs/COMPATIBILITY.md`
+
 ## Upgrade / Reinstall
 
 Codex:
@@ -84,7 +132,11 @@ Codex:
 bash scripts/install-codex-home.sh --force
 ```
 3. Re-run `bootstrap-scientific-software-playbook` in any downstream project that should receive updates.
+   - In minimal mode this refreshes `AGENTS.md` only.
 
 Claude:
-1. Re-install plugin from the updated checkout (`/plugin install ...`) if needed.
-2. Run `/plugin reload`.
+1. Re-add marketplace from the updated checkout (`/plugin marketplace add ...`) if needed.
+2. Re-install required plugin(s):
+   - `/plugin install scientific-plan-execute@scientific-software-playbook`
+   - `/plugin install scientific-house-style@scientific-software-playbook`
+3. Run `/plugin reload`.

@@ -145,7 +145,7 @@ placeholder_checks=(
   "Goal placeholder|^[[:space:]]*- Goal 1[[:space:]]*$"
   "Non-goal placeholder|^[[:space:]]*- Non-goal 1[[:space:]]*$"
   "Acceptance criteria placeholder|^[[:space:]]*1\\. AC1[[:space:]]*$"
-  "Model acquisition path placeholder|^[[:space:]]*-[[:space:]]*Path:[[:space:]]*\\`provided-model\\` \\| \\`suggested-model\\`[[:space:]]*$"
+  "Model acquisition path placeholder|^[[:space:]]*-[[:space:]]*Path:[[:space:]]*\`provided-model\` \\| \`suggested-model\`[[:space:]]*$"
   "Model selection confirmation placeholder|^[[:space:]]*-[[:space:]]*User selection confirmation:[[:space:]]*$"
   "Simulation scope placeholder|^[[:space:]]*-[[:space:]]*In scope:[[:space:]]*yes\\|no[[:space:]]*$"
   "Model source placeholder row|^[[:space:]]*\\| SRC-1 \\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*$"

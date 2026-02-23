@@ -1,11 +1,15 @@
 ## Scientific Software Playbook (Codex Native)
 
-This repository can be used in two modes:
+Audience and intent:
+1. This file is for agents and contributors developing this repository itself.
+2. It defines implementation-facing contracts, internal workflow rules, and source-of-truth plugin paths.
+3. For user-facing installation and usage guidance on GitHub, use `README.md`.
 
-1. Local repository mode (open this repo directly in Codex).
-2. Global install mode (install into `CODEX_HOME` and bootstrap downstream projects).
+This repository supports one operational mode:
 
-Scope note: this repository now hosts two plugins:
+1. Global install mode (install into `CODEX_HOME` and bootstrap downstream projects).
+
+Scope note: this repository hosts two plugins:
 1. `scientific-plan-execute`
 2. `scientific-house-style`
 
@@ -16,10 +20,9 @@ Dependency contract:
 2. `scientific-house-style` is optional and provides reusable guidance.
 3. If house-style skills are unavailable, workflow should continue without blocking.
 
-## Local Repository Mode
+## Plugin Assets (Source Of Truth)
 
-### Local skills (`scientific-plan-execute`)
-- `install-scientific-software-playbook-home`: `plugins/scientific-plan-execute/skills/install-scientific-software-playbook-home/SKILL.md`
+### Skills (`scientific-plan-execute`)
 - `bootstrap-scientific-software-playbook`: `plugins/scientific-plan-execute/skills/bootstrap-scientific-software-playbook/SKILL.md`
 - `new-design-plan`: `plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md`
 - `validate-design-plan`: `plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md`
@@ -34,11 +37,11 @@ Dependency contract:
 - `jax-equinox-core-numerics-shell`: `plugins/scientific-plan-execute/skills/jax-equinox-core-numerics-shell/SKILL.md`
 - `scientific-cli-thin-shell`: `plugins/scientific-plan-execute/skills/scientific-cli-thin-shell/SKILL.md`
 
-### Local skills (`scientific-house-style`)
+### Skills (`scientific-house-style`)
 - `jax-equinox-numerics`: `plugins/scientific-house-style/skills/jax-equinox-numerics/SKILL.md`
 - `project-engineering`: `plugins/scientific-house-style/skills/project-engineering/SKILL.md`
 
-### Local assets
+### Assets
 - Plan-execute agents: `plugins/scientific-plan-execute/agents/`
 - Plan-execute commands: `plugins/scientific-plan-execute/commands/`
 - Plan-execute hooks: `plugins/scientific-plan-execute/hooks/`
@@ -47,9 +50,9 @@ Dependency contract:
 - Plan-execute templates: `plugins/scientific-plan-execute/docs/implementation-plans/templates/`
 - House-style docs: `plugins/scientific-house-style/docs/`
 
-Breaking change note:
-1. Repository-root compatibility links were removed.
-2. Use plugin-scoped paths under `plugins/` only.
+Breaking-change contract:
+1. Repository-root compatibility links are removed.
+2. Plugin-scoped paths under `plugins/` are the only supported source-of-truth paths.
 
 Execution delegates:
 1. `scientific-task-implementor-fast`
@@ -64,9 +67,9 @@ Simulation delegate:
 
 Script policy:
 1. User-facing script usage is limited to `scripts/install-codex-home.sh`.
-2. All other scripts are internal and agent-invoked.
+2. All other scripts are internal and agent-invoked from installed plugin paths.
 
-## Global Install Mode (Recommended For Reuse)
+## Global Install Mode (Required)
 
 Install globally:
 
@@ -97,20 +100,19 @@ you want to refresh `AGENTS.md`).
 
 ## Workflow
 
-1. If this project is not bootstrapped yet, run `bootstrap-scientific-software-playbook`.
-2. Start architecture with `scientific-software-architecture`.
-3. Choose model path early:
+1. Start architecture with `scientific-software-architecture`.
+2. Choose model path early:
    - `provided-model` (user-supplied model/update rules), or
    - `suggested-model` (literature-backed model candidates + explicit user selection).
-4. Define simulation scope for inference validation:
+3. Define simulation scope for inference validation:
    - use `simulation-for-inference-validation` when simulation-based checks are required.
-5. Create plan scaffolding with `new-design-plan`.
-6. Run `scientific-internet-research-pass` when external facts are uncertain.
-7. Validate in review phase with `validate-design-plan` (`phase=in-review`).
-8. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
-9. Create implementation phases and traceability with `start-scientific-implementation-plan`.
-10. Execute phase-by-phase with `execute-scientific-implementation-plan`.
-11. During phase execution, apply layer skills in order when relevant:
+4. Create plan scaffolding with `new-design-plan`.
+5. Run `scientific-internet-research-pass` when external facts are uncertain.
+6. Validate in review phase with `validate-design-plan` (`phase=in-review`).
+7. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
+8. Create implementation phases and traceability with `start-scientific-implementation-plan`.
+9. Execute phase-by-phase with `execute-scientific-implementation-plan`.
+10. During phase execution, apply layer skills in order when relevant:
    - `ingress-to-canonical-jax`
    - `validation-first-pipeline-api`
    - `jax-equinox-core-numerics-shell`

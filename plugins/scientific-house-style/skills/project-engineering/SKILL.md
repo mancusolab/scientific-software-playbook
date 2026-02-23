@@ -8,13 +8,18 @@ metadata:
 # Project Engineering (JAX/Equinox Scientific Computing)
 
 Guidance for software engineering practices around numerical/JAX codebases.
-In this plugin, prefer the vendored local paths under `skills/project-engineering/`.
+
+## Path Contract (Unambiguous)
+
+1. All relative paths in this file resolve from this skill directory (the directory containing this `SKILL.md`).
+2. Codex install location example: `${CODEX_HOME:-$HOME/.codex}/skills/project-engineering/`.
+3. Claude plugin location example: `<claude-plugin-root>/skills/project-engineering/`.
 
 ## Companion checklists
 
 Apply these checklists when using this skill.
 
-### Repo-local paths
+### Installation-local paths (relative to this `SKILL.md`)
 - `checklists/project_engineering_checklist.md`
 - `checklists/testing_checklist.md`
 
@@ -27,7 +32,7 @@ Apply these checklists when using this skill.
 
 Use these snippets as implementation starters when they match the task.
 
-### Repo-local paths
+### Installation-local paths (relative to this `SKILL.md`)
 - `snippets/cli_skeleton.py`
 - `snippets/pyproject_minimal.toml`
 - `snippets/test_jvp_finite_difference.py`
@@ -96,21 +101,17 @@ class Solution(eqx.Module):
 
 ## Documentation
 
-### Rule: Match repository docstring style
-- Do: Use markdown sections like `**Arguments:**` / `**Returns:**` when the repo uses that style.
-- Don’t: Mix multiple docstring styles in the same module.
-- Why: Consistency improves usability and tooling.
-- Example:
-```python
-def solve(...):
-    """**Arguments:**
-    - `x`: input
-
-    **Returns:**
-    - solution
-    """
-```
+### Rule: Docstrings
+- Use raw docstrings (`r"""..."""`) on public CLI/pipeline/numerics entrypoints.
+- Use exact section labels: `**Arguments:**`, `**Returns:**`, and `**Raises:**` or `**Failure Modes:**`.
+- Keep one empty line immediately after each section heading and one empty line between section blocks.
+- Use LaTeX math notation in docstrings when helpful (`$...$` inline, `$$...$$` display blocks).
+- Update docstrings in the same patch when signatures, status semantics, or side effects change.
 - Allowed break: Internal‑only helpers.
+
+### Rule: Docstrings Markdown
+- Use MkDocs admonitions when they improve clarity in generated docstrings (for example: `!!! info`, `!!! note`, `!!! warning`, `!!! tip`).
+- Keep admonition titles/content concise and technically actionable; avoid decorative callouts.
 
 ### Rule: Document determinism and failure modes
 - Do: Explain nondeterminism across devices/backends and list expected failure results.
@@ -128,8 +129,8 @@ def solve(...):
 - Don’t: Remove or rename enum members without a deprecation window.
 - Why: Result enums are part of the public API contract.
 
-### Rule: [Local policy] Keep companion assets co-located with this vendored skill
-- Do: Use local checklists/snippets in `skills/project-engineering/checklists/` and `skills/project-engineering/snippets/`.
+### Rule: [Installation-local policy] Keep companion assets co-located with this installed skill
+- Do: Use companion checklists/snippets in `checklists/` and `snippets/` (relative to this `SKILL.md`).
 - Don’t: Add references to external-only asset paths when editing this plugin.
 - Why: Users can apply this project directly even without separately installed global skills.
 - Note: If this skill is exported elsewhere, package companion checklists/snippets alongside it.

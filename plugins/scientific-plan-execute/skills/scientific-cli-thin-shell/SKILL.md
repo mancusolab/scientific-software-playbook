@@ -8,6 +8,11 @@ description: Use when building command-line interfaces for scientific workflows 
 The CLI should be a boundary adapter, not a business-logic layer.
 This skill includes all CLI engineering rules needed for this playbook (no companion skill required).
 
+## Path Contract (Unambiguous)
+
+1. This skill has no installation-local playbook file dependencies.
+2. Any path contracts in CLI examples refer to user/runtime inputs, not plugin asset paths.
+
 ## Input Contract
 
 Required inputs:

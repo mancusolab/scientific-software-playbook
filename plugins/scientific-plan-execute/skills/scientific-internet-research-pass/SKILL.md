@@ -7,6 +7,11 @@ description: Use when architecture or implementation planning depends on uncerta
 
 Run a formal research loop when plan correctness depends on external, potentially changing facts.
 
+## Path Contract (Unambiguous)
+
+1. This skill has no installation-local playbook file dependencies.
+2. Source references are URLs/citations, not filesystem paths in Codex or Claude plugin installs.
+
 ## Input Contract
 
 Required inputs:

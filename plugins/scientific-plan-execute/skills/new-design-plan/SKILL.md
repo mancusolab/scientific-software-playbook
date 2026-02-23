@@ -7,6 +7,14 @@ description: Use when creating a dated scientific architecture plan and required
 
 Creates a new design plan and required artifact files.
 
+## Path Contract (Unambiguous)
+
+1. Installation-local utility path examples:
+- Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/new-design-plan.sh`
+- Claude plugin install: `<claude-plugin-root>/scripts/new-design-plan.sh`
+2. Project-local output paths:
+- `docs/...` paths in this skill are relative to the active downstream project root.
+
 ## Required Input
 
 1. Slug: lowercase hyphenated token, for example `genetics-infer`.
@@ -17,8 +25,7 @@ Creates a new design plan and required artifact files.
 1. Validate slug format (`a-z`, `0-9`, `-`).
 2. Resolve utility path:
 - `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"`
-- `SCRIPT_PATH="scripts/new-design-plan.sh"`
-- `if [[ ! -f "$SCRIPT_PATH" ]]; then SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/new-design-plan.sh"; fi`
+- `SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/new-design-plan.sh"`
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run plan creation utility:
 - `bash "$SCRIPT_PATH" "<slug>"`
@@ -29,6 +36,6 @@ or with title:
 
 ## Output
 
-1. Plan path: `docs/design-plans/YYYY-MM-DD-<slug>.md`
+1. Plan path: `<project-root>/docs/design-plans/YYYY-MM-DD-<slug>.md`
 2. Artifact directory:
-- `docs/design-plans/artifacts/YYYY-MM-DD-<slug>/`
+- `<project-root>/docs/design-plans/artifacts/YYYY-MM-DD-<slug>/`

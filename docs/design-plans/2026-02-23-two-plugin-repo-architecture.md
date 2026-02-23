@@ -56,7 +56,6 @@ scientific-software-playbook/
       scripts/
       skills/
         bootstrap-scientific-software-playbook/
-        install-scientific-software-playbook-home/
         new-design-plan/
         validate-design-plan/
         set-design-plan-status/

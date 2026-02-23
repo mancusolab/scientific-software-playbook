@@ -16,104 +16,69 @@ jobs:
           set -euo pipefail
           while IFS= read -r script; do
             bash -n "$script"
-          done < <(find scripts -type f -name '*.sh' | sort)
+          done < <(find scripts plugins -type f -name '*.sh' | sort)
 
       - name: JSON manifest checks
         run: |
           set -euo pipefail
-          jq empty hooks/hooks.json
-          jq empty .claude-plugin/plugin.json
+          python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
+          python3 -m json.tool plugins/scientific-plan-execute/.claude-plugin/plugin.json >/dev/null
+          python3 -m json.tool plugins/scientific-house-style/.claude-plugin/plugin.json >/dev/null
+          python3 -m json.tool plugins/scientific-plan-execute/hooks/hooks.json >/dev/null
 
-      - name: AGENTS and command-doc consistency checks
+      - name: Repository contract checks
+        run: |
+          set -euo pipefail
+          bash plugins/scientific-plan-execute/scripts/check-repo-contracts.sh
+
+      - name: Codex install and bootstrap smoke test
         run: |
           set -euo pipefail
 
-          failures=0
-
-          fail_ref() {
-            local file="$1"
-            local kind="$2"
-            local ref="$3"
-            echo "::error file=${file}::missing ${kind} reference: ${ref}"
-            failures=1
-          }
-
-          # AGENTS.md: skill path references must exist.
-          while IFS= read -r skill_path; do
-            [[ -z "${skill_path}" ]] && continue
-            [[ -f "${skill_path}" ]] || fail_ref "AGENTS.md" "skill-path" "${skill_path}"
-          done < <(grep -oE 'skills/[a-z0-9-]+/SKILL\.md' AGENTS.md | sort -u)
-
-          # AGENTS.md: command file references must exist.
-          while IFS= read -r command_path; do
-            [[ -z "${command_path}" ]] && continue
-            [[ -f "${command_path}" ]] || fail_ref "AGENTS.md" "command-path" "${command_path}"
-          done < <(grep -oE 'commands/[a-z0-9-]+\.md' AGENTS.md | sort -u)
-
-          for cmd_file in commands/*.md; do
-            # Slash-style command references (e.g., /new-design-plan) must resolve.
-            # Match only tokens that start at line start or whitespace to avoid file paths.
-            while IFS= read -r slash_cmd; do
-              [[ -z "${slash_cmd}" ]] && continue
-              [[ -f "commands/${slash_cmd}.md" ]] || fail_ref "${cmd_file}" "slash-command" "${slash_cmd}"
-            done < <(
-              grep -oE '(^|[[:space:]])/[a-z0-9]+-[a-z0-9-]+' "${cmd_file}" \
-                | sed -E 's/^[[:space:]]*\/([a-z0-9-]+)$/\1/' \
-                | sort -u
-            )
-
-            # "invoke `<command>`" references must resolve.
-            while IFS= read -r invoked_cmd; do
-              [[ -z "${invoked_cmd}" ]] && continue
-              [[ -f "commands/${invoked_cmd}.md" ]] || fail_ref "${cmd_file}" "invoked-command" "${invoked_cmd}"
-            done < <(sed -nE 's/.*invoke `([a-z0-9-]+)`.*/\1/p' "${cmd_file}" | sort -u)
-
-            # Backticked symbols used in Use/Run/invoke contexts must resolve as skill, agent, or command.
-            while IFS= read -r symbol; do
-              [[ -z "${symbol}" ]] && continue
-              if [[ -f "skills/${symbol}/SKILL.md" || -f "agents/${symbol}.md" || -f "commands/${symbol}.md" ]]; then
-                continue
-              fi
-              fail_ref "${cmd_file}" "symbol" "${symbol}"
-            done < <(
-              sed -nE \
-                -e 's/.*Use (the )?`([a-z0-9-]+)`.*/\2/p' \
-                -e 's/.*Run `([a-z0-9-]+)`.*/\1/p' \
-                -e 's/.*run `([a-z0-9-]+)`.*/\1/p' \
-                -e 's/.*invoke `([a-z0-9-]+)`.*/\1/p' \
-                "${cmd_file}" \
-                | sort -u
-            )
-          done
-
-          if [[ "${failures}" -ne 0 ]]; then
-            exit 1
-          fi
-
-      - name: Codex-home install and bootstrap smoke test
-        run: |
-          set -euo pipefail
           codex_home="$(mktemp -d)"
           downstream_root="$(mktemp -d)"
 
           bash scripts/install-codex-home.sh --codex-home "$codex_home" --force
 
           bundle="$codex_home/scientific-software-playbook"
-          bootstrap_script="$bundle/scripts/bootstrap-scientific-software-playbook.sh"
+          plan_plugin="$bundle/plugins/scientific-plan-execute"
+          house_plugin="$bundle/plugins/scientific-house-style"
+
+          test -d "$plan_plugin"
+          test -d "$house_plugin"
+
+          bootstrap_script="$plan_plugin/scripts/bootstrap-scientific-software-playbook.sh"
           test -x "$bootstrap_script"
 
           downstream_project="$downstream_root/scientific-project"
-          bash "$bootstrap_script" "$downstream_project" --force
+          CODEX_HOME="$codex_home" bash "$bootstrap_script" "$downstream_project" --force
 
           test -f "$downstream_project/AGENTS.md"
-          test -f "$downstream_project/commands/start-scientific-architecture.md"
-          test -f "$downstream_project/commands/start-simulation-validation.md"
-          test -f "$downstream_project/hooks/hooks.json"
-          test -f "$downstream_project/scripts/hooks/session-start.sh"
-          test -f "$downstream_project/docs/implementation-plans/templates/phase-simulation-validation-template.md"
-          test -f "$codex_home/skills/start-scientific-implementation-plan/SKILL.md"
-          test -f "$codex_home/skills/execute-scientific-implementation-plan/SKILL.md"
+          test -z "$(find "$downstream_project" -mindepth 1 -maxdepth 1 ! -name AGENTS.md -print)"
 
-          jq empty "$downstream_project/hooks/hooks.json"
-          grep -Fq "simulation-for-inference-validation" "$downstream_project/AGENTS.md"
+          # Legacy root bundle compatibility paths must remain absent.
+          test ! -e "$bundle/agents"
+          test ! -e "$bundle/commands"
+          test ! -e "$bundle/hooks"
+          test ! -e "$bundle/scripts"
+
+          grep -Fq "$plan_plugin" "$downstream_project/AGENTS.md"
           grep -Fq "$codex_home/skills/" "$downstream_project/AGENTS.md"
+
+      - name: Selective install smoke tests
+        run: |
+          set -euo pipefail
+
+          codex_home_plan="$(mktemp -d)"
+          bash scripts/install-codex-home.sh --codex-home "$codex_home_plan" --force --plugin scientific-plan-execute
+          test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-plan-execute"
+          test ! -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-house-style"
+          test -f "$codex_home_plan/skills/scientific-software-architecture/SKILL.md"
+          test ! -d "$codex_home_plan/skills/jax-equinox-numerics"
+
+          codex_home_house="$(mktemp -d)"
+          bash scripts/install-codex-home.sh --codex-home "$codex_home_house" --force --plugin scientific-house-style
+          test -d "$codex_home_house/scientific-software-playbook/plugins/scientific-house-style"
+          test ! -d "$codex_home_house/scientific-software-playbook/plugins/scientific-plan-execute"
+          test -f "$codex_home_house/skills/jax-equinox-numerics/SKILL.md"
+          test ! -d "$codex_home_house/skills/scientific-software-architecture"

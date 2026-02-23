@@ -12,13 +12,18 @@ JAX + Equinox + Lineax + Optimistix.
 
 This file is the entrypoint. Keep it lightweight and load focused references for
 implementation details.
-In this plugin, prefer the vendored local paths under `skills/jax-equinox-numerics/`.
+
+## Path Contract (Unambiguous)
+
+1. All relative paths in this file resolve from this skill directory (the directory containing this `SKILL.md`).
+2. Codex install location example: `${CODEX_HOME:-$HOME/.codex}/skills/jax-equinox-numerics/`.
+3. Claude plugin location example: `<claude-plugin-root>/skills/jax-equinox-numerics/`.
 
 ## Companion checklists
 
 Apply these checklists when using this skill.
 
-### Repo-local paths
+### Installation-local paths (relative to this `SKILL.md`)
 - `checklists/jax_equinox_design_checklist.md`
 - `checklists/jit_static_pytree_checklist.md`
 - `checklists/numerics_ad_testing_checklist.md`
@@ -33,7 +38,7 @@ Apply these checklists when using this skill.
 
 Use these snippets as implementation starters when they match the task.
 
-### Repo-local paths
+### Installation-local paths (relative to this `SKILL.md`)
 - `snippets/jit_boundary.py`
 - `snippets/partition_static_state.py`
 - `snippets/filter_vmap_batching.py`
@@ -178,4 +183,4 @@ to reduce instruction weight and improve retrieval quality.
 ## See also: project engineering
 
 For API stability, documentation style, type checking, CLI patterns, CI gates, and
-serialization guidance, see `skills/project-engineering/SKILL.md`.
+serialization guidance, see `../project-engineering/SKILL.md`.

@@ -164,6 +164,15 @@ for skill in "${managed_skills[@]}"; do
   rm -rf "${skills_dst}/${skill}"
 done
 
+# Clean retired skills that were removed from the catalog so old installs do not
+# leave stale directories behind.
+retired_skills=(
+  "install-scientific-software-playbook-home"
+)
+for skill in "${retired_skills[@]}"; do
+  rm -rf "${skills_dst}/${skill}"
+done
+
 installed_skills=()
 installed_plugins=()
 
@@ -213,7 +222,6 @@ if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
     "${plan_dst}/scripts/set-design-plan-status.sh" \
     "${plan_dst}/scripts/validate-design-plan-readiness.sh" \
     "${plan_dst}/scripts/bootstrap-scientific-software-playbook.sh" \
-    "${plan_dst}/scripts/install-codex-home.sh" \
     "${plan_dst}/scripts/plugin-catalog.sh"
 fi
 

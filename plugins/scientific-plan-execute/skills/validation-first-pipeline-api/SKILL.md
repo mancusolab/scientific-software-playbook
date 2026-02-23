@@ -7,6 +7,11 @@ description: Use when implementing orchestration APIs for scientific workflows -
 
 This skill structures task-level APIs such as `fit`, `infer`, and `simulate`.
 
+## Path Contract (Unambiguous)
+
+1. This skill has no installation-local playbook file dependencies.
+2. Any path-like values in examples (for example user file paths) are runtime data inputs, not plugin asset paths.
+
 ## Input Contract
 
 Required inputs:

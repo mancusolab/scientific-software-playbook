@@ -7,11 +7,18 @@ description: Use when executing a scientific implementation plan directory - run
 
 Execute a prepared implementation plan with explicit quality gates, loop controls, and evidence requirements.
 
+## Path Contract (Unambiguous)
+
+1. Project-local execution paths:
+- `docs/...` paths in this skill are relative to the active downstream project root.
+2. Absolute paths:
+- Absolute implementation-plan paths are preferred for handoff/execution to avoid ambiguity.
+
 ## Input Contract
 
 Required inputs:
 1. Implementation plan directory path:
-- `docs/implementation-plans/YYYY-MM-DD-<slug>/`
+- `<project-root>/docs/implementation-plans/YYYY-MM-DD-<slug>/`
 
 Required artifacts in that directory:
 1. `README.md`

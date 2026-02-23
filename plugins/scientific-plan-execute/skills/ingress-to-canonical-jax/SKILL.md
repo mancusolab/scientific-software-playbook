@@ -7,6 +7,11 @@ description: Use when implementing file/data ingestion for scientific software -
 
 This skill enforces immediate conversion at ingress and blocks raw containers from entering pipeline code.
 
+## Path Contract (Unambiguous)
+
+1. This skill has no installation-local playbook file dependencies.
+2. Any file paths discussed here are user/data input paths handled by ingress adapters, not plugin asset paths.
+
 ## Input Contract
 
 Required inputs:

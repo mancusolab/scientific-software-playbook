@@ -7,6 +7,11 @@ description: Use when defining a simulate function for inference-focused scienti
 
 Design a simulation pathway that mirrors inferential assumptions so users can test inference behavior under controlled data generation.
 
+## Path Contract (Unambiguous)
+
+1. This skill has no installation-local playbook file dependencies.
+2. API contracts in this skill define model/data interfaces, not filesystem path contracts.
+
 ## Input Contract
 
 Required inputs:

@@ -7,10 +7,18 @@ description: Use when moving from an approved scientific design plan to implemen
 
 Create implementation-ready phase artifacts from an approved architecture plan.
 
+## Path Contract (Unambiguous)
+
+1. Project-local paths:
+- `docs/...` paths in this skill are relative to the active downstream project root.
+2. Installation-local template path examples:
+- Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
+- Claude plugin install: `<claude-plugin-root>/docs/implementation-plans/templates/`
+
 ## Input Contract
 
 Required inputs:
-1. Design plan path (`docs/design-plans/YYYY-MM-DD-<slug>.md`).
+1. Design plan path (`<project-root>/docs/design-plans/YYYY-MM-DD-<slug>.md`).
 2. Design plan status equal to `Approved for Implementation`.
 
 Optional inputs:
@@ -23,7 +31,7 @@ Optional inputs:
 
 This skill must produce:
 1. Implementation plan directory:
-- `docs/implementation-plans/YYYY-MM-DD-<slug>/`
+- `<project-root>/docs/implementation-plans/YYYY-MM-DD-<slug>/`
 2. Required files:
 - `README.md`
 - `test-requirements.md`
@@ -64,12 +72,13 @@ Ask clarifying questions before writing implementation phases when any are true:
 - default from design plan filename after date prefix
 - or use user-provided override
 5. Create implementation directory:
-- `docs/implementation-plans/YYYY-MM-DD-<slug>/`
+- `<project-root>/docs/implementation-plans/YYYY-MM-DD-<slug>/`
 6. Resolve template source:
 - prefer project-local templates when present:
-  - `docs/implementation-plans/templates/`
+  - `<project-root>/docs/implementation-plans/templates/`
 - otherwise use installed plugin templates:
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
+  - `<claude-plugin-root>/docs/implementation-plans/templates/`
 7. Create/update files using resolved templates:
 - `scientific-implementation-plan-template.md`
 - `test-requirements-template.md`

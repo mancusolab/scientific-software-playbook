@@ -1,5 +1,9 @@
 # Scientific Software Playbook (Claude + Codex)
 
+Audience and intent:
+1. This README is for users visiting the GitHub repository to understand, install, and use these plugins.
+2. For agent/developer contracts used when developing this repository itself, use `AGENTS.md`.
+
 Scientific Software Playbook is an opinionated workflow for building scientific
 software with explicit design gates before implementation. It is aimed at teams
 that want traceable decisions, review artifacts, and consistent execution from
@@ -97,10 +101,10 @@ Typical entry points:
 - Day-1 onboarding flow: `docs/ONBOARDING.md`
 - Compatibility and breaking-change policy: `docs/COMPATIBILITY.md`
 - Release notes (two-plugin migration): `docs/releases/2026-02-23-two-plugin-migration.md`
-- Design plan templates: `docs/design-plans/templates/`
-- Implementation plan templates: `docs/implementation-plans/templates/`
-- Review template: `docs/reviews/review-template.md`
-- Skill/agent IO checklist: `docs/checklists/skill-agent-io-checklist.md`
+- Design plan templates: `plugins/scientific-plan-execute/docs/design-plans/templates/`
+- Implementation plan templates: `plugins/scientific-plan-execute/docs/implementation-plans/templates/`
+- Review template: `plugins/scientific-plan-execute/docs/reviews/review-template.md`
+- Skill/agent IO checklist: `plugins/scientific-plan-execute/docs/checklists/skill-agent-io-checklist.md`
 
 ## Agent-Focused Policy And Internals
 

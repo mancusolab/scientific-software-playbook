@@ -9,6 +9,11 @@ Day-to-day usage is command/skill driven inside Claude or Codex. The only
 user-facing shell command is the Codex install step (`install-codex-home.sh`).
 All other scripts are internal and invoked by commands, skills, hooks, or agents.
 
+Audience and scope:
+1. This document is user-facing installation/usage guidance.
+2. For repository-development contracts and agent-facing implementation rules, use `AGENTS.md`.
+3. For high-level plugin overview on GitHub, use `README.md`.
+
 ## Plugin Selection and Dependency Contract
 
 1. `scientific-plan-execute` is required for bootstrap and workflow orchestration.
@@ -71,20 +76,19 @@ What Codex install/bootstrap provides:
 ## Installed Skill Inventory (Exact)
 
 `scientific-plan-execute` installs:
-1. `install-scientific-software-playbook-home`
-2. `bootstrap-scientific-software-playbook`
-3. `new-design-plan`
-4. `validate-design-plan`
-5. `set-design-plan-status`
-6. `start-scientific-implementation-plan`
-7. `execute-scientific-implementation-plan`
-8. `scientific-internet-research-pass`
-9. `scientific-software-architecture`
-10. `simulation-for-inference-validation`
-11. `ingress-to-canonical-jax`
-12. `validation-first-pipeline-api`
-13. `jax-equinox-core-numerics-shell`
-14. `scientific-cli-thin-shell`
+1. `bootstrap-scientific-software-playbook`
+2. `new-design-plan`
+3. `validate-design-plan`
+4. `set-design-plan-status`
+5. `start-scientific-implementation-plan`
+6. `execute-scientific-implementation-plan`
+7. `scientific-internet-research-pass`
+8. `scientific-software-architecture`
+9. `simulation-for-inference-validation`
+10. `ingress-to-canonical-jax`
+11. `validation-first-pipeline-api`
+12. `jax-equinox-core-numerics-shell`
+13. `scientific-cli-thin-shell`
 
 `scientific-house-style` installs:
 1. `jax-equinox-numerics`
@@ -93,13 +97,13 @@ What Codex install/bootstrap provides:
 ## Usage Example (Downstream Project)
 
 Claude path:
-1. `/start-scientific-architecture genetics-infer`
+1. `/start-scientific-architecture <example-slug>`
 2. Choose model path early: `provided-model` or `suggested-model`.
 3. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
 4. `scientific-internet-research-pass` (when external facts are uncertain or model suggestions need citations)
 5. `/validate-design-plan <plan-path> --phase in-review`
 6. `/set-design-plan-status <plan-path> approved-for-implementation`
-7. `/start-scientific-implementation-plan <plan-path> genetics-infer`
+7. `/start-scientific-implementation-plan <plan-path> <example-slug>`
 8. Start a fresh session/context (recommended).
 9. `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
 
@@ -107,7 +111,7 @@ Codex path:
 1. Invoke `scientific-software-architecture`.
 2. Choose model path early: `provided-model` or `suggested-model`.
 3. Invoke `simulation-for-inference-validation` when simulation-based inference checks are in scope.
-4. Invoke `new-design-plan` with slug `genetics-infer` when plan scaffolding is needed.
+4. Invoke `new-design-plan` with slug `<example-slug>` when plan scaffolding is needed.
 5. Invoke `scientific-internet-research-pass` when external facts are uncertain or model suggestions need citations.
 6. Invoke `validate-design-plan` with phase `in-review`.
 7. Invoke `set-design-plan-status` with `approved-for-implementation`.

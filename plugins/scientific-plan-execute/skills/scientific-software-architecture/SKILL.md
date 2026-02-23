@@ -7,6 +7,16 @@ description: Use when designing scientific software systems with CLI ingress and
 
 Use this skill to design or review scientific software that separates ingress, orchestration, and numerics execution.
 
+## Path Contract (Unambiguous)
+
+1. Project-local paths:
+- `docs/...` paths in this skill are relative to the active downstream project root.
+2. Installation-local plugin asset path examples:
+- Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/...`
+- Claude plugin install: `<claude-plugin-root>/...`
+3. Skill references:
+- Names like `new-design-plan` or `simulation-for-inference-validation` refer to skill IDs, not relative file paths.
+
 ## Input Contract
 
 Required inputs (ask if missing):
@@ -28,7 +38,7 @@ Optional but strongly requested inputs:
 ## Output Contract
 
 This skill must produce:
-1. A design plan at `docs/design-plans/YYYY-MM-DD-<slug>.md` (or equivalent structured conversation output).
+1. A design plan at `<project-root>/docs/design-plans/YYYY-MM-DD-<slug>.md` (or equivalent structured conversation output).
 2. Companion artifacts when model/update rules are in scope:
 - `model-symbol-table.md`
 - `equation-to-code-map.md`
@@ -68,35 +78,40 @@ This skill must produce:
 Use these assets to keep planning and reviews consistent:
 
 1. Prefer skills as the primary interface:
-- `skills/new-design-plan/SKILL.md`
-- `skills/validate-design-plan/SKILL.md`
-- `skills/set-design-plan-status/SKILL.md`
-- `skills/start-scientific-implementation-plan/SKILL.md`
-- `skills/execute-scientific-implementation-plan/SKILL.md`
+- `new-design-plan`
+- `validate-design-plan`
+- `set-design-plan-status`
+- `start-scientific-implementation-plan`
+- `execute-scientific-implementation-plan`
 2. Commands are optional wrappers from the installed plugin bundle:
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/commands/`
+- `<claude-plugin-root>/commands/`
 3. Resolve templates with this precedence:
-- project-local templates when present
+- project-local templates under `<project-root>/docs/...` when present
 - otherwise installed plugin templates:
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/design-plans/templates/`
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
+  - `<claude-plugin-root>/docs/design-plans/templates/`
+  - `<claude-plugin-root>/docs/implementation-plans/templates/`
 4. Review/checklist references (installed plugin bundle):
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/reviews/review-template.md`
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/checklists/skill-agent-io-checklist.md`
+- `<claude-plugin-root>/docs/reviews/review-template.md`
+- `<claude-plugin-root>/docs/checklists/skill-agent-io-checklist.md`
 5. External research and simulation design:
-- `skills/scientific-internet-research-pass/SKILL.md`
-- `skills/simulation-for-inference-validation/SKILL.md`
+- `scientific-internet-research-pass`
+- `simulation-for-inference-validation`
 
 ## Integrated Guidance
 
 Use these core playbook skills directly for downstream design constraints (no companion pairing required):
 
-1. `skills/ingress-to-canonical-jax/SKILL.md`
-2. `skills/validation-first-pipeline-api/SKILL.md`
-3. `skills/jax-equinox-core-numerics-shell/SKILL.md`
-4. `skills/scientific-cli-thin-shell/SKILL.md`
-5. `skills/scientific-internet-research-pass/SKILL.md`
-6. `skills/simulation-for-inference-validation/SKILL.md`
+1. `ingress-to-canonical-jax`
+2. `validation-first-pipeline-api`
+3. `jax-equinox-core-numerics-shell`
+4. `scientific-cli-thin-shell`
+5. `scientific-internet-research-pass`
+6. `simulation-for-inference-validation`
 
 ## Uncertainty Triggers (Must Ask Questions)
 
@@ -154,7 +169,7 @@ Research guidance:
 
 Before any implementation-oriented skill is used, produce a plan in:
 
-- `docs/design-plans/YYYY-MM-DD-<slug>.md` when repository docs are available.
+- `<project-root>/docs/design-plans/YYYY-MM-DD-<slug>.md` when repository docs are available.
 - Conversation output with the same structure if no writable plan location exists.
 - Prefer creating files via:
 `/new-design-plan <slug>` (Claude) or `new-design-plan` (Codex).
@@ -183,9 +198,9 @@ Plan structure (minimum):
 
 Companion artifact files (required when model/update rules are in scope):
 
-1. `docs/design-plans/artifacts/YYYY-MM-DD-<slug>/model-symbol-table.md`
-2. `docs/design-plans/artifacts/YYYY-MM-DD-<slug>/equation-to-code-map.md`
-3. `docs/design-plans/artifacts/YYYY-MM-DD-<slug>/solver-feasibility-matrix.md`
+1. `<project-root>/docs/design-plans/artifacts/YYYY-MM-DD-<slug>/model-symbol-table.md`
+2. `<project-root>/docs/design-plans/artifacts/YYYY-MM-DD-<slug>/equation-to-code-map.md`
+3. `<project-root>/docs/design-plans/artifacts/YYYY-MM-DD-<slug>/solver-feasibility-matrix.md`
 
 ## Approval Gate (Hard Stop)
 
@@ -387,12 +402,12 @@ When simulation-based validation is in scope, define:
 16. If simulation is in scope, is the `simulate` contract explicit and aligned to inferential assumptions?
 17. If simulation is in scope, are recovery/calibration validation experiments documented?
 18. Were required artifact files generated and populated?
-19. Was reviewer output produced using `docs/reviews/review-template.md`?
+19. Was reviewer output produced using the installed plan-execute review template (`docs/reviews/review-template.md` under the plugin install location)?
 20. Is `Handoff Decision` explicit and consistent with plan status?
 21. Were external research triggers evaluated and, when triggered, cited findings documented with access dates?
 
 ## Weighted Review Guidance
 
-Use weighted gate scoring in `docs/reviews/review-template.md`:
+Use weighted gate scoring in the installed plan-execute review template (`docs/reviews/review-template.md` under the plugin install location):
 1. Hard-stop failures must be zero.
 2. Weighted score should be `>= 90/100` before approval recommendation.

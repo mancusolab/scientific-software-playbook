@@ -12,7 +12,6 @@ ssp_plugin_skills() {
   case "$plugin" in
     scientific-plan-execute)
       cat <<'EOF'
-install-scientific-software-playbook-home
 bootstrap-scientific-software-playbook
 new-design-plan
 validate-design-plan

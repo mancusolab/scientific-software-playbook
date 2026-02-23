@@ -7,6 +7,14 @@ description: Use when validating scientific design-plan readiness in Codex for i
 
 Runs design-plan readiness checks and reports pass/fail gaps.
 
+## Path Contract (Unambiguous)
+
+1. Installation-local utility path examples:
+- Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/validate-design-plan-readiness.sh`
+- Claude plugin install: `<claude-plugin-root>/scripts/validate-design-plan-readiness.sh`
+2. Project-local input paths:
+- Any design plan path passed to this skill resolves within the active downstream project root unless explicitly absolute.
+
 ## Required Input
 
 1. Plan path.
@@ -19,8 +27,7 @@ Runs design-plan readiness checks and reports pass/fail gaps.
 1. Verify plan path exists.
 2. Resolve validator path:
 - `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"`
-- `SCRIPT_PATH="scripts/validate-design-plan-readiness.sh"`
-- `if [[ ! -f "$SCRIPT_PATH" ]]; then SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/validate-design-plan-readiness.sh"; fi`
+- `SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/validate-design-plan-readiness.sh"`
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run readiness validator:
 - `bash "$SCRIPT_PATH" "<plan-path>" --phase "<phase>"`

@@ -10,9 +10,10 @@ steps from `docs/INSTALLATION.md` first.
 
 Plugin prerequisite:
 1. This onboarding flow requires `scientific-plan-execute`.
-2. `scientific-house-style` is optional and supplements numerics/project-engineering guidance.
-3. If only `scientific-house-style` is installed, bootstrap and workflow commands in this guide will not resolve.
-4. Compatibility and breaking-change path policy is documented in `docs/COMPATIBILITY.md`.
+2. This onboarding flow also requires `scientific-research` for research-gated steps.
+3. `scientific-house-style` is optional and supplements numerics/project-engineering guidance.
+4. If only `scientific-house-style` is installed, bootstrap and workflow commands in this guide will not resolve.
+5. Compatibility and breaking-change path policy is documented in `docs/COMPATIBILITY.md`.
 
 ## Phase Workflow
 
@@ -30,6 +31,8 @@ Plugin prerequisite:
   - Claude: `/start-simulation-validation <plan-path>`
   - Codex: invoke `simulation-for-inference-validation`
 - If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
+- Delegate `internet-researcher` for general/API internet research needs.
+- Delegate `scientific-literature-researcher` when literature support is needed.
 - Outcome: design plan in `docs/design-plans/YYYY-MM-DD-<slug>.md`.
 - Typical status flow: `Draft` (initial scaffold) -> `In Review` (after first planning pass).
 
@@ -92,7 +95,10 @@ Plugin prerequisite:
 - Codex: invoke `validate-design-plan` with phase `in-review`
 
 4. Run external research pass when triggered:
-- Claude/Codex: invoke `scientific-internet-research-pass`
+- Claude/Codex:
+  - `scientific-internet-research-pass` for external claims
+  - delegate `internet-researcher` for general/API web evidence
+  - delegate `scientific-literature-researcher` for paper-backed support
 
 5. Define simulation contract when in scope:
 - Claude: `/start-simulation-validation <plan-path>`

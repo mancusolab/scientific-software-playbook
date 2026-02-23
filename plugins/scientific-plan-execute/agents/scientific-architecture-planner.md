@@ -52,6 +52,8 @@ Optional but high-value inputs:
 8. If explicit update rules exist, ask the user to choose solver strategy.
 9. Evaluate and document Optimistix/Lineax translation feasibility versus custom solver path.
 10. Run `scientific-internet-research-pass` when external APIs, formats, standards, or suggested-model evidence are uncertain.
+   - Delegate `internet-researcher` for general/API web evidence.
+   - Delegate `scientific-literature-researcher` for paper-backed support.
 11. Create the plan skeleton with `/new-design-plan <slug>` (Claude) or `new-design-plan` (Codex) when the plan file does not exist.
 12. Draft or update design plan in `docs/design-plans/YYYY-MM-DD-<slug>.md` when available.
 13. Populate companion artifacts in `docs/design-plans/artifacts/YYYY-MM-DD-<slug>/`.
@@ -61,16 +63,16 @@ Optional but high-value inputs:
 17. Before recommending approval, run `/validate-design-plan <plan-path> --phase in-review` (Claude) or `validate-design-plan` with phase `in-review` (Codex).
 18. Only after approval and readiness pass, recommend downstream implementation skills/tasks.
 
-## Core Skill Inputs (Local)
+## Core Skill Inputs
 
-Use these local skill files when drafting solver and implementation guidance:
-1. `skills/scientific-software-architecture/SKILL.md`
-2. `skills/ingress-to-canonical-jax/SKILL.md`
-3. `skills/validation-first-pipeline-api/SKILL.md`
-4. `skills/jax-equinox-core-numerics-shell/SKILL.md`
-5. `skills/scientific-cli-thin-shell/SKILL.md`
-6. `skills/scientific-internet-research-pass/SKILL.md`
-7. `skills/simulation-for-inference-validation/SKILL.md`
+Use these skill IDs when drafting solver and implementation guidance:
+1. `scientific-software-architecture`
+2. `ingress-to-canonical-jax`
+3. `validation-first-pipeline-api`
+4. `jax-equinox-core-numerics-shell`
+5. `scientific-cli-thin-shell`
+6. `scientific-internet-research-pass`
+7. `simulation-for-inference-validation`
 
 ## Clarifying Question Rules
 

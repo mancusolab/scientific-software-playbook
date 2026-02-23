@@ -67,16 +67,16 @@ Required inputs:
 16. Fill weighted gates and score summary (`>= 90` required for approval recommendation).
 17. Save report to `docs/reviews/YYYY-MM-DD-<slug>-architecture-review.md`.
 
-## Core Skill Inputs (Local)
+## Core Skill Inputs
 
-Use these local references when evaluating architecture and solver decisions:
-1. `skills/scientific-software-architecture/SKILL.md`
-2. `skills/ingress-to-canonical-jax/SKILL.md`
-3. `skills/validation-first-pipeline-api/SKILL.md`
-4. `skills/jax-equinox-core-numerics-shell/SKILL.md`
-5. `skills/scientific-cli-thin-shell/SKILL.md`
-6. `skills/scientific-internet-research-pass/SKILL.md`
-7. `skills/simulation-for-inference-validation/SKILL.md`
+Use these skill IDs when evaluating architecture and solver decisions:
+1. `scientific-software-architecture`
+2. `ingress-to-canonical-jax`
+3. `validation-first-pipeline-api`
+4. `jax-equinox-core-numerics-shell`
+5. `scientific-cli-thin-shell`
+6. `scientific-internet-research-pass`
+7. `simulation-for-inference-validation`
 
 ## Hard Gates
 

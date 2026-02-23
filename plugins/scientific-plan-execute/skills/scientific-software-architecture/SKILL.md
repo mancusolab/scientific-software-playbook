@@ -5,6 +5,17 @@ description: Use when designing scientific software systems with CLI ingress and
 
 # Scientific Software Architecture
 
+## Runtime Compatibility
+
+When executing this definition in Codex or another runtime, apply this mapping:
+
+- `TaskCreate`, `TaskUpdate`, `TodoWrite` -> `update_plan`
+- `Task` delegate calls (for example `<invoke name="Task">`) -> perform the requested work directly in the current session when delegation is unavailable
+- `Skill` tool calls -> load the named skill with your runtime skill-loading mechanism
+- Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
+
+Apply this translation before following the remaining steps.
+
 Use this skill to design or review scientific software that separates ingress, orchestration, and numerics execution.
 
 ## Path Contract (Unambiguous)
@@ -134,6 +145,9 @@ Ask clarifying questions before proposing architecture when any are true:
 ## External Research Pass (When Triggered)
 
 Run `scientific-internet-research-pass` when research triggers are present.
+Delegate as needed:
+1. `internet-researcher` for general/API web evidence.
+2. `scientific-literature-researcher` for paper-backed support.
 
 Required research outputs:
 1. Cited claim table (claim -> source URL -> access date -> confidence).

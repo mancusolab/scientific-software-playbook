@@ -5,6 +5,17 @@ description: Use when implementing file/data ingestion for scientific software -
 
 # Ingress To Canonical JAX
 
+## Runtime Compatibility
+
+When executing this definition in Codex or another runtime, apply this mapping:
+
+- `TaskCreate`, `TaskUpdate`, `TodoWrite` -> `update_plan`
+- `Task` delegate calls (for example `<invoke name="Task">`) -> perform the requested work directly in the current session when delegation is unavailable
+- `Skill` tool calls -> load the named skill with your runtime skill-loading mechanism
+- Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
+
+Apply this translation before following the remaining steps.
+
 This skill enforces immediate conversion at ingress and blocks raw containers from entering pipeline code.
 
 ## Path Contract (Unambiguous)

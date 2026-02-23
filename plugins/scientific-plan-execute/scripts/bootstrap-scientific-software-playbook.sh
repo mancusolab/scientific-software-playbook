@@ -120,6 +120,11 @@ if [[ -d "${bundle_root}/plugins/scientific-house-style" ]]; then
   house_style_block="- House-style docs: \`${bundle_root}/plugins/scientific-house-style/docs/\`"
 fi
 
+research_block=""
+if [[ -d "${bundle_root}/plugins/scientific-research" ]]; then
+  research_block="- Research agents/skills: \`${bundle_root}/plugins/scientific-research/\`"
+fi
+
 cat > "$agents_path" <<AGENT_EOF
 ## Scientific Software Playbook (Codex Native)
 
@@ -139,6 +144,7 @@ ${skills_block}
 - Templates: \`${plugin_root}/docs/implementation-plans/templates/\`
 - Review template: \`${plugin_root}/docs/reviews/review-template.md\`
 - IO checklist: \`${plugin_root}/docs/checklists/skill-agent-io-checklist.md\`
+${research_block}
 ${house_style_block}
 
 ### Project-local footprint
@@ -152,7 +158,8 @@ ${house_style_block}
    - choose model path (\`provided-model\` or \`suggested-model\`).
    - invoke \`simulation-for-inference-validation\` when simulation-based inference validation is in scope.
    - invoke \`new-design-plan\` with a slug.
-   - invoke \`scientific-internet-research-pass\` when external facts are uncertain.
+   - invoke \`scientific-internet-research-pass\` when external claims need citations.
+   - delegate \`internet-researcher\` or \`scientific-literature-researcher\` when needed.
 3. Validate draft readiness:
    - invoke \`validate-design-plan\` with phase \`in-review\`.
 4. Approve after explicit user sign-off:

@@ -16,7 +16,6 @@
     "./agents/scientific-architecture-reviewer.md",
     "./agents/scientific-simulation-designer.md",
     "./agents/numerics-interface-auditor.md",
-    "./agents/scientific-internet-researcher.md",
     "./agents/scientific-task-implementor-fast.md",
     "./agents/scientific-task-bug-fixer.md",
     "./agents/scientific-test-analyst.md"

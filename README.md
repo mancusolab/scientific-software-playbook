@@ -9,25 +9,33 @@ software with explicit design gates before implementation. It is aimed at teams
 that want traceable decisions, review artifacts, and consistent execution from
 architecture through delivery.
 
-This repository hosts two plugins in one codebase:
+This repository hosts three plugins in one codebase:
 
 1. `scientific-plan-execute`
-2. `scientific-house-style`
+2. `scientific-research`
+3. `scientific-house-style`
 
 ## Plugin Boundaries
 
 1. `scientific-plan-execute`
 - Workflow orchestration for architecture, planning, status gates, and phase execution.
 - Owns agents, commands, hooks, and playbook scripts/templates.
-2. `scientific-house-style`
+2. `scientific-research`
+- Reusable research workflows and delegates:
+  - `scientific-internet-research-pass`
+  - `scientific-codebase-investigation-pass`
+  - `codebase-investigator`, `internet-researcher`, `remote-code-researcher`, `combined-researcher`, `scientific-literature-researcher`
+3. `scientific-house-style`
 - Reusable JAX/Equinox house-style skills (`jax-equinox-numerics`, `project-engineering`).
 - Can be installed independently.
 
 Dependency contract:
 1. `scientific-plan-execute` is required for bootstrap and workflow commands.
-2. `scientific-house-style` is optional but recommended when numerics and project
+2. `scientific-research` is required for external-fact validation gates in workflow planning.
+3. Codex installer auto-adds `scientific-research` when `scientific-plan-execute` is selected.
+4. `scientific-house-style` is optional but recommended when numerics and project
    engineering constraints are in scope.
-3. If `scientific-house-style` is not installed, core workflow still runs.
+5. If `scientific-house-style` is not installed, core workflow still runs.
 
 ## Who This Is For
 
@@ -41,6 +49,7 @@ Dependency contract:
 - Reusable skills, commands, and agents for phased execution.
 - Templates for design plans, implementation plans, and review artifacts.
 - A Codex bootstrap path for applying this playbook to downstream repos.
+- A dedicated research plugin with ed3d-style research agent layout for local and internet investigation.
 - A separate house-style plugin for JAX/Equinox numerics and project
   engineering guidance.
 
@@ -54,6 +63,7 @@ cd scientific-software-playbook
 bash scripts/install-codex-home.sh --force
 # Optional selective install:
 # bash scripts/install-codex-home.sh --plugin scientific-plan-execute --force
+# bash scripts/install-codex-home.sh --plugin scientific-research --force
 # bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 ```
 
@@ -69,11 +79,13 @@ Then:
    - `/plugin marketplace add file:///absolute/path/to/scientific-software-playbook`
 2. Install the workflow plugin:
    - `/plugin install scientific-plan-execute@scientific-software-playbook`
-3. Optional: install house-style plugin:
+3. Install research plugin:
+   - `/plugin install scientific-research@scientific-software-playbook`
+4. Optional: install house-style plugin:
    - `/plugin install scientific-house-style@scientific-software-playbook`
-4. Reload:
+5. Reload:
    - `/plugin reload`
-5. Start architecture:
+6. Start architecture:
    - `/start-scientific-architecture <slug>`
 
 ## Workflow At A Glance
@@ -90,17 +102,19 @@ Typical entry points:
 
 1. Architecture: `scientific-software-architecture` or `/start-scientific-architecture`
 2. Plan scaffolding: `new-design-plan` or `/new-design-plan`
-3. Readiness check: `validate-design-plan` or `/validate-design-plan --phase in-review`
-4. Approval transition: `set-design-plan-status` or `/set-design-plan-status`
-5. Implementation planning: `start-scientific-implementation-plan`
-6. Execution: `execute-scientific-implementation-plan`
+3. Research passes: `scientific-internet-research-pass`, `scientific-codebase-investigation-pass`
+4. Readiness check: `validate-design-plan` or `/validate-design-plan --phase in-review`
+5. Approval transition: `set-design-plan-status` or `/set-design-plan-status`
+6. Implementation planning: `start-scientific-implementation-plan`
+7. Execution: `execute-scientific-implementation-plan`
 
 ## Documentation Map
 
 - Installation and setup: `docs/INSTALLATION.md`
 - Day-1 onboarding flow: `docs/ONBOARDING.md`
 - Compatibility and breaking-change policy: `docs/COMPATIBILITY.md`
-- Release notes (two-plugin migration): `docs/releases/2026-02-23-two-plugin-migration.md`
+- Release notes (three-plugin research split): `docs/releases/2026-02-23-research-plugin-split.md`
+- Historical release notes (two-plugin migration): `docs/releases/2026-02-23-two-plugin-migration.md`
 - Design plan templates: `plugins/scientific-plan-execute/docs/design-plans/templates/`
 - Implementation plan templates: `plugins/scientific-plan-execute/docs/implementation-plans/templates/`
 - Review template: `plugins/scientific-plan-execute/docs/reviews/review-template.md`
@@ -122,6 +136,7 @@ runtime constraints.
 scientific-software-playbook/
 ├── plugins/
 │   ├── scientific-plan-execute/
+│   ├── scientific-research/
 │   └── scientific-house-style/
 ├── AGENTS.md
 ├── docs/

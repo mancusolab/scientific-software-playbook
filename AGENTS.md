@@ -9,16 +9,19 @@ This repository supports one operational mode:
 
 1. Global install mode (install into `CODEX_HOME` and bootstrap downstream projects).
 
-Scope note: this repository hosts two plugins:
+Scope note: this repository hosts three plugins:
 1. `scientific-plan-execute`
-2. `scientific-house-style`
+2. `scientific-research`
+3. `scientific-house-style`
 
 Operational workflow remains centered on `scientific-plan-execute`.
 
 Dependency contract:
 1. `scientific-plan-execute` is required for bootstrap and orchestration flow.
-2. `scientific-house-style` is optional and provides reusable guidance.
-3. If house-style skills are unavailable, workflow should continue without blocking.
+2. `scientific-research` is required for external-fact validation gates and research workflows.
+3. `scripts/install-codex-home.sh` auto-adds `scientific-research` when `scientific-plan-execute` is selected.
+4. `scientific-house-style` is optional and provides reusable guidance.
+5. If house-style skills are unavailable, workflow should continue without blocking.
 
 ## Plugin Assets (Source Of Truth)
 
@@ -29,13 +32,16 @@ Dependency contract:
 - `set-design-plan-status`: `plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md`
 - `start-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/start-scientific-implementation-plan/SKILL.md`
 - `execute-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/execute-scientific-implementation-plan/SKILL.md`
-- `scientific-internet-research-pass`: `plugins/scientific-plan-execute/skills/scientific-internet-research-pass/SKILL.md`
 - `scientific-software-architecture`: `plugins/scientific-plan-execute/skills/scientific-software-architecture/SKILL.md`
 - `simulation-for-inference-validation`: `plugins/scientific-plan-execute/skills/simulation-for-inference-validation/SKILL.md`
 - `ingress-to-canonical-jax`: `plugins/scientific-plan-execute/skills/ingress-to-canonical-jax/SKILL.md`
 - `validation-first-pipeline-api`: `plugins/scientific-plan-execute/skills/validation-first-pipeline-api/SKILL.md`
 - `jax-equinox-core-numerics-shell`: `plugins/scientific-plan-execute/skills/jax-equinox-core-numerics-shell/SKILL.md`
 - `scientific-cli-thin-shell`: `plugins/scientific-plan-execute/skills/scientific-cli-thin-shell/SKILL.md`
+
+### Skills (`scientific-research`)
+- `scientific-internet-research-pass`: `plugins/scientific-research/skills/scientific-internet-research-pass/SKILL.md`
+- `scientific-codebase-investigation-pass`: `plugins/scientific-research/skills/scientific-codebase-investigation-pass/SKILL.md`
 
 ### Skills (`scientific-house-style`)
 - `jax-equinox-numerics`: `plugins/scientific-house-style/skills/jax-equinox-numerics/SKILL.md`
@@ -48,6 +54,8 @@ Dependency contract:
 - Plan-execute scripts: `plugins/scientific-plan-execute/scripts/`
 - Plan-execute templates: `plugins/scientific-plan-execute/docs/design-plans/templates/`
 - Plan-execute templates: `plugins/scientific-plan-execute/docs/implementation-plans/templates/`
+- Research agents: `plugins/scientific-research/agents/`
+- Research docs: `plugins/scientific-research/docs/`
 - House-style docs: `plugins/scientific-house-style/docs/`
 
 Breaking-change contract:
@@ -59,8 +67,12 @@ Execution delegates:
 2. `scientific-task-bug-fixer`
 3. `scientific-test-analyst`
 
-Research delegate:
-1. `scientific-internet-researcher`
+Research delegates:
+1. `codebase-investigator`
+2. `internet-researcher`
+3. `remote-code-researcher`
+4. `combined-researcher`
+5. `scientific-literature-researcher`
 
 Simulation delegate:
 1. `scientific-simulation-designer`
@@ -81,6 +93,7 @@ Optional selective install:
 
 ```bash
 bash scripts/install-codex-home.sh --plugin scientific-plan-execute --force
+bash scripts/install-codex-home.sh --plugin scientific-research --force
 bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 ```
 

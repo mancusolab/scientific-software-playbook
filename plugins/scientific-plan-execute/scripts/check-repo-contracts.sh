@@ -46,19 +46,83 @@ done < <(grep -oE 'plugins/[a-z0-9-]+/skills/[a-z0-9-]+/SKILL\.md' AGENTS.md | s
 
 # Plugin manifest and hook paths must resolve.
 [[ -f "plugins/scientific-plan-execute/.claude-plugin/plugin.json" ]] || fail "missing plan-execute plugin manifest"
+[[ -f "plugins/scientific-research/.claude-plugin/plugin.json" ]] || fail "missing scientific-research plugin manifest"
 [[ -f "plugins/scientific-house-style/.claude-plugin/plugin.json" ]] || fail "missing house-style plugin manifest"
 [[ -f "plugins/scientific-plan-execute/hooks/hooks.json" ]] || fail "missing plan-execute hooks manifest"
+[[ -f "plugins/scientific-research/skills/scientific-internet-research-pass/SKILL.md" ]] || fail "missing scientific research skill"
+[[ -f "plugins/scientific-research/skills/scientific-codebase-investigation-pass/SKILL.md" ]] || fail "missing codebase research skill"
+[[ ! -e "plugins/scientific-plan-execute/skills/scientific-internet-research-pass" ]] || fail "research skill must not live in plan-execute plugin"
+python3 - <<'PY'
+import json
+import sys
+
+with open("plugins/scientific-research/.claude-plugin/plugin.json", "r", encoding="utf-8") as fh:
+    research_manifest = json.load(fh)
+with open(".claude-plugin/marketplace.json", "r", encoding="utf-8") as fh:
+    marketplace = json.load(fh)
+
+manifest_version = research_manifest.get("version")
+if not manifest_version:
+    print("error: scientific-research plugin manifest missing version", file=sys.stderr)
+    sys.exit(1)
+
+marketplace_version = None
+for plugin in marketplace.get("plugins", []):
+    if plugin.get("name") == "scientific-research":
+        marketplace_version = plugin.get("version")
+        break
+
+if not marketplace_version:
+    print("error: marketplace missing scientific-research version entry", file=sys.stderr)
+    sys.exit(1)
+
+if manifest_version != marketplace_version:
+    print(
+        f"error: scientific-research version mismatch: "
+        f"manifest={manifest_version} marketplace={marketplace_version}",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+PY
+for research_agent in \
+  "codebase-investigator" \
+  "internet-researcher" \
+  "remote-code-researcher" \
+  "combined-researcher" \
+  "scientific-literature-researcher"; do
+  [[ -f "plugins/scientific-research/agents/${research_agent}.md" ]] || fail "missing scientific-research agent: ${research_agent}"
+  grep -Fq "./agents/${research_agent}.md" "plugins/scientific-research/.claude-plugin/plugin.json" \
+    || fail "scientific-research manifest missing agent entry: ${research_agent}"
+done
+
+# Plan-execute agents must reference skills by skill ID, not repo-local skill file paths.
+if find "plugins/scientific-plan-execute/agents" -type f -name '*.md' -print0 | xargs -0 grep -nE 'skills/[a-z0-9-]+/SKILL\.md' >/dev/null 2>&1; then
+  fail "plan-execute agents contain forbidden repo-local skill file references"
+fi
 
 # Skills must resolve script paths from installed plugin location only.
 for skill_file in \
+  "plugins/scientific-plan-execute/skills/bootstrap-scientific-software-playbook/SKILL.md" \
   "plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md" \
   "plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md" \
   "plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md"; do
   grep -Fq '$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/' "$skill_file" \
     || fail "skill missing plugin-script path contract: $skill_file"
+  grep -Fq 'do not use repository-local `scripts/...` paths.' "$skill_file" \
+    || fail "skill missing repository-local script prohibition: $skill_file"
   if grep -Fq 'SCRIPT_PATH="scripts/' "$skill_file"; then
     fail "skill contains forbidden local script path: $skill_file"
   fi
 done
+
+grep -Fq '<claude-plugin-root>/scripts/new-design-plan.sh' \
+  "plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md" \
+  || fail "new-design-plan skill missing Claude plugin script path"
+grep -Fq '<claude-plugin-root>/scripts/validate-design-plan-readiness.sh' \
+  "plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md" \
+  || fail "validate-design-plan skill missing Claude plugin script path"
+grep -Fq '<claude-plugin-root>/scripts/set-design-plan-status.sh' \
+  "plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md" \
+  || fail "set-design-plan-status skill missing Claude plugin script path"
 
 echo "repo_contracts_ok"

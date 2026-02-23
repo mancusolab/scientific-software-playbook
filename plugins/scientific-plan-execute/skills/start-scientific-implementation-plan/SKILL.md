@@ -5,6 +5,17 @@ description: Use when moving from an approved scientific design plan to implemen
 
 # Start Scientific Implementation Plan
 
+## Runtime Compatibility
+
+When executing this definition in Codex or another runtime, apply this mapping:
+
+- `TaskCreate`, `TaskUpdate`, `TodoWrite` -> `update_plan`
+- `Task` delegate calls (for example `<invoke name="Task">`) -> perform the requested work directly in the current session when delegation is unavailable
+- `Skill` tool calls -> load the named skill with your runtime skill-loading mechanism
+- Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
+
+Apply this translation before following the remaining steps.
+
 Create implementation-ready phase artifacts from an approved architecture plan.
 
 ## Path Contract (Unambiguous)
@@ -88,7 +99,10 @@ Ask clarifying questions before writing implementation phases when any are true:
 - keep phases cohesive and independently reviewable
 - include phase goals, task list, and done gates
  - when simulation scope is `yes`, include at least one dedicated simulation-validation `phase_XX.md` built from `phase-simulation-validation-template.md`
-9. Run `scientific-internet-research-pass` when implementation tasks rely on uncertain external facts.
+9. Run research pass when implementation tasks rely on uncertain external facts:
+- run `scientific-internet-research-pass`
+- delegate `internet-researcher` for general/API web evidence
+- delegate `scientific-literature-researcher` for paper-backed support
  - Record citations and decision impacts in implementation-plan `README.md`.
 10. Build AC-to-task and AC-to-test traceability:
 - populate `README.md` traceability table

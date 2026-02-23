@@ -39,6 +39,8 @@ Run the scientific architecture kickoff workflow end-to-end.
 - Require explicit user model selection before proceeding.
 8. If external facts are uncertain (API behavior, library versions, format specs, standards, or model-evidence claims):
 - Run `scientific-internet-research-pass`.
+- Delegate `internet-researcher` for general/API web evidence.
+- Delegate `scientific-literature-researcher` for paper-backed support.
 - Record cited claims (source URL + access date + confidence) in the design plan.
 9. Produce or update the design plan with status `In Review`.
 10. Run in-review validation with `validate-design-plan` and capture any remaining placeholders/gaps.

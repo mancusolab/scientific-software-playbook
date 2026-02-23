@@ -115,6 +115,12 @@ for plugin in "${selected_plugins[@]}"; do
 done
 selected_plugins=("${dedup_plugins[@]}")
 
+# Plan-execute relies on research skills for external-fact validation gates.
+if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]] && [[ " ${selected_plugins[*]} " != *" scientific-research "* ]]; then
+  selected_plugins+=("scientific-research")
+  echo "info: scientific-plan-execute depends on scientific-research; adding scientific-research automatically."
+fi
+
 if [[ ! -d "$plugins_src_root" ]]; then
   echo "error: missing plugins directory at $plugins_src_root" >&2
   exit 1

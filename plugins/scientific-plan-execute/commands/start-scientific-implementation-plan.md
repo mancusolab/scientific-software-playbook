@@ -20,6 +20,8 @@ Create a detailed implementation plan from an approved scientific design plan.
 2. If `$2` is provided, use it as the implementation slug override.
 3. Use the `start-scientific-implementation-plan` skill.
 4. When implementation tasks depend on uncertain external facts, run `scientific-internet-research-pass` and capture citations.
+   - Delegate `internet-researcher` for general/API web evidence.
+   - Delegate `scientific-literature-researcher` for paper-backed support.
 5. Report:
 - implementation plan directory path
 - phase files created or updated

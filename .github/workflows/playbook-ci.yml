@@ -23,6 +23,7 @@ jobs:
           set -euo pipefail
           python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
           python3 -m json.tool plugins/scientific-plan-execute/.claude-plugin/plugin.json >/dev/null
+          python3 -m json.tool plugins/scientific-research/.claude-plugin/plugin.json >/dev/null
           python3 -m json.tool plugins/scientific-house-style/.claude-plugin/plugin.json >/dev/null
           python3 -m json.tool plugins/scientific-plan-execute/hooks/hooks.json >/dev/null
 
@@ -42,9 +43,11 @@ jobs:
 
           bundle="$codex_home/scientific-software-playbook"
           plan_plugin="$bundle/plugins/scientific-plan-execute"
+          research_plugin="$bundle/plugins/scientific-research"
           house_plugin="$bundle/plugins/scientific-house-style"
 
           test -d "$plan_plugin"
+          test -d "$research_plugin"
           test -d "$house_plugin"
 
           bootstrap_script="$plan_plugin/scripts/bootstrap-scientific-software-playbook.sh"
@@ -72,9 +75,20 @@ jobs:
           codex_home_plan="$(mktemp -d)"
           bash scripts/install-codex-home.sh --codex-home "$codex_home_plan" --force --plugin scientific-plan-execute
           test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-plan-execute"
+          test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-research"
           test ! -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-house-style"
           test -f "$codex_home_plan/skills/scientific-software-architecture/SKILL.md"
+          test -f "$codex_home_plan/skills/scientific-internet-research-pass/SKILL.md"
           test ! -d "$codex_home_plan/skills/jax-equinox-numerics"
+
+          codex_home_research="$(mktemp -d)"
+          bash scripts/install-codex-home.sh --codex-home "$codex_home_research" --force --plugin scientific-research
+          test -d "$codex_home_research/scientific-software-playbook/plugins/scientific-research"
+          test ! -d "$codex_home_research/scientific-software-playbook/plugins/scientific-plan-execute"
+          test ! -d "$codex_home_research/scientific-software-playbook/plugins/scientific-house-style"
+          test -f "$codex_home_research/skills/scientific-internet-research-pass/SKILL.md"
+          test -f "$codex_home_research/skills/scientific-codebase-investigation-pass/SKILL.md"
+          test ! -d "$codex_home_research/skills/scientific-software-architecture"
 
           codex_home_house="$(mktemp -d)"
           bash scripts/install-codex-home.sh --codex-home "$codex_home_house" --force --plugin scientific-house-style

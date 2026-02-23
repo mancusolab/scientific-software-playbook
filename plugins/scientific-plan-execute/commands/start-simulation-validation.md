@@ -19,6 +19,8 @@ Design simulation support for inference validation.
 2. Use `scientific-simulation-designer` to draft simulation design.
 3. Use `simulation-for-inference-validation` to enforce required simulation contract details.
 4. If simulation protocol assumptions are uncertain, run `scientific-internet-research-pass` and capture citations.
+   - Delegate `internet-researcher` for general/API web evidence.
+   - Delegate `scientific-literature-researcher` for paper-backed support.
 5. Report:
 - simulation contract (`simulate` inputs/outputs/seed policy)
 - assumption-alignment summary (simulation vs inference)

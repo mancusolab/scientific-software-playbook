@@ -61,12 +61,12 @@ Audit at least these risk classes:
 7. Dtype precision policy drift:
 - critical numerics left in low precision without explicit rationale/tests
 
-## Core Skill Inputs (Local)
+## Core Skill Inputs
 
-Use these local references when auditing numerics interfaces:
-1. `skills/jax-equinox-core-numerics-shell/SKILL.md`
-2. `skills/validation-first-pipeline-api/SKILL.md`
-3. `skills/scientific-cli-thin-shell/SKILL.md`
+Use these skill IDs when auditing numerics interfaces:
+1. `jax-equinox-core-numerics-shell`
+2. `validation-first-pipeline-api`
+3. `scientific-cli-thin-shell`
 
 ## Hard Gates
 

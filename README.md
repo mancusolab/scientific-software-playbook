@@ -113,6 +113,8 @@ Typical entry points:
 - Installation and setup: `docs/INSTALLATION.md`
 - Day-1 onboarding flow: `docs/ONBOARDING.md`
 - Compatibility and breaking-change policy: `docs/COMPATIBILITY.md`
+- Repository attribution notice: `NOTICE`
+- Repository and upstream lineage licenses: `LICENSE`, `LICENSE.superpowers`
 - Release notes (three-plugin research split): `docs/releases/2026-02-23-research-plugin-split.md`
 - Historical release notes (two-plugin migration): `docs/releases/2026-02-23-two-plugin-migration.md`
 - Design plan templates: `plugins/scientific-plan-execute/docs/design-plans/templates/`
@@ -134,14 +136,17 @@ runtime constraints.
 
 ```text
 scientific-software-playbook/
+├── .claude-plugin/
+│   └── marketplace.json
 ├── plugins/
 │   ├── scientific-plan-execute/
 │   ├── scientific-research/
-│   └── scientific-house-style/
-├── AGENTS.md
+│   ├── scientific-house-style/
+│   └── README.md
 ├── docs/
 ├── scripts/
-└── .claude-plugin/  (marketplace manifest)
+├── AGENTS.md
+└── README.md
 ```
 
 ## Script Usage Policy
@@ -152,3 +157,19 @@ Direct user-facing script usage is limited to:
 
 All other scripts are internal and invoked by commands, skills, hooks, or
 agents.
+
+## Attribution
+
+This repository is derived in part from [ed3d-plugins](https://github.com/ed3dai/ed3d-plugins):
+
+1. `scientific-plan-execute` derives from `ed3d-plan-and-execute`.
+2. `scientific-research` derives from `ed3d-research-agents`.
+3. `scientific-house-style` incorporates patterns from `ed3d-house-style` with project-specific guidance.
+
+Upstream lineage includes material derived from [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent via `ed3d-plan-and-execute`.
+
+## License
+
+1. Repository and plugin content is licensed under Creative Commons Attribution-ShareAlike 4.0 International (`LICENSE` and `plugins/*/LICENSE`).
+2. Upstream `obra/superpowers` material in the derivation chain is MIT-licensed (`LICENSE.superpowers` and `plugins/scientific-plan-execute/LICENSE.superpowers`).
+3. Attribution and provenance details are recorded in `NOTICE`.

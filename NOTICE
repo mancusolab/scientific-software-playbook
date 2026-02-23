@@ -1,0 +1,22 @@
+Scientific Software Playbook Attribution Notice
+
+This repository is derived in part from:
+- https://github.com/ed3dai/ed3d-plugins
+
+Primary derivation mapping:
+- `scientific-plan-execute` <- `ed3d-plan-and-execute`
+- `scientific-research` <- `ed3d-research-agents`
+- `scientific-house-style` <- `ed3d-house-style` patterns and related house-style conventions
+
+Upstream lineage note:
+- `ed3d-plan-and-execute` includes material derived from
+  https://github.com/obra/superpowers by Jesse Vincent.
+- The corresponding upstream MIT license text is included in:
+  - `LICENSE.superpowers`
+  - `plugins/scientific-plan-execute/LICENSE.superpowers`
+
+License summary for this repository:
+- Default repository/plugin content: Creative Commons Attribution-ShareAlike 4.0
+  International (`LICENSE` and plugin-local `LICENSE` files).
+- Upstream `obra/superpowers` material in this derivation chain: MIT
+  (`LICENSE.superpowers`).

@@ -5,7 +5,8 @@ This repository now hosts multiple plugins.
 ## Plugins
 
 1. `scientific-plan-execute`
-2. `scientific-house-style`
+2. `scientific-research`
+3. `scientific-house-style`
 
 ## Intent
 
@@ -15,3 +16,9 @@ This repository now hosts multiple plugins.
 
 See compatibility matrix and shim timeline in:
 1. `docs/COMPATIBILITY.md`
+
+## Licensing
+
+1. Each plugin ships a local `LICENSE` file.
+2. `scientific-plan-execute` also includes `LICENSE.superpowers` for upstream MIT lineage via `ed3d-plan-and-execute`.
+3. Repository-level attribution details are in `NOTICE`.

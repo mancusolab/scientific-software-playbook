@@ -31,6 +31,9 @@ done
 # Root manifest contract.
 [[ -f ".claude-plugin/marketplace.json" ]] || fail "missing marketplace manifest"
 [[ ! -e ".claude-plugin/plugin.json" ]] || fail "forbidden legacy plugin manifest exists"
+[[ -f "LICENSE" ]] || fail "missing root LICENSE"
+[[ -f "NOTICE" ]] || fail "missing root NOTICE"
+[[ -f "LICENSE.superpowers" ]] || fail "missing root LICENSE.superpowers"
 
 # AGENTS contract: global-install-only.
 grep -Fq "supports one operational mode" AGENTS.md || fail "AGENTS.md missing single-mode contract text"
@@ -48,6 +51,10 @@ done < <(grep -oE 'plugins/[a-z0-9-]+/skills/[a-z0-9-]+/SKILL\.md' AGENTS.md | s
 [[ -f "plugins/scientific-plan-execute/.claude-plugin/plugin.json" ]] || fail "missing plan-execute plugin manifest"
 [[ -f "plugins/scientific-research/.claude-plugin/plugin.json" ]] || fail "missing scientific-research plugin manifest"
 [[ -f "plugins/scientific-house-style/.claude-plugin/plugin.json" ]] || fail "missing house-style plugin manifest"
+[[ -f "plugins/scientific-plan-execute/LICENSE" ]] || fail "missing plan-execute LICENSE"
+[[ -f "plugins/scientific-plan-execute/LICENSE.superpowers" ]] || fail "missing plan-execute LICENSE.superpowers"
+[[ -f "plugins/scientific-research/LICENSE" ]] || fail "missing scientific-research LICENSE"
+[[ -f "plugins/scientific-house-style/LICENSE" ]] || fail "missing house-style LICENSE"
 [[ -f "plugins/scientific-plan-execute/hooks/hooks.json" ]] || fail "missing plan-execute hooks manifest"
 [[ -f "plugins/scientific-research/skills/scientific-internet-research-pass/SKILL.md" ]] || fail "missing scientific research skill"
 [[ -f "plugins/scientific-research/skills/scientific-codebase-investigation-pass/SKILL.md" ]] || fail "missing codebase research skill"

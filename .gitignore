@@ -14,6 +14,9 @@ __pycache__/*
 */.ipynb_checkpoints/*
 .DS_Store
 
+# sometimes symlink to make for easier indexing
+ed3d-plugins/
+
 
 # Project files
 .ropeproject

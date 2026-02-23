@@ -1,1 +1,0 @@
-../plugins/scientific-plan-execute/scripts/set-design-plan-status.sh

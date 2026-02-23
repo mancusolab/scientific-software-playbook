@@ -1,1 +1,0 @@
-../plugins/scientific-plan-execute/scripts/new-design-plan.sh

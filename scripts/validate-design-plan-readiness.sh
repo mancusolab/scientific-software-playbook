@@ -1,1 +1,0 @@
-../plugins/scientific-plan-execute/scripts/validate-design-plan-readiness.sh

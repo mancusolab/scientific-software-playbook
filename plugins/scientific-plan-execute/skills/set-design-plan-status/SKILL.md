@@ -22,7 +22,6 @@ Updates plan status with transition and readiness checks.
 - `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"`
 - `SCRIPT_PATH="scripts/set-design-plan-status.sh"`
 - `if [[ ! -f "$SCRIPT_PATH" ]]; then SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/set-design-plan-status.sh"; fi`
-- `if [[ ! -f "$SCRIPT_PATH" ]]; then SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/scripts/set-design-plan-status.sh"; fi` (legacy compatibility fallback)
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run transition utility:
 - `bash "$SCRIPT_PATH" "<plan-path>" "<status-token>"`

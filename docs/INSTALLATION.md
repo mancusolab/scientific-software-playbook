@@ -66,7 +66,6 @@ What Codex install/bootstrap provides:
 - `AGENTS.md` (only)
 4. Runtime behavior:
 - Plan-execute assets are resolved from the installed plugin bundle in `CODEX_HOME`.
-- For compatibility, plan-execute assets are also exposed at `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/`.
 - Workflow outputs (design plans, implementation plans, reviews) are written into the downstream project under `docs/`.
 
 ## Installed Skill Inventory (Exact)
@@ -118,8 +117,7 @@ Codex path:
 
 ## Compatibility Policy
 
-For version compatibility mapping and deprecation timeline for legacy path shims,
-see:
+For plugin compatibility and current breaking-change path contracts, see:
 
 - `docs/COMPATIBILITY.md`
 

@@ -19,36 +19,37 @@ Dependency contract:
 ## Local Repository Mode
 
 ### Local skills (`scientific-plan-execute`)
-- `install-scientific-software-playbook-home`: `skills/install-scientific-software-playbook-home/SKILL.md`
-- `bootstrap-scientific-software-playbook`: `skills/bootstrap-scientific-software-playbook/SKILL.md`
-- `new-design-plan`: `skills/new-design-plan/SKILL.md`
-- `validate-design-plan`: `skills/validate-design-plan/SKILL.md`
-- `set-design-plan-status`: `skills/set-design-plan-status/SKILL.md`
-- `start-scientific-implementation-plan`: `skills/start-scientific-implementation-plan/SKILL.md`
-- `execute-scientific-implementation-plan`: `skills/execute-scientific-implementation-plan/SKILL.md`
-- `scientific-internet-research-pass`: `skills/scientific-internet-research-pass/SKILL.md`
-- `scientific-software-architecture`: `skills/scientific-software-architecture/SKILL.md`
-- `simulation-for-inference-validation`: `skills/simulation-for-inference-validation/SKILL.md`
-- `ingress-to-canonical-jax`: `skills/ingress-to-canonical-jax/SKILL.md`
-- `validation-first-pipeline-api`: `skills/validation-first-pipeline-api/SKILL.md`
-- `jax-equinox-core-numerics-shell`: `skills/jax-equinox-core-numerics-shell/SKILL.md`
-- `scientific-cli-thin-shell`: `skills/scientific-cli-thin-shell/SKILL.md`
+- `install-scientific-software-playbook-home`: `plugins/scientific-plan-execute/skills/install-scientific-software-playbook-home/SKILL.md`
+- `bootstrap-scientific-software-playbook`: `plugins/scientific-plan-execute/skills/bootstrap-scientific-software-playbook/SKILL.md`
+- `new-design-plan`: `plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md`
+- `validate-design-plan`: `plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md`
+- `set-design-plan-status`: `plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md`
+- `start-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/start-scientific-implementation-plan/SKILL.md`
+- `execute-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/execute-scientific-implementation-plan/SKILL.md`
+- `scientific-internet-research-pass`: `plugins/scientific-plan-execute/skills/scientific-internet-research-pass/SKILL.md`
+- `scientific-software-architecture`: `plugins/scientific-plan-execute/skills/scientific-software-architecture/SKILL.md`
+- `simulation-for-inference-validation`: `plugins/scientific-plan-execute/skills/simulation-for-inference-validation/SKILL.md`
+- `ingress-to-canonical-jax`: `plugins/scientific-plan-execute/skills/ingress-to-canonical-jax/SKILL.md`
+- `validation-first-pipeline-api`: `plugins/scientific-plan-execute/skills/validation-first-pipeline-api/SKILL.md`
+- `jax-equinox-core-numerics-shell`: `plugins/scientific-plan-execute/skills/jax-equinox-core-numerics-shell/SKILL.md`
+- `scientific-cli-thin-shell`: `plugins/scientific-plan-execute/skills/scientific-cli-thin-shell/SKILL.md`
 
 ### Local skills (`scientific-house-style`)
-- `jax-equinox-numerics`: `skills/jax-equinox-numerics/SKILL.md`
-- `project-engineering`: `skills/project-engineering/SKILL.md`
+- `jax-equinox-numerics`: `plugins/scientific-house-style/skills/jax-equinox-numerics/SKILL.md`
+- `project-engineering`: `plugins/scientific-house-style/skills/project-engineering/SKILL.md`
 
 ### Local assets
-- Agents: `agents/`
-- Commands: `commands/`
-- Hooks: `hooks/`
-- Scripts: `scripts/` (internal utilities invoked by commands/skills/hooks)
-- Templates: `docs/design-plans/templates/`
-- Templates: `docs/implementation-plans/templates/`
+- Plan-execute agents: `plugins/scientific-plan-execute/agents/`
+- Plan-execute commands: `plugins/scientific-plan-execute/commands/`
+- Plan-execute hooks: `plugins/scientific-plan-execute/hooks/`
+- Plan-execute scripts: `plugins/scientific-plan-execute/scripts/`
+- Plan-execute templates: `plugins/scientific-plan-execute/docs/design-plans/templates/`
+- Plan-execute templates: `plugins/scientific-plan-execute/docs/implementation-plans/templates/`
+- House-style docs: `plugins/scientific-house-style/docs/`
 
-Compatibility note:
-1. Legacy root paths (`agents/`, `commands/`, `hooks/`, most `skills/`) are compatibility links to plugin-owned assets under `plugins/`.
-2. Version compatibility and shim deprecation timeline are defined in `docs/COMPATIBILITY.md`.
+Breaking change note:
+1. Repository-root compatibility links were removed.
+2. Use plugin-scoped paths under `plugins/` only.
 
 Execution delegates:
 1. `scientific-task-implementor-fast`

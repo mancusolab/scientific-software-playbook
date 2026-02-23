@@ -19,7 +19,6 @@ Creates a new design plan and required artifact files.
 - `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"`
 - `SCRIPT_PATH="scripts/new-design-plan.sh"`
 - `if [[ ! -f "$SCRIPT_PATH" ]]; then SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/new-design-plan.sh"; fi`
-- `if [[ ! -f "$SCRIPT_PATH" ]]; then SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/scripts/new-design-plan.sh"; fi` (legacy compatibility fallback)
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run plan creation utility:
 - `bash "$SCRIPT_PATH" "<slug>"`

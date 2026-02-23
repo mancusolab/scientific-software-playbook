@@ -95,7 +95,7 @@ Typical entry points:
 
 - Installation and setup: `docs/INSTALLATION.md`
 - Day-1 onboarding flow: `docs/ONBOARDING.md`
-- Compatibility matrix and migration timeline: `docs/COMPATIBILITY.md`
+- Compatibility and breaking-change policy: `docs/COMPATIBILITY.md`
 - Release notes (two-plugin migration): `docs/releases/2026-02-23-two-plugin-migration.md`
 - Design plan templates: `docs/design-plans/templates/`
 - Implementation plan templates: `docs/implementation-plans/templates/`

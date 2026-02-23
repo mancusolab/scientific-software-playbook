@@ -75,22 +75,14 @@ Use these assets to keep planning and reviews consistent:
 - `skills/execute-scientific-implementation-plan/SKILL.md`
 2. Commands are optional wrappers from the installed plugin bundle:
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/commands/`
-- legacy compatibility fallback:
-  - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/commands/`
 3. Resolve templates with this precedence:
 - project-local templates when present
 - otherwise installed plugin templates:
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/design-plans/templates/`
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
-- legacy compatibility fallback templates:
-  - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/docs/design-plans/templates/`
-  - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/docs/implementation-plans/templates/`
 4. Review/checklist references (installed plugin bundle):
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/reviews/review-template.md`
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/checklists/skill-agent-io-checklist.md`
-- legacy compatibility fallback:
-  - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/docs/reviews/review-template.md`
-  - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/docs/checklists/skill-agent-io-checklist.md`
 5. External research and simulation design:
 - `skills/scientific-internet-research-pass/SKILL.md`
 - `skills/simulation-for-inference-validation/SKILL.md`

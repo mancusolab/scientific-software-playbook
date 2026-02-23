@@ -1,1 +1,0 @@
-../plugins/scientific-plan-execute/scripts/bootstrap-scientific-software-playbook.sh

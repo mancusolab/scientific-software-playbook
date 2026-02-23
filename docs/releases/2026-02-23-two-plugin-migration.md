@@ -18,9 +18,9 @@ and downstream bootstrap remains AGENTS-only.
    - `--plugin scientific-plan-execute`
    - `--plugin scientific-house-style`
 2. Bootstrap resolves from plugin bundle paths and writes downstream `AGENTS.md` only.
-3. Documentation and skill contracts now use plugin-path-first resolution with
-   explicit legacy compatibility fallbacks.
-4. Compatibility matrix and deprecation timeline are published in:
+3. Documentation and skill contracts now use plugin-path-only resolution.
+4. Legacy root compatibility links and legacy installed bundle paths were removed.
+5. Compatibility policy is published in:
    - `docs/COMPATIBILITY.md`
 
 ## Migration Matrix Results
@@ -37,11 +37,11 @@ Validation checks included:
 3. Bootstrap output footprint (`AGENTS.md` only) for downstream projects.
 4. AGENTS scope correctness for optional house-style presence/absence.
 
-## Compatibility Shim Policy
+## Breaking Change Policy
 
-1. Shims remain in place through `0.1.x` and `0.2.x`.
-2. Earliest removal target is `0.3.0` on or after August 1, 2026.
-3. Removal will ship with explicit migration guidance and release notes.
+1. Root compatibility links are no longer supported.
+2. Plugin-scoped paths are now the only supported contract.
+3. Any future path changes will be documented in release notes and `docs/COMPATIBILITY.md`.
 
 ## Action for Downstream Users
 

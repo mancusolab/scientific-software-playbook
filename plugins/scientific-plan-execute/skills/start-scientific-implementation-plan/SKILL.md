@@ -70,8 +70,6 @@ Ask clarifying questions before writing implementation phases when any are true:
   - `docs/implementation-plans/templates/`
 - otherwise use installed plugin templates:
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
-- legacy compatibility fallback:
-  - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/docs/implementation-plans/templates/`
 7. Create/update files using resolved templates:
 - `scientific-implementation-plan-template.md`
 - `test-requirements-template.md`

@@ -56,14 +56,8 @@ fi
 codex_home="${CODEX_HOME:-$HOME/.codex}"
 bundle_root="${codex_home}/scientific-software-playbook"
 plugin_root="${bundle_root}/plugins/scientific-plan-execute"
-bundle_ref_root="$plugin_root"
-
-if [[ ! -d "$bundle_ref_root" && -d "$bundle_root" ]]; then
-  bundle_ref_root="$bundle_root"
-fi
-
-if [[ ! -d "$bundle_ref_root" ]]; then
-  echo "error: expected installed plan-execute bundle at $plugin_root (or legacy bundle at $bundle_root)" >&2
+if [[ ! -d "$plugin_root" ]]; then
+  echo "error: expected installed plan-execute bundle at $plugin_root" >&2
   echo "run from a playbook checkout: bash scripts/install-codex-home.sh --force" >&2
   exit 1
 fi
@@ -130,21 +124,21 @@ cat > "$agents_path" <<AGENT_EOF
 ## Scientific Software Playbook (Codex Native)
 
 This project was bootstrapped from:
-\`${bundle_ref_root}\`
+\`${plugin_root}\`
 
 ### Installed plugins (in CODEX_HOME)
 ${plugin_block}
 ### Global skills (installed in CODEX_HOME)
 ${skills_block}
 ### Global playbook assets (not copied into this repository)
-- Agents: \`${bundle_ref_root}/agents/\`
-- Commands: \`${bundle_ref_root}/commands/\`
-- Hooks: \`${bundle_ref_root}/hooks/\` (runtime hook definitions)
-- Scripts: \`${bundle_ref_root}/scripts/\` (internal utilities invoked by skills/hooks)
-- Templates: \`${bundle_ref_root}/docs/design-plans/templates/\`
-- Templates: \`${bundle_ref_root}/docs/implementation-plans/templates/\`
-- Review template: \`${bundle_ref_root}/docs/reviews/review-template.md\`
-- IO checklist: \`${bundle_ref_root}/docs/checklists/skill-agent-io-checklist.md\`
+- Agents: \`${plugin_root}/agents/\`
+- Commands: \`${plugin_root}/commands/\`
+- Hooks: \`${plugin_root}/hooks/\` (runtime hook definitions)
+- Scripts: \`${plugin_root}/scripts/\` (internal utilities invoked by skills/hooks)
+- Templates: \`${plugin_root}/docs/design-plans/templates/\`
+- Templates: \`${plugin_root}/docs/implementation-plans/templates/\`
+- Review template: \`${plugin_root}/docs/reviews/review-template.md\`
+- IO checklist: \`${plugin_root}/docs/checklists/skill-agent-io-checklist.md\`
 ${house_style_block}
 
 ### Project-local footprint

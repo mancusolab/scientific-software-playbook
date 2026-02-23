@@ -18,10 +18,8 @@ It is a one-time initializer and should not be treated as an architecture or imp
 
 1. Resolve Codex home:
 - `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"`
-2. Resolve bootstrap script path with precedence:
+2. Resolve bootstrap script path:
 - `SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/bootstrap-scientific-software-playbook.sh"`
-- if `"$SCRIPT_PATH"` is missing, fallback to legacy compatibility path:
-  - `SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/scripts/bootstrap-scientific-software-playbook.sh"`
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run bootstrap in current directory:
 - `bash "$SCRIPT_PATH"`

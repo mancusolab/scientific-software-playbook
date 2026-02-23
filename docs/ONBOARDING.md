@@ -12,7 +12,7 @@ Plugin prerequisite:
 1. This onboarding flow requires `scientific-plan-execute`.
 2. `scientific-house-style` is optional and supplements numerics/project-engineering guidance.
 3. If only `scientific-house-style` is installed, bootstrap and workflow commands in this guide will not resolve.
-4. Compatibility/deprecation policy is documented in `docs/COMPATIBILITY.md`.
+4. Compatibility and breaking-change path policy is documented in `docs/COMPATIBILITY.md`.
 
 ## Phase Workflow
 

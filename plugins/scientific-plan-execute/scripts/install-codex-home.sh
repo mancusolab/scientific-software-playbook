@@ -203,21 +203,8 @@ for plugin in "${selected_plugins[@]}"; do
   done < <(ssp_plugin_skills "$plugin")
 done
 
-# Backward compatibility: expose plan-execute assets at the legacy bundle root.
 if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
   plan_dst="${plugins_dst}/scientific-plan-execute"
-
-  copy_tree "${plan_dst}/agents" "${bundle_root}/agents"
-  copy_tree "${plan_dst}/commands" "${bundle_root}/commands"
-  copy_tree "${plan_dst}/hooks" "${bundle_root}/hooks"
-  copy_tree "${plan_dst}/scripts" "${bundle_root}/scripts"
-
-  mkdir -p "${bundle_root}/docs/design-plans" "${bundle_root}/docs/implementation-plans" "${bundle_root}/docs/reviews" "${bundle_root}/docs/checklists"
-  copy_tree "${plan_dst}/docs/design-plans/templates" "${bundle_root}/docs/design-plans/templates"
-  copy_tree "${plan_dst}/docs/implementation-plans/templates" "${bundle_root}/docs/implementation-plans/templates"
-  cp -f "${plan_dst}/docs/reviews/review-template.md" "${bundle_root}/docs/reviews/review-template.md"
-  cp -f "${plan_dst}/docs/checklists/skill-agent-io-checklist.md" "${bundle_root}/docs/checklists/skill-agent-io-checklist.md"
-
   chmod +x \
     "${plan_dst}/scripts/hooks/session-start.sh" \
     "${plan_dst}/scripts/hooks/post-edit.sh" \
@@ -228,17 +215,6 @@ if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
     "${plan_dst}/scripts/bootstrap-scientific-software-playbook.sh" \
     "${plan_dst}/scripts/install-codex-home.sh" \
     "${plan_dst}/scripts/plugin-catalog.sh"
-
-  chmod +x \
-    "${bundle_root}/scripts/hooks/session-start.sh" \
-    "${bundle_root}/scripts/hooks/post-edit.sh" \
-    "${bundle_root}/scripts/hooks/stop.sh" \
-    "${bundle_root}/scripts/new-design-plan.sh" \
-    "${bundle_root}/scripts/set-design-plan-status.sh" \
-    "${bundle_root}/scripts/validate-design-plan-readiness.sh" \
-    "${bundle_root}/scripts/bootstrap-scientific-software-playbook.sh" \
-    "${bundle_root}/scripts/install-codex-home.sh" \
-    "${bundle_root}/scripts/plugin-catalog.sh"
 fi
 
 echo "Installed plugins:"
@@ -255,9 +231,6 @@ done
 
 echo
 if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
-  echo "Installed compatibility bundle (plan-execute):"
-  echo "  - ${bundle_root}"
-  echo
   echo "Next step (per downstream project):"
   echo "  Open target project root in Codex and invoke: bootstrap-scientific-software-playbook"
 else

@@ -21,7 +21,6 @@ Runs design-plan readiness checks and reports pass/fail gaps.
 - `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"`
 - `SCRIPT_PATH="scripts/validate-design-plan-readiness.sh"`
 - `if [[ ! -f "$SCRIPT_PATH" ]]; then SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/validate-design-plan-readiness.sh"; fi`
-- `if [[ ! -f "$SCRIPT_PATH" ]]; then SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/scripts/validate-design-plan-readiness.sh"; fi` (legacy compatibility fallback)
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run readiness validator:
 - `bash "$SCRIPT_PATH" "<plan-path>" --phase "<phase>"`

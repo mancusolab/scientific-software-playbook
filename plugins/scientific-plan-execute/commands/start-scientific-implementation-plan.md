@@ -32,7 +32,7 @@ Create a detailed implementation plan from an approved scientific design plan.
 - explicit handoff status (`blocked` or `ready-to-execute`)
 6. Resolve and verify absolute implementation plan directory path.
 7. If ready, provide next step using the absolute path:
-- Claude path: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
+- Claude Code path: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
 - Codex path: invoke `execute-scientific-implementation-plan` with the same absolute path.
 8. Recommend running the execution step in a fresh session/context for cleaner phase execution.
 

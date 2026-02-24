@@ -1,6 +1,6 @@
 ---
 name: set-design-plan-status
-description: Use when transitioning scientific design-plan status in Codex or Claude with readiness gates enforced, without requiring users to run scripts directly.
+description: Use when transitioning scientific design-plan status in Codex or Claude Code with readiness gates enforced, without requiring users to run scripts directly.
 ---
 
 # Set Design Plan Status
@@ -22,9 +22,9 @@ Updates plan status with transition and readiness checks.
 
 1. Installation-local utility path examples:
 - Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/set-design-plan-status.sh`
-- Claude plugin install: `<claude-plugin-root>/scripts/set-design-plan-status.sh`
+- Claude Code plugin install: `<claude-plugin-root>/scripts/set-design-plan-status.sh`
 2. Script resolution rule:
-- resolve from the installed plugin location only (Codex bundle or Claude plugin root).
+- resolve from the installed plugin location only (Codex bundle or Claude Code plugin root).
 - do not use repository-local `scripts/...` paths.
 3. Project-local input/output paths:
 - Any plan path passed to this skill resolves within the active downstream project root unless explicitly absolute.
@@ -42,7 +42,7 @@ Updates plan status with transition and readiness checks.
 1. Validate plan path and status token.
 2. Resolve utility path by runtime:
 - Codex: `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"` then `SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/set-design-plan-status.sh"`
-- Claude plugin: `SCRIPT_PATH="<claude-plugin-root>/scripts/set-design-plan-status.sh"`
+- Claude Code plugin: `SCRIPT_PATH="<claude-plugin-root>/scripts/set-design-plan-status.sh"`
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run transition utility:
 - `bash "$SCRIPT_PATH" "<plan-path>" "<status-token>"`

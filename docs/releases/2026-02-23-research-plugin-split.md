@@ -28,5 +28,5 @@ bash scripts/install-codex-home.sh --force
 ```
 2. If you install selectively for Codex and choose `scientific-plan-execute`,
    `scientific-research` is included automatically.
-3. For Claude, install both workflow and research plugins when using full
+3. For Claude Code, install both workflow and research plugins when using full
    plan-execute workflows.

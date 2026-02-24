@@ -54,13 +54,13 @@ Optional but high-value inputs:
 10. Run `scientific-internet-research-pass` when external APIs, formats, standards, or suggested-model evidence are uncertain.
    - Delegate `internet-researcher` for general/API web evidence.
    - Delegate `scientific-literature-researcher` for paper-backed support.
-11. Create the plan skeleton with `/new-design-plan <slug>` (Claude) or `new-design-plan` (Codex) when the plan file does not exist.
+11. Create the plan skeleton with `/new-design-plan <slug>` (Claude Code) or `new-design-plan` (Codex) when the plan file does not exist.
 12. Draft or update design plan in `docs/design-plans/YYYY-MM-DD-<slug>.md` when available.
 13. Populate companion artifacts in `docs/design-plans/artifacts/YYYY-MM-DD-<slug>/`.
 14. Record cited external research findings with access dates and confidence.
 15. Present the draft and request explicit approval.
 16. If feedback is provided, revise and re-present until approved.
-17. Before recommending approval, run `/validate-design-plan <plan-path> --phase in-review` (Claude) or `validate-design-plan` with phase `in-review` (Codex).
+17. Before recommending approval, run `/validate-design-plan <plan-path> --phase in-review` (Claude Code) or `validate-design-plan` with phase `in-review` (Codex).
 18. Only after approval and readiness pass, recommend downstream implementation skills/tasks.
 
 ## Core Skill Inputs

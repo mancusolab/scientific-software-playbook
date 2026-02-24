@@ -10,6 +10,10 @@ Day-to-day usage is command/skill driven inside Claude or Codex. The only
 user-facing shell command is the Codex install step (`install-codex-home.sh`).
 All other scripts are internal and invoked by commands, skills, hooks, or agents.
 
+Throughout this guide, `<scientific-software-playbook>` refers to this plugin
+repository (cloned once for installation), while `<your-scientific-project>`
+refers to the downstream codebase where you do your actual scientific work.
+
 Audience and scope:
 1. This document is user-facing installation/usage guidance.
 2. For repository-development contracts and agent-facing implementation rules, use `AGENTS.md`.
@@ -30,26 +34,27 @@ Audience and scope:
 1. `git`
 2. Codex and/or Claude
 
-## Clone
+## Clone (One-Time Setup)
 
 ```bash
-git clone <your-repo-url>
-cd <your-repo-directory>
+git clone <playbook-repo-url>
+# Note the absolute path where this was cloned (e.g., /Users/you/scientific-software-playbook)
 ```
 
 ## Claude Installation (Native)
 
-1. Add this repository as a marketplace from inside Claude:
-- `/plugin marketplace add file:///absolute/path/to/<your-repo-directory>`
-2. Install workflow plugin:
+1. Open Claude in `<your-scientific-project>` (where you do your actual work).
+2. Add the playbook repository as a marketplace (using the absolute path from the clone step):
+- `/plugin marketplace add /absolute/path/to/<scientific-software-playbook>`
+3. Install workflow plugin:
 - `/plugin install scientific-plan-execute@scientific-software-playbook`
-3. Install research plugin:
+4. Install research plugin:
 - `/plugin install scientific-research@scientific-software-playbook`
-4. Optional: install house-style plugin:
+5. Optional: install house-style plugin:
 - `/plugin install scientific-house-style@scientific-software-playbook`
-5. Reload plugin:
+6. Reload plugin:
 - `/plugin reload`
-6. Start workflow:
+7. Start workflow:
 - `/start-scientific-architecture <slug>`
 
 ## Codex Installation (Native)
@@ -146,7 +151,7 @@ bash scripts/install-codex-home.sh --force
    - In minimal mode this refreshes `AGENTS.md` only.
 
 Claude:
-1. Re-add marketplace from the updated checkout (`/plugin marketplace add ...`) if needed.
+1. Re-add marketplace from the updated checkout (`/plugin marketplace add /path/to/repo`) if needed.
 2. Re-install required plugin(s):
    - `/plugin install scientific-plan-execute@scientific-software-playbook`
    - `/plugin install scientific-research@scientific-software-playbook`

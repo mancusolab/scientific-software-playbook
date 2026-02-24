@@ -26,7 +26,7 @@ It prefers `jax-equinox-numerics` for broad guidance and always enforces the req
 - `jax-equinox-numerics`
 3. Installation-local resolution examples for `jax-equinox-numerics`:
 - Codex: `${CODEX_HOME:-$HOME/.codex}/skills/jax-equinox-numerics/SKILL.md`
-- Claude plugin: `<claude-plugin-root>/skills/jax-equinox-numerics/SKILL.md`
+- Claude Code plugin: `<claude-plugin-root>/skills/jax-equinox-numerics/SKILL.md`
 4. This adapter has no required installation-local file dependencies beyond skill availability checks.
 
 ## Adapter Workflow

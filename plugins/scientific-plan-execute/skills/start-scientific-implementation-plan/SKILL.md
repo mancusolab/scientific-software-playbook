@@ -24,7 +24,7 @@ Create implementation-ready phase artifacts from an approved architecture plan.
 - `docs/...` paths in this skill are relative to the active downstream project root.
 2. Installation-local template path examples:
 - Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
-- Claude plugin install: `<claude-plugin-root>/docs/implementation-plans/templates/`
+- Claude Code plugin install: `<claude-plugin-root>/docs/implementation-plans/templates/`
 
 ## Input Contract
 
@@ -77,7 +77,7 @@ Ask clarifying questions before writing implementation phases when any are true:
 1. Validate the design plan path exists.
 2. Validate design status is `Approved for Implementation`.
 3. Run design readiness validation in approval mode before planning:
-- `validate-design-plan <plan-path> --phase approval` (Claude)
+- `validate-design-plan <plan-path> --phase approval` (Claude Code)
 - `validate-design-plan` with phase `approval` (Codex)
 4. Resolve slug:
 - default from design plan filename after date prefix

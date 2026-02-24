@@ -6,7 +6,7 @@ This repository hosts three plugins in one codebase:
 2. `scientific-research`
 3. `scientific-house-style`
 
-Day-to-day usage is command/skill driven inside Claude or Codex. The only
+Day-to-day usage is command/skill driven inside Claude Code or Codex. The only
 user-facing shell command is the Codex install step (`install-codex-home.sh`).
 All other scripts are internal and invoked by commands, skills, hooks, or agents.
 
@@ -28,7 +28,7 @@ Audience and scope:
 ## Prerequisites
 
 1. `git`
-2. Codex and/or Claude
+2. Codex and/or Claude Code
 
 ## Clone
 
@@ -37,9 +37,9 @@ git clone <your-repo-url>
 cd <your-repo-directory>
 ```
 
-## Claude Installation (Native)
+## Claude Code Installation (Native)
 
-1. Add this repository as a marketplace from inside Claude:
+1. Add this repository as a marketplace from inside Claude Code:
 - `/plugin marketplace add file:///absolute/path/to/<your-repo-directory>`
 2. Install workflow plugin:
 - `/plugin install scientific-plan-execute@scientific-software-playbook`
@@ -103,7 +103,7 @@ What Codex install/bootstrap provides:
 
 ## Usage Example (Downstream Project)
 
-Claude path:
+Claude Code path:
 1. `/start-scientific-architecture <example-slug>`
 2. Choose model path early: `provided-model` or `suggested-model`.
 3. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
@@ -145,7 +145,7 @@ bash scripts/install-codex-home.sh --force
 3. Re-run `bootstrap-scientific-software-playbook` in any downstream project that should receive updates.
    - In minimal mode this refreshes `AGENTS.md` only.
 
-Claude:
+Claude Code:
 1. Re-add marketplace from the updated checkout (`/plugin marketplace add ...`) if needed.
 2. Re-install required plugin(s):
    - `/plugin install scientific-plan-execute@scientific-software-playbook`

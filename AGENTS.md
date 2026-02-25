@@ -7,7 +7,7 @@ Audience and intent:
 
 This repository supports one operational mode:
 
-1. Global install mode (install into `CODEX_HOME` and bootstrap downstream projects).
+1. Global install mode (install into `CODEX_HOME` and run workflows directly in downstream projects).
 
 Scope note: this repository hosts three plugins:
 1. `scientific-plan-execute`
@@ -17,7 +17,7 @@ Scope note: this repository hosts three plugins:
 Operational workflow remains centered on `scientific-plan-execute`.
 
 Dependency contract:
-1. `scientific-plan-execute` is required for bootstrap and orchestration flow.
+1. `scientific-plan-execute` is required for orchestration flow.
 2. `scientific-research` is required for external-fact validation gates and research workflows.
 3. `scripts/install-codex-home.sh` auto-adds `scientific-research` when `scientific-plan-execute` is selected.
 4. `scientific-house-style` is optional and provides reusable guidance.
@@ -26,12 +26,14 @@ Dependency contract:
 ## Plugin Assets (Source Of Truth)
 
 ### Skills (`scientific-plan-execute`)
-- `bootstrap-scientific-software-playbook`: `plugins/scientific-plan-execute/skills/bootstrap-scientific-software-playbook/SKILL.md`
 - `new-design-plan`: `plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md`
 - `validate-design-plan`: `plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md`
 - `set-design-plan-status`: `plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md`
 - `start-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/start-scientific-implementation-plan/SKILL.md`
 - `execute-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/execute-scientific-implementation-plan/SKILL.md`
+- `starting-a-design-plan`: `plugins/scientific-plan-execute/skills/starting-a-design-plan/SKILL.md`
+- `starting-an-implementation-plan`: `plugins/scientific-plan-execute/skills/starting-an-implementation-plan/SKILL.md`
+- `executing-an-implementation-plan`: `plugins/scientific-plan-execute/skills/executing-an-implementation-plan/SKILL.md`
 - `scientific-software-architecture`: `plugins/scientific-plan-execute/skills/scientific-software-architecture/SKILL.md`
 - `simulation-for-inference-validation`: `plugins/scientific-plan-execute/skills/simulation-for-inference-validation/SKILL.md`
 - `validation-first-pipeline-api`: `plugins/scientific-plan-execute/skills/validation-first-pipeline-api/SKILL.md`
@@ -57,6 +59,10 @@ Dependency contract:
 - Plan-execute scripts: `plugins/scientific-plan-execute/scripts/`
 - Plan-execute templates: `plugins/scientific-plan-execute/docs/design-plans/templates/`
 - Plan-execute templates: `plugins/scientific-plan-execute/docs/implementation-plans/templates/`
+- Runtime compatibility source: `docs/runtime-compatibility.md`
+- Runtime path contract: `docs/installed-path-resolution.md`
+- Runtime compatibility sync tool: `plugins/scientific-plan-execute/scripts/sync-runtime-compatibility.py`
+- Runtime path resolver: `plugins/scientific-plan-execute/scripts/resolve-plugin-path.sh`
 - Research agents: `plugins/scientific-research/agents/`
 - Research docs: `plugins/scientific-research/docs/`
 - House-style docs: `plugins/scientific-house-style/docs/`
@@ -68,7 +74,8 @@ Breaking-change contract:
 Execution delegates:
 1. `scientific-task-implementor-fast`
 2. `scientific-task-bug-fixer`
-3. `scientific-test-analyst`
+3. `scientific-code-reviewer`
+4. `scientific-test-analyst`
 
 Research delegates:
 1. `codebase-investigator`
@@ -100,19 +107,10 @@ bash scripts/install-codex-home.sh --plugin scientific-research --force
 bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 ```
 
-Bootstrap a downstream project:
+Run a downstream project:
 
 1. Open the target project root in Codex.
-2. Invoke `bootstrap-scientific-software-playbook`.
-
-The bootstrap command writes project `AGENTS.md` only. It references globally
-installed skills/assets in `CODEX_HOME` and keeps the downstream repository
-footprint minimal.
-
-`bootstrap-scientific-software-playbook` is a convenience wrapper for Codex users:
-from the current project root, it runs the installed bootstrap script and verifies
-that `AGENTS.md` exists. It is only needed once per downstream project (or when
-you want to refresh `AGENTS.md`).
+2. Start architecture planning with `scientific-software-architecture`.
 
 ## Workflow
 
@@ -128,7 +126,11 @@ you want to refresh `AGENTS.md`).
 7. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
 8. Create implementation phases and traceability with `start-scientific-implementation-plan`.
 9. Execute phase-by-phase with `execute-scientific-implementation-plan`.
-10. During phase execution, apply layer skills in order when relevant:
+10. Compatibility command aliases are available for upstream parity:
+   - `start-design-plan` -> `starting-a-design-plan`
+   - `start-implementation-plan` -> `starting-an-implementation-plan`
+   - `execute-implementation-plan` -> `executing-an-implementation-plan`
+11. During phase execution, apply layer skills in order when relevant:
    - `validation-first-pipeline-api`
    - `jax-equinox-numerics` (from `scientific-house-style`, when installed)
    - `scientific-cli-thin-shell`

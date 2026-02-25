@@ -227,7 +227,6 @@ if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
     "${plan_dst}/scripts/new-design-plan.sh" \
     "${plan_dst}/scripts/set-design-plan-status.sh" \
     "${plan_dst}/scripts/validate-design-plan-readiness.sh" \
-    "${plan_dst}/scripts/bootstrap-scientific-software-playbook.sh" \
     "${plan_dst}/scripts/plugin-catalog.sh"
 fi
 
@@ -246,8 +245,8 @@ done
 echo
 if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
   echo "Next step (per downstream project):"
-  echo "  Open target project root in Codex and invoke: bootstrap-scientific-software-playbook"
+  echo "  Open target project root in Codex and invoke: scientific-software-architecture"
 else
   echo "Plan-execute plugin not selected."
-  echo "Install with --plugin scientific-plan-execute to enable bootstrap/workflow commands."
+  echo "Install with --plugin scientific-plan-execute to enable workflow commands."
 fi

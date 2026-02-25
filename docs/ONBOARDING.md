@@ -5,14 +5,14 @@ Use this workflow when starting from scratch or adding a major feature.
 Before running this flow on a fresh clone, complete setup in:
 `docs/INSTALLATION.md`
 
-For Codex reuse across repositories, use the global install + downstream bootstrap
+For Codex reuse across repositories, use the global install
 steps from `docs/INSTALLATION.md` first.
 
 Plugin prerequisite:
 1. This onboarding flow requires `scientific-plan-execute`.
 2. This onboarding flow also requires `scientific-research` for research-gated steps.
 3. `scientific-house-style` is optional and supplements numerics/project-engineering guidance.
-4. If only `scientific-house-style` is installed, bootstrap and workflow commands in this guide will not resolve.
+4. If only `scientific-house-style` is installed, workflow commands in this guide will not resolve.
 5. Compatibility and breaking-change path policy is documented in `docs/COMPATIBILITY.md`.
 
 ## Phase Workflow
@@ -20,9 +20,7 @@ Plugin prerequisite:
 1. Architecture kickoff
 - Claude Code path: run `/start-scientific-architecture <slug>`.
 - Codex path:
-  - If this repo is not bootstrapped yet, invoke `bootstrap-scientific-software-playbook`.
   - Use `scientific-software-architecture` directly (see `AGENTS.md`).
-  - `bootstrap-scientific-software-playbook` is a one-time initializer that writes `AGENTS.md` only.
   - Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
 - Choose one model path early:
   - `provided-model`: user supplies model artifacts/update rules.

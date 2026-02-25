@@ -5,6 +5,7 @@ description: Use when moving from an approved scientific design plan to implemen
 
 # Start Scientific Implementation Plan
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
 When executing this definition in Codex or another runtime, apply this mapping:
@@ -15,6 +16,7 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 Create implementation-ready phase artifacts from an approved architecture plan.
 

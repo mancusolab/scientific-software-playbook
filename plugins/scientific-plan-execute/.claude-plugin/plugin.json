@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Scientific workflow loop: architecture, planning, execution, validation, and review orchestration.",
   "commands": [
+    "./commands/start-design-plan.md",
+    "./commands/start-implementation-plan.md",
+    "./commands/execute-implementation-plan.md",
+    "./commands/flesh-it-out.md",
+    "./commands/how-to-customize.md",
     "./commands/start-scientific-architecture.md",
     "./commands/start-simulation-validation.md",
     "./commands/new-design-plan.md",
@@ -14,6 +19,7 @@
   "agents": [
     "./agents/scientific-architecture-planner.md",
     "./agents/scientific-architecture-reviewer.md",
+    "./agents/scientific-code-reviewer.md",
     "./agents/scientific-simulation-designer.md",
     "./agents/numerics-interface-auditor.md",
     "./agents/scientific-task-implementor-fast.md",

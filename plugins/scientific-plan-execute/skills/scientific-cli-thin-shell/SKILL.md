@@ -5,6 +5,7 @@ description: Use when building command-line interfaces for scientific workflows 
 
 # Scientific CLI Thin Shell
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
 When executing this definition in Codex or another runtime, apply this mapping:
@@ -15,6 +16,7 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 The CLI should be a boundary adapter, not a business-logic layer.
 This skill includes all CLI engineering rules needed for this playbook (no companion skill required).

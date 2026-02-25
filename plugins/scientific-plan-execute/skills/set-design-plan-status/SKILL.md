@@ -5,6 +5,7 @@ description: Use when transitioning scientific design-plan status in Codex or Cl
 
 # Set Design Plan Status
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
 When executing this definition in Codex or another runtime, apply this mapping:
@@ -15,16 +16,18 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 Updates plan status with transition and readiness checks.
 
 ## Path Contract (Unambiguous)
 
 1. Installation-local utility path examples:
-- Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/set-design-plan-status.sh`
-- Claude Code plugin install: `${CLAUDE_PLUGIN_ROOT}/scripts/set-design-plan-status.sh`
+- Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/resolve-plugin-path.sh`
+- Claude Code plugin install: `${CLAUDE_PLUGIN_ROOT}/scripts/resolve-plugin-path.sh`
 2. Script resolution rule:
-- resolve from the installed plugin location only (Codex bundle or Claude Code plugin root).
+- resolve script paths through the shared resolver only.
+- resolver locates installed plugin roots for Codex/Claude runtime and returns absolute script paths.
 - do not use repository-local `scripts/...` paths.
 3. Project-local input/output paths:
 - Any plan path passed to this skill resolves within the active downstream project root unless explicitly absolute.
@@ -40,10 +43,10 @@ Updates plan status with transition and readiness checks.
 ## Workflow
 
 1. Validate plan path and status token.
-2. Resolve utility path by runtime:
-- Codex: `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"` then `SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/set-design-plan-status.sh"`
-- Claude Code plugin: `SCRIPT_PATH="${CLAUDE_PLUGIN_ROOT}/scripts/set-design-plan-status.sh"`
-- fail if `"$SCRIPT_PATH"` does not exist.
+2. Resolve utility path by runtime resolver:
+- `RESOLVER_PATH="${CLAUDE_PLUGIN_ROOT:-${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute}/scripts/resolve-plugin-path.sh"`
+- fail if `"$RESOLVER_PATH"` does not exist.
+- `SCRIPT_PATH="$(bash "$RESOLVER_PATH" --plan-execute-script "set-design-plan-status.sh")"`
 3. Run transition utility:
 - `bash "$SCRIPT_PATH" "<plan-path>" "<status-token>"`
 4. If target status is `approved-for-implementation`, require readiness validation pass.

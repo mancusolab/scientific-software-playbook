@@ -17,12 +17,12 @@ Audience and scope:
 
 ## Plugin Selection and Dependency Contract
 
-1. `scientific-plan-execute` is required for bootstrap and workflow orchestration.
+1. `scientific-plan-execute` is required for workflow orchestration.
 2. `scientific-research` is required for external-fact validation gates.
 3. `scientific-house-style` is optional and provides reusable numerics/project
    engineering guidance.
 4. Default install (`--force` with no `--plugin`) installs all plugins.
-5. If only `scientific-house-style` is installed, workflow/bootstrap commands are not available.
+5. If only `scientific-house-style` is installed, workflow commands are not available.
 6. Installing `scientific-plan-execute` via Codex installer auto-adds `scientific-research`.
 
 ## Prerequisites
@@ -68,30 +68,27 @@ bash scripts/install-codex-home.sh --plugin scientific-research --force
 bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 ```
 3. Open the downstream target project root in Codex.
-4. Invoke `bootstrap-scientific-software-playbook`.
+4. Invoke `scientific-software-architecture`.
 
-What Codex install/bootstrap provides:
+What Codex install provides:
 1. Skills in `${CODEX_HOME:-$HOME/.codex}/skills/`
 2. Plugin bundles in `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/`
-3. Downstream project footprint after bootstrap:
-- `AGENTS.md` (only)
-4. Runtime behavior:
+3. Runtime behavior:
 - Plan-execute assets are resolved from the installed plugin bundle in `CODEX_HOME`.
 - Workflow outputs (design plans, implementation plans, reviews) are written into the downstream project under `docs/`.
 
 ## Installed Skill Inventory (Exact)
 
 `scientific-plan-execute` installs:
-1. `bootstrap-scientific-software-playbook`
-2. `new-design-plan`
-3. `validate-design-plan`
-4. `set-design-plan-status`
-5. `start-scientific-implementation-plan`
-6. `execute-scientific-implementation-plan`
-7. `scientific-software-architecture`
-8. `simulation-for-inference-validation`
-9. `validation-first-pipeline-api`
-10. `scientific-cli-thin-shell`
+1. `new-design-plan`
+2. `validate-design-plan`
+3. `set-design-plan-status`
+4. `start-scientific-implementation-plan`
+5. `execute-scientific-implementation-plan`
+6. `scientific-software-architecture`
+7. `simulation-for-inference-validation`
+8. `validation-first-pipeline-api`
+9. `scientific-cli-thin-shell`
 
 `scientific-research` installs:
 1. `scientific-internet-research-pass`
@@ -147,8 +144,6 @@ Codex:
 ```bash
 bash scripts/install-codex-home.sh --force
 ```
-3. Re-run `bootstrap-scientific-software-playbook` in any downstream project that should receive updates.
-   - In minimal mode this refreshes `AGENTS.md` only.
 
 Claude Code:
 1. Re-add marketplace if needed:

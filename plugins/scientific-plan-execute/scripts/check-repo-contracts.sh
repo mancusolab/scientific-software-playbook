@@ -41,6 +41,14 @@ if grep -qi "Local repository mode" AGENTS.md; then
   fail "AGENTS.md still references local repository mode"
 fi
 
+# Runtime compatibility blocks are centrally managed and must remain synchronized.
+[[ -f "docs/runtime-compatibility.md" ]] || fail "missing runtime compatibility source: docs/runtime-compatibility.md"
+[[ -f "docs/installed-path-resolution.md" ]] || fail "missing installed path contract: docs/installed-path-resolution.md"
+[[ -x "plugins/scientific-plan-execute/scripts/sync-runtime-compatibility.py" ]] \
+  || fail "missing executable runtime compatibility sync script"
+python3 "plugins/scientific-plan-execute/scripts/sync-runtime-compatibility.py" --check \
+  || fail "runtime compatibility sections are out of sync"
+
 # AGENTS skill path references must resolve.
 while IFS= read -r skill_path; do
   [[ -n "$skill_path" ]] || continue
@@ -107,14 +115,21 @@ if find "plugins/scientific-plan-execute/agents" -type f -name '*.md' -print0 | 
   fail "plan-execute agents contain forbidden repo-local skill file references"
 fi
 
-# Skills must resolve script paths from installed plugin location only.
+# Shared runtime-path resolver must exist and be executable.
+[[ -x "plugins/scientific-plan-execute/scripts/resolve-plugin-path.sh" ]] \
+  || fail "missing resolver utility: plugins/scientific-plan-execute/scripts/resolve-plugin-path.sh"
+[[ -x "plugins/scientific-plan-execute/scripts/lib/runtime-paths.sh" ]] \
+  || fail "missing resolver library: plugins/scientific-plan-execute/scripts/lib/runtime-paths.sh"
+
+# Skills must resolve utility scripts through shared resolver.
 for skill_file in \
-  "plugins/scientific-plan-execute/skills/bootstrap-scientific-software-playbook/SKILL.md" \
   "plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md" \
   "plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md" \
   "plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md"; do
-  grep -Fq '$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/' "$skill_file" \
-    || fail "skill missing plugin-script path contract: $skill_file"
+  grep -Fq 'scripts/resolve-plugin-path.sh' "$skill_file" \
+    || fail "skill missing shared resolver path contract: $skill_file"
+  grep -Fq -- '--plan-execute-script' "$skill_file" \
+    || fail "skill missing resolver usage contract: $skill_file"
   grep -Fq 'do not use repository-local `scripts/...` paths.' "$skill_file" \
     || fail "skill missing repository-local script prohibition: $skill_file"
   if grep -Fq 'SCRIPT_PATH="scripts/' "$skill_file"; then
@@ -122,14 +137,14 @@ for skill_file in \
   fi
 done
 
-grep -Fq '${CLAUDE_PLUGIN_ROOT}/scripts/new-design-plan.sh' \
+grep -Fq -- '--plan-execute-script "new-design-plan.sh"' \
   "plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md" \
-  || fail "new-design-plan skill missing Claude plugin script path"
-grep -Fq '${CLAUDE_PLUGIN_ROOT}/scripts/validate-design-plan-readiness.sh' \
+  || fail "new-design-plan skill missing resolver call for new-design-plan.sh"
+grep -Fq -- '--plan-execute-script "validate-design-plan-readiness.sh"' \
   "plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md" \
-  || fail "validate-design-plan skill missing Claude plugin script path"
-grep -Fq '${CLAUDE_PLUGIN_ROOT}/scripts/set-design-plan-status.sh' \
+  || fail "validate-design-plan skill missing resolver call for validate-design-plan-readiness.sh"
+grep -Fq -- '--plan-execute-script "set-design-plan-status.sh"' \
   "plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md" \
-  || fail "set-design-plan-status skill missing Claude plugin script path"
+  || fail "set-design-plan-status skill missing resolver call for set-design-plan-status.sh"
 
 echo "repo_contracts_ok"

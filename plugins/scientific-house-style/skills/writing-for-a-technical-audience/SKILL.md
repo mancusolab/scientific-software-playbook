@@ -8,6 +8,7 @@ metadata:
 
 # Writing for a Technical Audience
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
 When executing this definition in Codex or another runtime, apply this mapping:
@@ -18,6 +19,7 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 ## Path Contract (Unambiguous)
 

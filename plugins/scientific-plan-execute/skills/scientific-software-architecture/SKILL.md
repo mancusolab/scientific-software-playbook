@@ -5,6 +5,7 @@ description: Use when designing scientific software systems with CLI ingress and
 
 # Scientific Software Architecture
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
 When executing this definition in Codex or another runtime, apply this mapping:
@@ -15,6 +16,7 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 Use this skill to design or review scientific software that separates ingress, orchestration, and numerics execution.
 

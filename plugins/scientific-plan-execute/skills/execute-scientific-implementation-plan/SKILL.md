@@ -5,6 +5,7 @@ description: Use when executing a scientific implementation plan directory - run
 
 # Execute Scientific Implementation Plan
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
 When executing this definition in Codex or another runtime, apply this mapping:
@@ -15,6 +16,7 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 Execute a prepared implementation plan with explicit quality gates, loop controls, and evidence requirements.
 
@@ -64,9 +66,10 @@ This skill must produce:
 Use these delegates when available:
 1. `scientific-task-implementor-fast`
 2. `scientific-task-bug-fixer`
-3. `scientific-architecture-reviewer`
-4. `numerics-interface-auditor`
-5. `scientific-test-analyst`
+3. `scientific-code-reviewer`
+4. `scientific-architecture-reviewer`
+5. `numerics-interface-auditor`
+6. `scientific-test-analyst`
 
 If delegation is unavailable, execute equivalent steps directly with the same gates.
 
@@ -96,11 +99,14 @@ If delegation is unavailable, execute equivalent steps directly with the same ga
   - phase index includes at least one dedicated simulation-validation phase
   - at least one `phase_XX.md` includes `simulate` tasks, seed/reproducibility checks, and recovery or SBC/PPC validation tasks
 4. Discover phase files in lexical order (`phase_01.md`, `phase_02.md`, ...).
-5. Create an execution tracker with one cycle per phase:
+5. Resolve optional implementation guidance path in this order:
+- `.scientific/implementation-plan-guidance.md`
+- `.ed3d/implementation-plan-guidance.md` (legacy fallback)
+6. Create an execution tracker with one cycle per phase:
 - `Read`
 - `Implement`
 - `Review/Fix Loop`
-6. Execute phases one at a time (no full-plan preload).
+7. Execute phases one at a time (no full-plan preload).
 
 ### Phase Cycle
 
@@ -114,9 +120,11 @@ For each phase:
  - surface implementor evidence to the user before next task
 4. If implementor reports blockers, mark phase `blocked` and stop.
 5. Run phase review checkpoint:
-- always run `scientific-architecture-reviewer`
+- always run `scientific-code-reviewer`
+- run `scientific-architecture-reviewer` when boundary contracts or design assumptions changed
 - run `numerics-interface-auditor` when numerics APIs changed
- - surface reviewer findings before entering fix loops
+- include implementation guidance path when one exists
+- surface reviewer findings before entering fix loops
 6. Record findings by severity in the issue registry.
 7. If blocking findings exist:
 - dispatch `scientific-task-bug-fixer`
@@ -143,16 +151,18 @@ For each phase:
 
 After all phases are `completed`:
 1. Run full verification commands from implementation plan `README.md`.
-2. Dispatch `scientific-test-analyst` for AC-to-task-to-test coverage using:
+2. Run final `scientific-code-reviewer` on the full phase diff/range and resolve findings to zero.
+3. Dispatch `scientific-test-analyst` for AC-to-task-to-test coverage using:
 - `README.md`
 - `test-requirements.md`
 - all `phase_XX.md`
-3. If test analyst returns `FAIL`:
+4. If test analyst returns `FAIL`:
 - dispatch `scientific-task-bug-fixer` for missing coverage
 - re-run `scientific-test-analyst`
 - stop after 3 unresolved cycles and mark `blocked`
-4. If test analyst returns `BLOCKED`, mark execution `blocked`.
-5. Report final decision with evidence summary.
+5. If test analyst returns `BLOCKED`, mark execution `blocked`.
+6. If coverage is `PASS`, require a human test-plan section in the final report (or an explicit note that manual verification is not required for this scope).
+7. Report final decision with evidence summary.
 
 ## Mandatory Evidence Rules
 
@@ -166,7 +176,7 @@ After all phases are `completed`:
 Track findings with:
 1. Finding ID or stable label.
 2. Severity.
-3. Source reviewer (`architecture`, `numerics`, `test-analyst`).
+3. Source reviewer (`code-review`, `architecture`, `numerics`, `test-analyst`).
 4. Status (`open`, `closed`, `accepted-risk`).
 5. Fix evidence reference (command and outcome).
 

@@ -30,7 +30,7 @@ This repository hosts three plugins in one codebase:
 - Can be installed independently.
 
 Dependency contract:
-1. `scientific-plan-execute` is required for bootstrap and workflow commands.
+1. `scientific-plan-execute` is required for workflow commands.
 2. `scientific-research` is required for external-fact validation gates in workflow planning.
 3. Codex installer auto-adds `scientific-research` when `scientific-plan-execute` is selected.
 4. `scientific-house-style` is optional but recommended when numerics and project
@@ -48,7 +48,6 @@ Dependency contract:
 - Architecture-first planning with explicit approval before implementation.
 - Reusable skills, commands, and agents for phased execution.
 - Templates for design plans, implementation plans, and review artifacts.
-- A Codex bootstrap path for applying this playbook to downstream repos.
 - A dedicated research plugin with ed3d-style research agent layout for local and internet investigation.
 - A separate house-style plugin for JAX/Equinox numerics and project
   engineering guidance.
@@ -70,8 +69,7 @@ bash scripts/install-codex-home.sh --force
 Then:
 
 1. Open your target project in Codex.
-2. Run `bootstrap-scientific-software-playbook` once in that project (writes `AGENTS.md` only).
-3. Start with `scientific-software-architecture`.
+2. Start with `scientific-software-architecture`.
 
 ### Claude Code
 
@@ -100,18 +98,22 @@ Architecture plan
 Typical entry points:
 
 1. Architecture: `scientific-software-architecture` or `/start-scientific-architecture`
-2. Plan scaffolding: `new-design-plan` or `/new-design-plan`
-3. Research passes: `scientific-internet-research-pass`, `scientific-codebase-investigation-pass`
-4. Readiness check: `validate-design-plan` or `/validate-design-plan --phase in-review`
-5. Approval transition: `set-design-plan-status` or `/set-design-plan-status`
-6. Implementation planning: `start-scientific-implementation-plan`
-7. Execution: `execute-scientific-implementation-plan`
+2. Design loop parity alias: `start-design-plan` (wraps scientific design workflow)
+3. Plan scaffolding: `new-design-plan` or `/new-design-plan`
+4. Research passes: `scientific-internet-research-pass`, `scientific-codebase-investigation-pass`
+5. Readiness check: `validate-design-plan` or `/validate-design-plan --phase in-review`
+6. Approval transition: `set-design-plan-status` or `/set-design-plan-status`
+7. Implementation planning: `start-scientific-implementation-plan` or `start-implementation-plan`
+8. Execution: `execute-scientific-implementation-plan` or `execute-implementation-plan`
+9. Idea refinement/customization helpers: `flesh-it-out`, `how-to-customize`
 
 ## Documentation Map
 
 - Installation and setup: `docs/INSTALLATION.md`
 - Day-1 onboarding flow: `docs/ONBOARDING.md`
 - Compatibility and breaking-change policy: `docs/COMPATIBILITY.md`
+- Runtime compatibility source block: `docs/runtime-compatibility.md`
+- Runtime installed-path contract: `docs/installed-path-resolution.md`
 - Repository attribution notice: `NOTICE`
 - Repository and upstream lineage licenses: `LICENSE`, `LICENSE.superpowers`
 - Release notes (three-plugin research split): `docs/releases/2026-02-23-research-plugin-split.md`
@@ -120,6 +122,8 @@ Typical entry points:
 - Implementation plan templates: `plugins/scientific-plan-execute/docs/implementation-plans/templates/`
 - Review template: `plugins/scientific-plan-execute/docs/reviews/review-template.md`
 - Skill/agent IO checklist: `plugins/scientific-plan-execute/docs/checklists/skill-agent-io-checklist.md`
+- Runtime compatibility sync tool: `plugins/scientific-plan-execute/scripts/sync-runtime-compatibility.py`
+- Runtime path resolver: `plugins/scientific-plan-execute/scripts/resolve-plugin-path.sh`
 
 ## Agent-Focused Policy And Internals
 

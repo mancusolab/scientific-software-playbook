@@ -115,10 +115,14 @@ for plugin in "${selected_plugins[@]}"; do
 done
 selected_plugins=("${dedup_plugins[@]}")
 
-# Plan-execute relies on research skills for external-fact validation gates.
+# Plan-execute relies on research + house-style skills for required workflow gates.
 if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]] && [[ " ${selected_plugins[*]} " != *" scientific-research "* ]]; then
   selected_plugins+=("scientific-research")
   echo "info: scientific-plan-execute depends on scientific-research; adding scientific-research automatically."
+fi
+if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]] && [[ " ${selected_plugins[*]} " != *" scientific-house-style "* ]]; then
+  selected_plugins+=("scientific-house-style")
+  echo "info: scientific-plan-execute depends on scientific-house-style; adding scientific-house-style automatically."
 fi
 
 if [[ ! -d "$plugins_src_root" ]]; then
@@ -224,6 +228,8 @@ if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
     "${plan_dst}/scripts/hooks/session-start.sh" \
     "${plan_dst}/scripts/hooks/post-edit.sh" \
     "${plan_dst}/scripts/hooks/stop.sh" \
+    "${plan_dst}/scripts/check-required-house-style-skills.sh" \
+    "${plan_dst}/scripts/run-required-house-style-preflight.sh" \
     "${plan_dst}/scripts/new-design-plan.sh" \
     "${plan_dst}/scripts/set-design-plan-status.sh" \
     "${plan_dst}/scripts/validate-design-plan-readiness.sh" \
@@ -245,7 +251,7 @@ done
 echo
 if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
   echo "Next step (per downstream project):"
-  echo "  Open target project root in Codex and invoke: scientific-software-architecture"
+  echo "  Open target project root in Codex and invoke: starting-a-design-plan (or scientific-software-architecture compatibility alias)"
 else
   echo "Plan-execute plugin not selected."
   echo "Install with --plugin scientific-plan-execute to enable workflow commands."

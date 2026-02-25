@@ -21,6 +21,10 @@
 - Expected simulate entrypoint/signature:
   - `__SIMULATE_SIGNATURE__`
 
+## Review Profile
+- Profile: `inference` | `full`
+- Why this profile:
+
 ## Tasks
 
 <!-- START_TASK_1 -->
@@ -98,10 +102,15 @@
 ```
 
 ## Review Gate
-1. Run `scientific-architecture-reviewer` with simulation-validation scope.
-2. Run `numerics-interface-auditor` if numerics kernels/solvers are touched.
-3. Run `scientific-test-analyst` checks for simulation traceability coverage.
-4. Resolve blocking findings before phase status is `completed`.
+1. Run `scientific-code-reviewer` with simulation-validation scope.
+2. Apply profile baseline:
+   - `inference`: add `numerics-interface-auditor` and `scientific-inference-algorithm-reviewer`
+   - `full`: add `scientific-architecture-reviewer`, `numerics-interface-auditor`, and `scientific-inference-algorithm-reviewer`
+3. Escalate reviewers when touched surfaces require them:
+   - boundary-contract change -> `scientific-architecture-reviewer`
+   - CLI/API change -> `scientific-cli-api-reviewer`
+4. Run `scientific-test-analyst` checks for simulation traceability coverage.
+5. Resolve blocking findings before phase status is `completed`.
 
 ## Completion Checklist
 - [ ] `simulate` contract is implemented and deterministic seed behavior is verified.

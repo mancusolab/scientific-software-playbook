@@ -64,9 +64,8 @@ Audit at least these risk classes:
 ## Core Skill Inputs
 
 Use these skill IDs when auditing numerics interfaces:
-1. `jax-equinox-numerics` (from `scientific-house-style`, when installed)
+1. `jax-equinox-numerics` (from `scientific-house-style`)
 2. `validation-first-pipeline-api`
-3. `scientific-cli-thin-shell`
 
 ## Hard Gates
 

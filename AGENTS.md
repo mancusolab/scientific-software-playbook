@@ -19,25 +19,42 @@ Operational workflow remains centered on `scientific-plan-execute`.
 Dependency contract:
 1. `scientific-plan-execute` is required for orchestration flow.
 2. `scientific-research` is required for external-fact validation gates and research workflows.
-3. `scripts/install-codex-home.sh` auto-adds `scientific-research` when `scientific-plan-execute` is selected.
-4. `scientific-house-style` is optional and provides reusable guidance.
-5. If house-style skills are unavailable, workflow should continue without blocking.
+3. `scientific-house-style` is required for workflow execution and review gates.
+4. `scripts/install-codex-home.sh` auto-adds `scientific-research` and `scientific-house-style` when `scientific-plan-execute` is selected.
+5. Required house-style skills must be resolvable at runtime:
+- `jax-equinox-numerics`
+- `project-engineering`
+- `coding-effectively`
+6. Mandatory scientific correctness constraints remain in `scientific-plan-execute`:
+   - `validation-first-pipeline-api`
+   - `simulation-for-inference-validation`
+7. `scientific-house-style` should carry reusable implementation-style guidance, while `scientific-plan-execute` enforces orchestration and hard-stop gates.
 
 ## Plugin Assets (Source Of Truth)
 
 ### Skills (`scientific-plan-execute`)
+- `asking-clarifying-questions`: `plugins/scientific-plan-execute/skills/asking-clarifying-questions/SKILL.md`
+- `brainstorming`: `plugins/scientific-plan-execute/skills/brainstorming/SKILL.md`
+- `scientific-kickoff`: `plugins/scientific-plan-execute/skills/scientific-kickoff/SKILL.md`
+- `starting-a-design-plan`: `plugins/scientific-plan-execute/skills/starting-a-design-plan/SKILL.md`
 - `new-design-plan`: `plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md`
 - `validate-design-plan`: `plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md`
 - `set-design-plan-status`: `plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md`
-- `start-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/start-scientific-implementation-plan/SKILL.md`
-- `execute-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/execute-scientific-implementation-plan/SKILL.md`
-- `starting-a-design-plan`: `plugins/scientific-plan-execute/skills/starting-a-design-plan/SKILL.md`
 - `starting-an-implementation-plan`: `plugins/scientific-plan-execute/skills/starting-an-implementation-plan/SKILL.md`
+- `start-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/start-scientific-implementation-plan/SKILL.md`
 - `executing-an-implementation-plan`: `plugins/scientific-plan-execute/skills/executing-an-implementation-plan/SKILL.md`
+- `execute-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/execute-scientific-implementation-plan/SKILL.md`
+- `writing-design-plans`: `plugins/scientific-plan-execute/skills/writing-design-plans/SKILL.md`
+- `writing-implementation-plans`: `plugins/scientific-plan-execute/skills/writing-implementation-plans/SKILL.md`
 - `scientific-software-architecture`: `plugins/scientific-plan-execute/skills/scientific-software-architecture/SKILL.md`
 - `simulation-for-inference-validation`: `plugins/scientific-plan-execute/skills/simulation-for-inference-validation/SKILL.md`
 - `validation-first-pipeline-api`: `plugins/scientific-plan-execute/skills/validation-first-pipeline-api/SKILL.md`
-- `scientific-cli-thin-shell`: `plugins/scientific-plan-execute/skills/scientific-cli-thin-shell/SKILL.md`
+- `requesting-code-review`: `plugins/scientific-plan-execute/skills/requesting-code-review/SKILL.md`
+- `verification-before-completion`: `plugins/scientific-plan-execute/skills/verification-before-completion/SKILL.md`
+- `systematic-debugging`: `plugins/scientific-plan-execute/skills/systematic-debugging/SKILL.md`
+- `test-driven-development`: `plugins/scientific-plan-execute/skills/test-driven-development/SKILL.md`
+- `using-git-worktrees`: `plugins/scientific-plan-execute/skills/using-git-worktrees/SKILL.md`
+- `finishing-a-development-branch`: `plugins/scientific-plan-execute/skills/finishing-a-development-branch/SKILL.md`
 
 ### Skills (`scientific-research`)
 - `scientific-internet-research-pass`: `plugins/scientific-research/skills/scientific-internet-research-pass/SKILL.md`
@@ -74,8 +91,14 @@ Breaking-change contract:
 Execution delegates:
 1. `scientific-task-implementor-fast`
 2. `scientific-task-bug-fixer`
-3. `scientific-code-reviewer`
-4. `scientific-test-analyst`
+3. `scientific-test-analyst`
+
+Review delegates:
+1. `scientific-code-reviewer`
+2. `scientific-architecture-reviewer`
+3. `numerics-interface-auditor`
+4. `scientific-cli-api-reviewer`
+5. `scientific-inference-algorithm-reviewer`
 
 Research delegates:
 1. `codebase-investigator`
@@ -110,30 +133,40 @@ bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 Run a downstream project:
 
 1. Open the target project root in Codex.
-2. Start architecture planning with `scientific-software-architecture`.
+2. Start architecture planning with `starting-a-design-plan` (Codex skill) or `start-design-plan` (command wrapper).
 
 ## Workflow
 
-1. Start architecture with `scientific-software-architecture`.
-2. Choose model path early:
+1. Start architecture with `starting-a-design-plan` (or `start-design-plan` command wrapper).
+2. Run `scientific-kickoff` early to choose exactly one model path:
    - `provided-model` (user-supplied model/update rules), or
-   - `suggested-model` (literature-backed model candidates + explicit user selection).
-3. Define simulation scope for inference validation:
+   - `suggested-model` (literature-backed model candidates + explicit user selection), or
+   - `existing-codebase-port` (source-pinned local directory or GitHub URL with parity targets).
+   - when `existing-codebase-port` is selected, run `scientific-codebase-investigation-pass` and capture file-level findings before approval.
+3. Set required workflow states before approval:
+   - `model_path_decided: yes`
+   - `codebase_investigation_complete_if_port: yes|n/a`
+   - `simulation_contract_complete_if_in_scope: yes|n/a`
+4. Define simulation scope for inference validation:
    - use `simulation-for-inference-validation` when simulation-based checks are required.
-4. Create plan scaffolding with `new-design-plan`.
-5. Run `scientific-internet-research-pass` when external facts are uncertain.
-6. Validate in review phase with `validate-design-plan` (`phase=in-review`).
-7. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
-8. Create implementation phases and traceability with `start-scientific-implementation-plan`.
-9. Execute phase-by-phase with `execute-scientific-implementation-plan`.
-10. Compatibility command aliases are available for upstream parity:
-   - `start-design-plan` -> `starting-a-design-plan`
-   - `start-implementation-plan` -> `starting-an-implementation-plan`
-   - `execute-implementation-plan` -> `executing-an-implementation-plan`
-11. During phase execution, apply layer skills in order when relevant:
+5. Validate in review phase with `validate-design-plan` (`phase=in-review`).
+6. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
+7. Create implementation phases and traceability with `starting-an-implementation-plan` (or `start-implementation-plan` command wrapper).
+8. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
+9. Compatibility wrappers are available:
+   - `scientific-software-architecture` -> `starting-a-design-plan`
+   - `start-scientific-architecture` -> `start-design-plan`
+   - `start-scientific-implementation-plan` -> `start-implementation-plan`
+   - `execute-scientific-implementation-plan` -> `execute-implementation-plan`
+10. During phase execution, apply layer skills in order when relevant:
    - `validation-first-pipeline-api`
-   - `jax-equinox-numerics` (from `scientific-house-style`, when installed)
-   - `scientific-cli-thin-shell`
+   - `jax-equinox-numerics` (from `scientific-house-style`)
+   - `test-driven-development` for behavior-changing work
+   - `systematic-debugging` for failing tests or persistent blockers
+   - `using-git-worktrees` when branch/worktree isolation is required
+11. Before phase or branch completion:
+   - run `requesting-code-review` for reviewer/fix closure to zero findings
+   - run `verification-before-completion` to ensure fresh, command-level completion evidence
 
 ## Hard Stops
 
@@ -143,5 +176,15 @@ Run a downstream project:
 4. Approval transitions must pass strict readiness validation.
 5. Completion claims require TDD evidence and fresh verification output.
 6. Implementation execution requires AC-to-task-to-test traceability.
-7. Architecture approval requires explicit model-path decision, concrete model sources/update rules for `provided-model`, and literature-backed model evidence plus user selection for `suggested-model`.
+7. Architecture approval requires explicit model-path decision:
+   - concrete model sources/update rules for `provided-model`
+   - literature-backed model evidence plus user selection for `suggested-model`
+   - source pin plus behavior/parity inventory for `existing-codebase-port`
+   - completed `scientific-codebase-investigation-pass` findings with file-level evidence for `existing-codebase-port`
 8. If simulation-based validation is in scope, architecture approval requires an explicit simulation contract aligned to inferential assumptions.
+9. Architecture approval requires required workflow states:
+   - `model_path_decided: yes`
+   - `codebase_investigation_complete_if_port: yes|n/a` (as applicable)
+   - `simulation_contract_complete_if_in_scope: yes|n/a` (as applicable)
+10. If CLI/API surfaces change during implementation, `scientific-cli-api-reviewer` gating is required before phase completion.
+11. If inference-algorithm behavior changes during implementation, `scientific-inference-algorithm-reviewer` gating is required before phase completion.

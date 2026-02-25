@@ -26,7 +26,6 @@ Optional inputs:
 1. Load and apply relevant skills when available:
 - `coding-effectively`
 - `validation-first-pipeline-api`
-- `scientific-cli-thin-shell`
 - `jax-equinox-numerics` (when numerics scope exists)
 
 2. Build a verification command set:

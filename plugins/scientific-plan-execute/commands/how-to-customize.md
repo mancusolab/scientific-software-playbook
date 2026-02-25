@@ -12,7 +12,7 @@ Create a `.scientific/` directory in your project root with these optional files
 
 ### `.scientific/design-plan-guidance.md`
 
-Loaded before architecture/design clarification during `start-design-plan` and `start-scientific-architecture` workflows.
+Loaded before architecture/design clarification during `start-design-plan`.
 
 What to include:
 - Domain terminology and symbols
@@ -31,10 +31,6 @@ What to include:
 - Review criteria beyond defaults
 - Commit conventions
 - Project-specific boundary rules (ingress/pipeline/numerics/CLI)
-
-## Backward Compatibility
-
-If legacy `.ed3d/design-plan-guidance.md` or `.ed3d/implementation-plan-guidance.md` files exist, workflows should treat them as fallback guidance.
 
 ## Example: `.scientific/design-plan-guidance.md`
 

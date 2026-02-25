@@ -30,9 +30,14 @@ List concrete outcomes that must be true for completion.
 - Non-goal 2
 
 ## Model Acquisition Path
-- Path: `provided-model` | `suggested-model`
+- Path: `provided-model` | `suggested-model` | `existing-codebase-port`
 - Why this path:
 - User selection confirmation:
+
+## Required Workflow States
+- model_path_decided: yes|no
+- codebase_investigation_complete_if_port: yes|no|n/a
+- simulation_contract_complete_if_in_scope: yes|no|n/a
 
 ## Model Specification Sources
 | Source ID | Path/Link | Type | Notes | Confidence (high/med/low) |
@@ -43,6 +48,29 @@ List concrete outcomes that must be true for completion.
 | Candidate ID | Model Family | When It Fits | Key Assumptions | Failure Modes | Supporting Citation(s) | Selection Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | MOD-1 | | | | | | selected/rejected |
+
+## Existing Codebase Port Contract (Required When `existing-codebase-port`)
+- Porting objective:
+- Source selection confirmation:
+
+### Source Pin
+| Source ID | Source Type (`local-directory` or `github-url`) | Path/URL | Commit/Tag | Notes |
+| --- | --- | --- | --- | --- |
+| PORT-SRC-1 | | | | |
+
+### Behavior Inventory And Parity Targets
+| Behavior ID | Surface (`cli`/`api`/`numerics`/`io`) | Current Behavior | Target Behavior | Evidence Plan (tests/golden outputs) |
+| --- | --- | --- | --- | --- |
+| PORT-BHV-1 | | | | |
+
+## Codebase Investigation Findings (Required When `existing-codebase-port`)
+- Investigation mode: `local-directory` | `github-url`
+- Investigation completion: yes|no
+- Investigator: `scientific-codebase-investigation-pass`
+
+| Finding ID | Source Scope | Summary | Evidence (file:line or commit:path:line) | Status (`confirmed`/`discrepancy`/`addition`/`missing`) |
+| --- | --- | --- | --- | --- |
+| PORT-INV-1 | | | | confirmed |
 
 ## External Research Findings (When Triggered)
 | Claim ID | Claim | Source URL | Source Type | Access Date | Confidence (high/med/low) |

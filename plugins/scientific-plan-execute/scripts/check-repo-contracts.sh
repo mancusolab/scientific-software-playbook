@@ -71,30 +71,48 @@ python3 - <<'PY'
 import json
 import sys
 
+with open("plugins/scientific-plan-execute/.claude-plugin/plugin.json", "r", encoding="utf-8") as fh:
+    plan_manifest = json.load(fh)
 with open("plugins/scientific-research/.claude-plugin/plugin.json", "r", encoding="utf-8") as fh:
     research_manifest = json.load(fh)
+with open("plugins/scientific-house-style/.claude-plugin/plugin.json", "r", encoding="utf-8") as fh:
+    house_manifest = json.load(fh)
 with open(".claude-plugin/marketplace.json", "r", encoding="utf-8") as fh:
     marketplace = json.load(fh)
 
-manifest_version = research_manifest.get("version")
-if not manifest_version:
-    print("error: scientific-research plugin manifest missing version", file=sys.stderr)
-    sys.exit(1)
+manifest_versions = {
+    "scientific-plan-execute": plan_manifest.get("version"),
+    "scientific-research": research_manifest.get("version"),
+    "scientific-house-style": house_manifest.get("version"),
+}
+for name, version in manifest_versions.items():
+    if not version:
+        print(f"error: {name} plugin manifest missing version", file=sys.stderr)
+        sys.exit(1)
 
-marketplace_version = None
+marketplace_versions = {}
 for plugin in marketplace.get("plugins", []):
-    if plugin.get("name") == "scientific-research":
-        marketplace_version = plugin.get("version")
-        break
+    name = plugin.get("name")
+    if name:
+        marketplace_versions[name] = plugin.get("version")
 
-if not marketplace_version:
-    print("error: marketplace missing scientific-research version entry", file=sys.stderr)
-    sys.exit(1)
+for name, version in manifest_versions.items():
+    market_version = marketplace_versions.get(name)
+    if not market_version:
+        print(f"error: marketplace missing {name} version entry", file=sys.stderr)
+        sys.exit(1)
+    if version != market_version:
+        print(
+            f"error: {name} version mismatch: manifest={version} marketplace={market_version}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
-if manifest_version != marketplace_version:
+if manifest_versions["scientific-plan-execute"] != manifest_versions["scientific-house-style"]:
     print(
-        f"error: scientific-research version mismatch: "
-        f"manifest={manifest_version} marketplace={marketplace_version}",
+        "error: scientific-plan-execute and scientific-house-style versions must match "
+        f"(found {manifest_versions['scientific-plan-execute']} vs "
+        f"{manifest_versions['scientific-house-style']})",
         file=sys.stderr,
     )
     sys.exit(1)
@@ -120,6 +138,12 @@ fi
   || fail "missing resolver utility: plugins/scientific-plan-execute/scripts/resolve-plugin-path.sh"
 [[ -x "plugins/scientific-plan-execute/scripts/lib/runtime-paths.sh" ]] \
   || fail "missing resolver library: plugins/scientific-plan-execute/scripts/lib/runtime-paths.sh"
+[[ -x "plugins/scientific-plan-execute/scripts/check-required-house-style-skills.sh" ]] \
+  || fail "missing executable house-style dependency checker: plugins/scientific-plan-execute/scripts/check-required-house-style-skills.sh"
+[[ -x "plugins/scientific-plan-execute/scripts/run-required-house-style-preflight.sh" ]] \
+  || fail "missing executable house-style preflight wrapper: plugins/scientific-plan-execute/scripts/run-required-house-style-preflight.sh"
+grep -Fq "depends on scientific-house-style; adding scientific-house-style automatically." "scripts/install-codex-home.sh" \
+  || fail "installer must auto-add scientific-house-style when scientific-plan-execute is selected"
 
 # Skills must resolve utility scripts through shared resolver.
 for skill_file in \

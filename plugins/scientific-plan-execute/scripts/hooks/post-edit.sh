@@ -5,6 +5,7 @@ paths="${CLAUDE_FILE_PATHS:-}"
 
 if [[ "$paths" == *"docs/design-plans/"* ]]; then
   echo "[scientific-software-playbook] Design artifacts changed. Re-check model path, solver strategy, simulation scope, and mathematical sanity checks." >&2
+  echo "[scientific-software-playbook] If existing-codebase-port is selected, ensure codebase investigation findings are complete with file-level evidence." >&2
   echo "[scientific-software-playbook] Re-run validate-design-plan before approval." >&2
 fi
 

@@ -52,7 +52,8 @@ Runs design-plan readiness checks and reports pass/fail gaps.
 - pass/fail
 - missing sections/artifacts
 - placeholder content status
-- model-path/evidence gating failures (for example missing `provided-model`/`suggested-model` decision or suggested-model selection without citations)
+- required workflow-state gating failures (for example `model_path_decided`, `codebase_investigation_complete_if_port`, `simulation_contract_complete_if_in_scope`)
+- model-path/evidence gating failures (for example missing model-path decision, suggested-model selection without citations, or existing-codebase-port source pin/parity/investigation gaps)
 - simulation gating failures (for example simulation scope `yes` without explicit simulate contract or validation experiments)
 
 ## Output

@@ -65,7 +65,6 @@ scientific-software-playbook/
         scientific-software-architecture/
         simulation-for-inference-validation/
         validation-first-pipeline-api/
-        scientific-cli-thin-shell/
       docs/
         design-plans/templates/
         implementation-plans/templates/

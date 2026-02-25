@@ -5,7 +5,7 @@
 | `scientific-plan-execute` | `scientific-research` | `scientific-house-style` | Status | Notes |
 |---|---|---|---|---|
 | `0.1.x` | `0.1.x` | `0.1.x` | Supported | Recommended default (all installed). |
-| `0.1.x` | `0.1.x` | not installed | Supported | Workflow runs; house-style skills are unavailable. |
+| `0.1.x` | `0.1.x` | not installed | Unsupported | Workflow preflight fails: required house-style skills missing. |
 | `0.1.x` | not installed | `0.1.x` | Unsupported | Research-gated workflow steps will fail. |
 | not installed | `0.1.x` | any | Supported | Research skills only; no workflow commands. |
 | not installed | not installed | `0.1.x` | Supported | House-style skills only; no workflow commands. |
@@ -14,7 +14,8 @@ Notes:
 1. `scientific-plan-execute`, `scientific-research`, and `scientific-house-style` are independently installable.
 2. Workflow orchestration requires `scientific-plan-execute`.
 3. Workflow research gates require `scientific-research`.
-4. House-style skills are optional dependencies from a runtime perspective.
+4. Workflow execution and review gates require `scientific-house-style`.
+5. `scientific-plan-execute` and `scientific-house-style` versions must match.
 
 ## Breaking Change (Applied)
 

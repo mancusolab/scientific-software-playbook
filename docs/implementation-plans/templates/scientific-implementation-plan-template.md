@@ -39,9 +39,9 @@ Draft
 | SIMVAL-1 | | | | | blocked |
 
 ## Phase Index
-| Phase | File | Goal | Done Gate |
-| --- | --- | --- | --- |
-| 1 | `phase_01.md` | | |
+| Phase | File | Goal | Review Profile | Done Gate |
+| --- | --- | --- | --- | --- |
+| 1 | `phase_01.md` | | `minimal` | |
 
 ## Simulation Phase Requirement (When In Scope)
 - If design plan simulation scope is `yes`, include at least one dedicated simulation-validation phase file:
@@ -57,9 +57,15 @@ Draft
 ```
 
 ## Review Checkpoints
-1. Run `scientific-architecture-reviewer` after each phase.
-2. Run `numerics-interface-auditor` for numerics-touching phases.
-3. Resolve all blocking findings before continuing.
+1. Run `scientific-code-reviewer` after each phase.
+2. Select phase-level baseline reviewers from the phase review profile:
+- `minimal`, `api-cli`, `numerics`, `inference`, `full`.
+3. Escalate reviewers from touched surfaces even if phase profile is lower:
+- boundary contracts -> `scientific-architecture-reviewer`
+- numerics changes -> `numerics-interface-auditor`
+- CLI/API changes -> `scientific-cli-api-reviewer`
+- inference/solver changes -> `scientific-inference-algorithm-reviewer`
+4. Resolve all blocking findings before continuing.
 
 ## Execution Log
 | Date | Phase | Status | Evidence |

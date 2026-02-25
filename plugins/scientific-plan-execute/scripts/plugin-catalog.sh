@@ -13,15 +13,28 @@ ssp_plugin_skills() {
   case "$plugin" in
     scientific-plan-execute)
       cat <<'EOF'
+asking-clarifying-questions
+brainstorming
+scientific-kickoff
+starting-a-design-plan
 new-design-plan
 validate-design-plan
 set-design-plan-status
+writing-design-plans
+starting-an-implementation-plan
 start-scientific-implementation-plan
+writing-implementation-plans
+executing-an-implementation-plan
 execute-scientific-implementation-plan
 scientific-software-architecture
 simulation-for-inference-validation
 validation-first-pipeline-api
-scientific-cli-thin-shell
+requesting-code-review
+verification-before-completion
+systematic-debugging
+test-driven-development
+using-git-worktrees
+finishing-a-development-branch
 EOF
       ;;
     scientific-research)

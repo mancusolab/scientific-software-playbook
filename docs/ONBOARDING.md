@@ -11,20 +11,25 @@ steps from `docs/INSTALLATION.md` first.
 Plugin prerequisite:
 1. This onboarding flow requires `scientific-plan-execute`.
 2. This onboarding flow also requires `scientific-research` for research-gated steps.
-3. `scientific-house-style` is optional and supplements numerics/project-engineering guidance.
-4. If only `scientific-house-style` is installed, workflow commands in this guide will not resolve.
+3. This onboarding flow requires `scientific-house-style` for numerics/project-engineering guidance gates.
+4. If `scientific-house-style` is missing, workflow preflight checks will fail.
 5. Compatibility and breaking-change path policy is documented in `docs/COMPATIBILITY.md`.
 
 ## Phase Workflow
 
 1. Architecture kickoff
-- Claude Code path: run `/start-scientific-architecture <slug>`.
+- Claude Code path: run `/start-design-plan <slug>`.
 - Codex path:
-  - Use `scientific-software-architecture` directly (see `AGENTS.md`).
+  - Use `starting-a-design-plan` directly (see `AGENTS.md`).
   - Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
+- Run `scientific-kickoff` to force one mode (`provided-model`, `suggested-model`, `existing-codebase-port`) before full architecture expansion.
+- Run `asking-clarifying-questions` to resolve contradictions and narrow scope.
+- Run `brainstorming` to compare alternatives and validate a direction.
 - Choose one model path early:
   - `provided-model`: user supplies model artifacts/update rules.
   - `suggested-model`: planner proposes literature-backed model options and user selects.
+  - `existing-codebase-port`: user supplies a local directory or GitHub URL and defines a pinned source + behavior parity contract.
+  - for `existing-codebase-port`, run `scientific-codebase-investigation-pass` and record file-level findings before approval.
 - If inference validation should include synthetic-data checks, define simulation contract:
   - Claude Code: `/start-simulation-validation <plan-path>`
   - Codex: invoke `simulation-for-inference-validation`
@@ -51,8 +56,8 @@ Plugin prerequisite:
 - Codex: invoke `set-design-plan-status` with `in-review`
 
 3. Build implementation orchestration artifacts
-- Claude Code: `/start-scientific-implementation-plan <design-plan-path> [slug]`
-- Codex: invoke `start-scientific-implementation-plan`
+- Claude Code: `/start-implementation-plan <design-plan-path>`
+- Codex: invoke `starting-an-implementation-plan`
 - Outcome:
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
@@ -62,19 +67,23 @@ Plugin prerequisite:
 - Recommended: start a fresh session/context before execution.
 
 4. Execute implementation phases
-- Claude Code: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
-- Codex: invoke `execute-scientific-implementation-plan` with the same absolute path
+- Claude Code: `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+- Codex: invoke `executing-an-implementation-plan` with the same paths
 - Outcome: phase-by-phase implementation with TDD, reviewer/fix loops, and traceability coverage checks.
 - During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
 
 5. During phase execution, apply layer skills in order when relevant
 - `validation-first-pipeline-api`
-- `jax-equinox-numerics` (from `scientific-house-style`, when installed)
-- `scientific-cli-thin-shell`
+- `jax-equinox-numerics` (from `scientific-house-style`)
+- `test-driven-development` for behavior-changing work
+- `systematic-debugging` for failing tests or persistent blockers
+- `using-git-worktrees` when branch/worktree isolation is required
 
 6. Review and completion
 - Run `scientific-architecture-reviewer`.
 - Run `numerics-interface-auditor`.
+- Run `requesting-code-review` to close implementation findings before completion.
+- Run `verification-before-completion` before any "done" claim.
 - Verify fresh test/check command evidence before claiming completion.
 
 ## Plan Utilities
@@ -82,39 +91,47 @@ Plugin prerequisite:
 1. Create plan + artifact stubs:
 - Claude Code: `/new-design-plan <slug>`
 - Codex: invoke `new-design-plan` with a slug
+- Use `writing-design-plans` to expand/refine design sections after scaffolding.
 
-2. Change plan status:
+2. Clarify and explore before architecture lock-in:
+- Codex/Claude: invoke `asking-clarifying-questions` then `brainstorming`.
+
+3. Change plan status:
 - Claude Code: `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
 - Codex: invoke `set-design-plan-status`
 
-3. Validate plan readiness:
+4. Validate plan readiness:
 - Claude Code: `/validate-design-plan <plan-path> --phase in-review`
 - Codex: invoke `validate-design-plan` with phase `in-review`
 
-4. Run external research pass when triggered:
+5. Run external research pass when triggered:
 - Claude Code/Codex:
   - `scientific-internet-research-pass` for external claims
   - delegate `internet-researcher` for general/API web evidence
   - delegate `scientific-literature-researcher` for paper-backed support
 
-5. Define simulation contract when in scope:
+6. Define simulation contract when in scope:
 - Claude Code: `/start-simulation-validation <plan-path>`
 - Codex: invoke `simulation-for-inference-validation`
 
-6. Start implementation planning:
-- Claude Code: `/start-scientific-implementation-plan <design-plan-path> [slug]`
-- Codex: invoke `start-scientific-implementation-plan`
+7. Start implementation planning:
+- Claude Code: `/start-implementation-plan <design-plan-path>`
+- Codex: invoke `starting-an-implementation-plan`
+- Use `writing-implementation-plans` to flesh out phase/task detail and traceability.
 
-7. Execute implementation plan:
-- Claude Code: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
-- Codex: invoke `execute-scientific-implementation-plan`
+8. Execute implementation plan:
+- Claude Code: `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+- Codex: invoke `executing-an-implementation-plan`
 
 ## Non-Negotiable Gates
 
-1. No implementation before explicit plan approval.
-2. If model artifacts exist, math sanity checks are required.
-3. Model path must be explicit: `provided-model` with concrete sources/rules, or `suggested-model` with literature-backed candidates plus user selection.
-4. If simulation-based validation is in scope, simulation contract (`simulate` API + alignment checks + validation experiments) is required.
-5. If update rules exist, solver strategy decision is required.
-6. TDD and fresh verification evidence are required before completion.
-7. Implementation phases are blocked unless AC-to-task-to-test traceability is complete.
+Canonical hard stops are maintained in `AGENTS.md`.
+
+Minimum required checks before implementation:
+1. Explicit plan approval.
+2. Explicit model path (`provided-model`, `suggested-model`, or `existing-codebase-port`).
+3. Required workflow states set for approval:
+- `model_path_decided: yes`
+- `codebase_investigation_complete_if_port: yes|n/a` (as applicable)
+- `simulation_contract_complete_if_in_scope: yes|n/a` (as applicable)
+4. Fresh verification evidence before completion claims.

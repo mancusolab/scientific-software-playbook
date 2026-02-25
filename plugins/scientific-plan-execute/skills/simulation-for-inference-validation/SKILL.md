@@ -28,7 +28,7 @@ Design a simulation pathway that mirrors inferential assumptions so users can te
 ## Input Contract
 
 Required inputs:
-1. Selected model specification (from `provided-model` or `suggested-model` path).
+1. Selected model specification (from `provided-model`, `suggested-model`, or `existing-codebase-port` path).
 2. Parameterization used by inference routines.
 3. Observed data schema and expected output schema.
 

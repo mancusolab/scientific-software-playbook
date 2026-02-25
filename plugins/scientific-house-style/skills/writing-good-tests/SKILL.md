@@ -23,7 +23,7 @@ Apply this translation before following the remaining steps.
 
 1. This skill has no installation-local file dependencies and is valid in either runtime:
 - Codex installation example: `${CODEX_HOME:-$HOME/.codex}/skills/writing-good-tests/SKILL.md`
-- Claude plugin installation example: `<claude-plugin-root>/skills/writing-good-tests/SKILL.md`
+- Claude plugin installation example: `${CLAUDE_PLUGIN_ROOT}/skills/writing-good-tests/SKILL.md`
 2. Companion references in this file use skill IDs (for example `property-based-testing`), not repository-relative paths.
 
 

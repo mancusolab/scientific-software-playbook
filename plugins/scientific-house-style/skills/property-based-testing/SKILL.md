@@ -23,7 +23,7 @@ Apply this translation before following the remaining steps.
 
 1. This skill has no installation-local file dependencies and is valid in either runtime:
 - Codex installation example: `${CODEX_HOME:-$HOME/.codex}/skills/property-based-testing/SKILL.md`
-- Claude plugin installation example: `<claude-plugin-root>/skills/property-based-testing/SKILL.md`
+- Claude plugin installation example: `${CLAUDE_PLUGIN_ROOT}/skills/property-based-testing/SKILL.md`
 2. For external library syntax, prefer primary docs and optionally `scientific-internet-research-pass` when that research skill is available.
 
 

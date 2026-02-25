@@ -23,7 +23,7 @@ Apply this translation before following the remaining steps.
 
 1. This skill has no installation-local file dependencies and is valid in either runtime:
 - Codex installation example: `${CODEX_HOME:-$HOME/.codex}/skills/howto-functional-vs-imperative/SKILL.md`
-- Claude plugin installation example: `<claude-plugin-root>/skills/howto-functional-vs-imperative/SKILL.md`
+- Claude plugin installation example: `${CLAUDE_PLUGIN_ROOT}/skills/howto-functional-vs-imperative/SKILL.md`
 2. Skill ID is `functional-core-imperative-shell` even though the installation directory is `howto-functional-vs-imperative`.
 
 

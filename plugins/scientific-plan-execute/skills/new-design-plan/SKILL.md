@@ -22,7 +22,7 @@ Creates a new design plan and required artifact files.
 
 1. Installation-local utility path examples:
 - Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/new-design-plan.sh`
-- Claude Code plugin install: `<claude-plugin-root>/scripts/new-design-plan.sh`
+- Claude Code plugin install: `${CLAUDE_PLUGIN_ROOT}/scripts/new-design-plan.sh`
 2. Script resolution rule:
 - resolve from the installed plugin location only (Codex bundle or Claude Code plugin root).
 - do not use repository-local `scripts/...` paths.
@@ -39,7 +39,7 @@ Creates a new design plan and required artifact files.
 1. Validate slug format (`a-z`, `0-9`, `-`).
 2. Resolve utility path by runtime:
 - Codex: `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"` then `SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/new-design-plan.sh"`
-- Claude Code plugin: `SCRIPT_PATH="<claude-plugin-root>/scripts/new-design-plan.sh"`
+- Claude Code plugin: `SCRIPT_PATH="${CLAUDE_PLUGIN_ROOT}/scripts/new-design-plan.sh"`
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run plan creation utility:
 - `bash "$SCRIPT_PATH" "<slug>"`

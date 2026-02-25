@@ -122,13 +122,13 @@ for skill_file in \
   fi
 done
 
-grep -Fq '<claude-plugin-root>/scripts/new-design-plan.sh' \
+grep -Fq '${CLAUDE_PLUGIN_ROOT}/scripts/new-design-plan.sh' \
   "plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md" \
   || fail "new-design-plan skill missing Claude plugin script path"
-grep -Fq '<claude-plugin-root>/scripts/validate-design-plan-readiness.sh' \
+grep -Fq '${CLAUDE_PLUGIN_ROOT}/scripts/validate-design-plan-readiness.sh' \
   "plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md" \
   || fail "validate-design-plan skill missing Claude plugin script path"
-grep -Fq '<claude-plugin-root>/scripts/set-design-plan-status.sh' \
+grep -Fq '${CLAUDE_PLUGIN_ROOT}/scripts/set-design-plan-status.sh' \
   "plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md" \
   || fail "set-design-plan-status skill missing Claude plugin script path"
 

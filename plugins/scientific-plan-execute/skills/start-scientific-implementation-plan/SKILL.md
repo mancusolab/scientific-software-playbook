@@ -24,7 +24,7 @@ Create implementation-ready phase artifacts from an approved architecture plan.
 - `docs/...` paths in this skill are relative to the active downstream project root.
 2. Installation-local template path examples:
 - Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
-- Claude Code plugin install: `<claude-plugin-root>/docs/implementation-plans/templates/`
+- Claude Code plugin install: `${CLAUDE_PLUGIN_ROOT}/docs/implementation-plans/templates/`
 
 ## Input Contract
 
@@ -89,7 +89,7 @@ Ask clarifying questions before writing implementation phases when any are true:
   - `<project-root>/docs/implementation-plans/templates/`
 - otherwise use installed plugin templates:
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
-  - `<claude-plugin-root>/docs/implementation-plans/templates/`
+  - `${CLAUDE_PLUGIN_ROOT}/docs/implementation-plans/templates/`
 7. Create/update files using resolved templates:
 - `scientific-implementation-plan-template.md`
 - `test-requirements-template.md`

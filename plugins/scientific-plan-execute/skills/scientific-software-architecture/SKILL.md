@@ -24,7 +24,7 @@ Use this skill to design or review scientific software that separates ingress, o
 - `docs/...` paths in this skill are relative to the active downstream project root.
 2. Installation-local plugin asset path examples:
 - Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/...`
-- Claude Code plugin install: `<claude-plugin-root>/...`
+- Claude Code plugin install: `${CLAUDE_PLUGIN_ROOT}/...`
 3. Skill references:
 - Names like `new-design-plan` or `simulation-for-inference-validation` refer to skill IDs, not relative file paths.
 
@@ -96,19 +96,19 @@ Use these assets to keep planning and reviews consistent:
 - `execute-scientific-implementation-plan`
 2. Commands are optional wrappers from the installed plugin bundle:
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/commands/`
-- `<claude-plugin-root>/commands/`
+- `${CLAUDE_PLUGIN_ROOT}/commands/`
 3. Resolve templates with this precedence:
 - project-local templates under `<project-root>/docs/...` when present
 - otherwise installed plugin templates:
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/design-plans/templates/`
   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/implementation-plans/templates/`
-  - `<claude-plugin-root>/docs/design-plans/templates/`
-  - `<claude-plugin-root>/docs/implementation-plans/templates/`
+  - `${CLAUDE_PLUGIN_ROOT}/docs/design-plans/templates/`
+  - `${CLAUDE_PLUGIN_ROOT}/docs/implementation-plans/templates/`
 4. Review/checklist references (installed plugin bundle):
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/reviews/review-template.md`
 - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/docs/checklists/skill-agent-io-checklist.md`
-- `<claude-plugin-root>/docs/reviews/review-template.md`
-- `<claude-plugin-root>/docs/checklists/skill-agent-io-checklist.md`
+- `${CLAUDE_PLUGIN_ROOT}/docs/reviews/review-template.md`
+- `${CLAUDE_PLUGIN_ROOT}/docs/checklists/skill-agent-io-checklist.md`
 5. External research and simulation design:
 - `scientific-internet-research-pass`
 - `simulation-for-inference-validation`

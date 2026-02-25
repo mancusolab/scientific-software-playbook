@@ -22,7 +22,7 @@ Runs design-plan readiness checks and reports pass/fail gaps.
 
 1. Installation-local utility path examples:
 - Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/validate-design-plan-readiness.sh`
-- Claude Code plugin install: `<claude-plugin-root>/scripts/validate-design-plan-readiness.sh`
+- Claude Code plugin install: `${CLAUDE_PLUGIN_ROOT}/scripts/validate-design-plan-readiness.sh`
 2. Script resolution rule:
 - resolve from the installed plugin location only (Codex bundle or Claude Code plugin root).
 - do not use repository-local `scripts/...` paths.
@@ -41,7 +41,7 @@ Runs design-plan readiness checks and reports pass/fail gaps.
 1. Verify plan path exists.
 2. Resolve validator path by runtime:
 - Codex: `CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"` then `SCRIPT_PATH="$CODEX_ROOT/scientific-software-playbook/plugins/scientific-plan-execute/scripts/validate-design-plan-readiness.sh"`
-- Claude Code plugin: `SCRIPT_PATH="<claude-plugin-root>/scripts/validate-design-plan-readiness.sh"`
+- Claude Code plugin: `SCRIPT_PATH="${CLAUDE_PLUGIN_ROOT}/scripts/validate-design-plan-readiness.sh"`
 - fail if `"$SCRIPT_PATH"` does not exist.
 3. Run readiness validator:
 - `bash "$SCRIPT_PATH" "<plan-path>" --phase "<phase>"`

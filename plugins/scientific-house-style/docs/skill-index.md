@@ -7,6 +7,11 @@ independently or alongside `scientific-plan-execute`.
 
 1. `jax-equinox-numerics`
 2. `project-engineering`
+3. `coding-effectively`
+4. `functional-core-imperative-shell` (installed at `howto-functional-vs-imperative`)
+5. `property-based-testing`
+6. `writing-for-a-technical-audience`
+7. `writing-good-tests`
 
 ## Dependency Notes
 

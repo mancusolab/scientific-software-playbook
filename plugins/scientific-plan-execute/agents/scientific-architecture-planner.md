@@ -67,12 +67,11 @@ Optional but high-value inputs:
 
 Use these skill IDs when drafting solver and implementation guidance:
 1. `scientific-software-architecture`
-2. `ingress-to-canonical-jax`
-3. `validation-first-pipeline-api`
-4. `jax-equinox-core-numerics-shell`
-5. `scientific-cli-thin-shell`
-6. `scientific-internet-research-pass`
-7. `simulation-for-inference-validation`
+2. `validation-first-pipeline-api`
+3. `jax-equinox-numerics` (from `scientific-house-style`, when installed)
+4. `scientific-cli-thin-shell`
+5. `scientific-internet-research-pass`
+6. `simulation-for-inference-validation`
 
 ## Clarifying Question Rules
 

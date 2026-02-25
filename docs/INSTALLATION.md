@@ -88,10 +88,8 @@ What Codex install/bootstrap provides:
 6. `execute-scientific-implementation-plan`
 7. `scientific-software-architecture`
 8. `simulation-for-inference-validation`
-9. `ingress-to-canonical-jax`
-10. `validation-first-pipeline-api`
-11. `jax-equinox-core-numerics-shell`
-12. `scientific-cli-thin-shell`
+9. `validation-first-pipeline-api`
+10. `scientific-cli-thin-shell`
 
 `scientific-research` installs:
 1. `scientific-internet-research-pass`
@@ -100,6 +98,11 @@ What Codex install/bootstrap provides:
 `scientific-house-style` installs:
 1. `jax-equinox-numerics`
 2. `project-engineering`
+3. `coding-effectively`
+4. `functional-core-imperative-shell` (installed at `howto-functional-vs-imperative`)
+5. `property-based-testing`
+6. `writing-for-a-technical-audience`
+7. `writing-good-tests`
 
 ## Usage Example (Downstream Project)
 

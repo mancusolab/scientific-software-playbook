@@ -34,9 +34,7 @@ Dependency contract:
 - `execute-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/execute-scientific-implementation-plan/SKILL.md`
 - `scientific-software-architecture`: `plugins/scientific-plan-execute/skills/scientific-software-architecture/SKILL.md`
 - `simulation-for-inference-validation`: `plugins/scientific-plan-execute/skills/simulation-for-inference-validation/SKILL.md`
-- `ingress-to-canonical-jax`: `plugins/scientific-plan-execute/skills/ingress-to-canonical-jax/SKILL.md`
 - `validation-first-pipeline-api`: `plugins/scientific-plan-execute/skills/validation-first-pipeline-api/SKILL.md`
-- `jax-equinox-core-numerics-shell`: `plugins/scientific-plan-execute/skills/jax-equinox-core-numerics-shell/SKILL.md`
 - `scientific-cli-thin-shell`: `plugins/scientific-plan-execute/skills/scientific-cli-thin-shell/SKILL.md`
 
 ### Skills (`scientific-research`)
@@ -46,6 +44,11 @@ Dependency contract:
 ### Skills (`scientific-house-style`)
 - `jax-equinox-numerics`: `plugins/scientific-house-style/skills/jax-equinox-numerics/SKILL.md`
 - `project-engineering`: `plugins/scientific-house-style/skills/project-engineering/SKILL.md`
+- `coding-effectively`: `plugins/scientific-house-style/skills/coding-effectively/SKILL.md`
+- `functional-core-imperative-shell`: `plugins/scientific-house-style/skills/howto-functional-vs-imperative/SKILL.md`
+- `property-based-testing`: `plugins/scientific-house-style/skills/property-based-testing/SKILL.md`
+- `writing-for-a-technical-audience`: `plugins/scientific-house-style/skills/writing-for-a-technical-audience/SKILL.md`
+- `writing-good-tests`: `plugins/scientific-house-style/skills/writing-good-tests/SKILL.md`
 
 ### Assets
 - Plan-execute agents: `plugins/scientific-plan-execute/agents/`
@@ -126,9 +129,8 @@ you want to refresh `AGENTS.md`).
 8. Create implementation phases and traceability with `start-scientific-implementation-plan`.
 9. Execute phase-by-phase with `execute-scientific-implementation-plan`.
 10. During phase execution, apply layer skills in order when relevant:
-   - `ingress-to-canonical-jax`
    - `validation-first-pipeline-api`
-   - `jax-equinox-core-numerics-shell`
+   - `jax-equinox-numerics` (from `scientific-house-style`, when installed)
    - `scientific-cli-thin-shell`
 
 ## Hard Stops

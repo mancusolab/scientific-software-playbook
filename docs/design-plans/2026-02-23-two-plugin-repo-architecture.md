@@ -64,9 +64,7 @@ scientific-software-playbook/
         scientific-internet-research-pass/
         scientific-software-architecture/
         simulation-for-inference-validation/
-        ingress-to-canonical-jax/
         validation-first-pipeline-api/
-        jax-equinox-core-numerics-shell/
         scientific-cli-thin-shell/
       docs/
         design-plans/templates/

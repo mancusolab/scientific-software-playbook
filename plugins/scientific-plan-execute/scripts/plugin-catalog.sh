@@ -21,9 +21,7 @@ start-scientific-implementation-plan
 execute-scientific-implementation-plan
 scientific-software-architecture
 simulation-for-inference-validation
-ingress-to-canonical-jax
 validation-first-pipeline-api
-jax-equinox-core-numerics-shell
 scientific-cli-thin-shell
 EOF
       ;;
@@ -37,6 +35,11 @@ EOF
       cat <<'EOF'
 jax-equinox-numerics
 project-engineering
+coding-effectively
+howto-functional-vs-imperative
+property-based-testing
+writing-for-a-technical-audience
+writing-good-tests
 EOF
       ;;
     *)

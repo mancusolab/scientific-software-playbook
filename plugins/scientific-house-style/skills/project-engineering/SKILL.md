@@ -100,6 +100,17 @@ class Solution(eqx.Module):
 - Don’t: Leave messages empty or force users to decode numeric codes.
 - Why: Users rely on `RESULTS[...]` for guidance without digging into code.
 
+### Rule: Do not add custom exception classes unless they provide real contract value
+- Do: Prefer built-in exceptions (`ValueError`, `TypeError`, `RuntimeError`, etc.) with precise, actionable messages.
+- Do: Introduce a custom exception class only when callers must catch that exact type as part of a stable public contract or when the class carries meaningful extra structure/behavior.
+- Don’t: Create pass-through subclasses that add no behavior, fields, or contract value.
+- Why: Trivial exception hierarchies add maintenance overhead and cognitive load without improving reliability.
+- Anti-pattern:
+```python
+class GWASError(ValueError):
+    pass
+```
+
 ### Rule: Prefer composition over subclassing for concrete Modules
 - Do: Wrap and delegate when customizing behavior.
 - Don’t: Subclass or override concrete modules.
@@ -237,7 +248,7 @@ def main(argv=None):
 - Allowed break: Internal scripts where all inputs are controlled by trusted code.
 
 ### Rule: Define stable stdout/stderr and exit-code contracts
-- Do: Reserve `stdout` for primary results (plain text or `--json`) and route diagnostics/errors to `stderr`.
+- Do: Reserve `stdout` for primary results (plain text  `--json`) and route diagnostics/errors to `stderr`.
 - Do: Document exit-code semantics (for example: `0` success, `2` usage errors, `1` runtime/result failures).
 - Don’t: Mix logs with machine-readable output or rely on Python tracebacks as user-facing error UX.
 - Why: Scientific CLIs are often used in automation and shell pipelines.

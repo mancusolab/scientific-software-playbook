@@ -169,9 +169,8 @@ ${house_style_block}
 6. Execute implementation phases:
    - invoke \`execute-scientific-implementation-plan\`.
 7. During phase execution, apply layer skills in order when relevant:
-   - \`ingress-to-canonical-jax\`
    - \`validation-first-pipeline-api\`
-   - \`jax-equinox-core-numerics-shell\`
+   - \`jax-equinox-numerics\` (from \`scientific-house-style\`, when installed)
    - \`scientific-cli-thin-shell\`
 AGENT_EOF
 

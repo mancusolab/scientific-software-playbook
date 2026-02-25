@@ -87,10 +87,24 @@ Use these snippets as implementation starters when they match the task.
 - Why: Structural and dtype drift causes retracing and numerical surprises.
 
 ### Rule: Convert tabular/dataframe inputs at boundaries
-- Do: Convert Polars/Pandas/table-like inputs to JAX/NumPy arrays immediately at ingress (`to_jax()` and `np.asarray(...)` where values are assigned into arrays).
+- Do: Convert Polars/Pandas/table-like inputs to JAX/NumPy arrays immediately at ingress (`to_jax()` and `jnp.asarray(...)` where values are assigned into arrays).
 - Do: Convert back to tabular formats only at egress adapters.
 - Don’t: Pass dataframe objects into `jit`/`vmap`/`scan` or core solver internals.
 - Why: Tabular containers are host-side objects that destabilize tracing, dtype policy, and reproducibility.
+
+### Rule: Keep ingress adapters explicit and copy-policy aware
+- Do: Parse external formats at ingress only and convert to canonical JAX/PyTree objects immediately when feasible.
+- Do: Declare copy mode per adapter (`zero-copy`, `mmap`, or `single-copy fallback`) and justify any fallback copy.
+- Do: Drop raw source containers after conversion so downstream layers carry one canonical representation.
+- Don’t: Let raw containers or format-specific objects cross into pipeline/numerics execution.
+- Why: Clear ingress boundaries prevent memory duplication and trace instability.
+
+### Rule: Define ingress adapter contracts and tests
+- Do: Specify format name, canonical output type, copy mode, and validation checks for each adapter.
+- Do: Validate required fields, dtype normalization, shape/index alignment, and domain invariants before adapter output.
+- Do: Use TDD for adapters: failing tests first for boundary rejection, conversion correctness, and copy-mode behavior.
+- Don’t: Mark an adapter complete if copy behavior is undefined or untested.
+- Why: Ingress defects are hard to diagnose once propagated into numerics.
 
 ### Rule: Thread PRNG keys explicitly
 - Do: Accept/return keys, split deterministically, and fold in step identifiers.
@@ -103,10 +117,12 @@ Use these snippets as implementation starters when they match the task.
 - Why: Reuses mature APIs for results, failure signaling, and transform compatibility.
 
 ### Rule: Handle failures through structured result channels
-- Do: Use `throw=False` when recovery/inspection is needed and branch on `result`.
-- Do: Use `throw=True` in strict or AD tangent paths where no safe result channel exists.
+- Do: Default to structured result/status channels and branch on `result` at clear boundary points.
+- Do: Keep failure handling explicit in return values instead of threading exception toggles through every API.
+- Do: Treat `throw=True`/`throw=False` as advanced, opt-in behavior for specialized use cases only.
 - Don’t: Assume convergence or silently ignore non-success statuses.
-- Why: Solver failures are normal control flow in numerics and must be explicit.
+- Don’t: Add `throw` options unless a concrete requirement demands hard-fail behavior.
+- Why: Solver failures are normal control flow; result channels keep most implementations simpler and easier to maintain.
 
 ### Rule: Raise early at boundaries; keep traced kernels exception-free
 - Do: Perform structural/range/input validation before entering the JIT boundary and raise actionable Python exceptions there.
@@ -132,7 +148,7 @@ A teammate says "just pass the frame through and convert later if needed."
 
 Options:
 A) Pass the DataFrame through JIT and convert inside solver steps.
-B) Convert at ingress (`to_jax()` / `np.asarray(...)`) and keep traced numerics array-only.
+B) Convert at ingress (`to_jax()` / `jnp.asarray(...)`) and keep traced numerics array-only.
 C) Convert half now and leave a DataFrame field in solver state.
 
 Choose A, B, or C.

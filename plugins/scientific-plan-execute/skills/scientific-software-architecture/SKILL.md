@@ -117,12 +117,11 @@ Use these assets to keep planning and reviews consistent:
 
 Use these core playbook skills directly for downstream design constraints (no companion pairing required):
 
-1. `ingress-to-canonical-jax`
-2. `validation-first-pipeline-api`
-3. `jax-equinox-core-numerics-shell`
-4. `scientific-cli-thin-shell`
-5. `scientific-internet-research-pass`
-6. `simulation-for-inference-validation`
+1. `validation-first-pipeline-api`
+2. `jax-equinox-numerics` (from `scientific-house-style`, when installed)
+3. `scientific-cli-thin-shell`
+4. `scientific-internet-research-pass`
+5. `simulation-for-inference-validation`
 
 ## Uncertainty Triggers (Must Ask Questions)
 

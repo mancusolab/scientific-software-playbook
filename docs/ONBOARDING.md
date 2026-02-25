@@ -70,9 +70,8 @@ Plugin prerequisite:
 - During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
 
 5. During phase execution, apply layer skills in order when relevant
-- `ingress-to-canonical-jax`
 - `validation-first-pipeline-api`
-- `jax-equinox-core-numerics-shell`
+- `jax-equinox-numerics` (from `scientific-house-style`, when installed)
 - `scientific-cli-thin-shell`
 
 6. Review and completion

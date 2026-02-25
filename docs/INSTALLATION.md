@@ -30,17 +30,12 @@ Audience and scope:
 1. `git`
 2. Codex and/or Claude Code
 
-## Clone
-
-```bash
-git clone <your-repo-url>
-cd <your-repo-directory>
-```
-
 ## Claude Code Installation (Native)
 
-1. Add this repository as a marketplace from inside Claude Code:
-- `/plugin marketplace add file:///absolute/path/to/<your-repo-directory>`
+Installation can be done from any directory:
+
+1. Add this repository as a marketplace directly from GitHub:
+- `/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git`
 2. Install workflow plugin:
 - `/plugin install scientific-plan-execute@scientific-software-playbook`
 3. Install research plugin:
@@ -49,12 +44,19 @@ cd <your-repo-directory>
 - `/plugin install scientific-house-style@scientific-software-playbook`
 5. Reload plugin:
 - `/plugin reload`
-6. Start workflow:
+
+## Running Workflows (Claude Code)
+
+Open Claude Code in your scientific project directory, then start:
 - `/start-scientific-architecture <slug>`
 
 ## Codex Installation (Native)
 
-1. Open this repository in Codex.
+1. Clone the repository:
+```bash
+git clone https://github.com/mancusolab/scientific-software-playbook.git
+cd scientific-software-playbook
+```
 2. Run installation from repository root:
 ```bash
 bash scripts/install-codex-home.sh --force
@@ -146,7 +148,8 @@ bash scripts/install-codex-home.sh --force
    - In minimal mode this refreshes `AGENTS.md` only.
 
 Claude Code:
-1. Re-add marketplace from the updated checkout (`/plugin marketplace add ...`) if needed.
+1. Re-add marketplace if needed:
+   - `/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git`
 2. Re-install required plugin(s):
    - `/plugin install scientific-plan-execute@scientific-software-playbook`
    - `/plugin install scientific-research@scientific-software-playbook`

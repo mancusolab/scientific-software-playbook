@@ -21,7 +21,7 @@ Apply this translation before following the remaining steps.
 
 1. This skill has no installation-local file dependencies and is valid in either runtime:
 - Codex installation example: `${CODEX_HOME:-$HOME/.codex}/skills/scientific-codebase-investigation-pass/SKILL.md`
-- Claude plugin installation example: `<claude-plugin-root>/skills/scientific-codebase-investigation-pass/SKILL.md`
+- Claude Code plugin installation example: `<claude-plugin-root>/skills/scientific-codebase-investigation-pass/SKILL.md`
 2. All discovered code paths are project-local paths in the currently investigated workspace.
 
 ## Overview

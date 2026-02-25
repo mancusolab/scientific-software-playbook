@@ -1,4 +1,4 @@
-# Scientific Software Playbook (Claude + Codex)
+# Scientific Software Playbook (Claude Code + Codex)
 
 Audience and intent:
 1. This README is for users visiting the GitHub repository to understand, install, and use these plugins.
@@ -41,7 +41,7 @@ Dependency contract:
 
 - Teams building modeling, simulation, or inference-heavy systems.
 - Projects that need architecture and model assumptions reviewed before coding.
-- Contributors using Claude and/or Codex in a plan-and-execute workflow.
+- Contributors using Claude Code and/or Codex in a plan-and-execute workflow.
 
 ## What You Get
 
@@ -73,20 +73,19 @@ Then:
 2. Run `bootstrap-scientific-software-playbook` once in that project (writes `AGENTS.md` only).
 3. Start with `scientific-software-architecture`.
 
-### Claude
+### Claude Code
 
-1. Add this repository as a local marketplace:
-   - `/plugin marketplace add file:///absolute/path/to/scientific-software-playbook`
-2. Install the workflow plugin:
-   - `/plugin install scientific-plan-execute@scientific-software-playbook`
-3. Install research plugin:
-   - `/plugin install scientific-research@scientific-software-playbook`
-4. Optional: install house-style plugin:
-   - `/plugin install scientific-house-style@scientific-software-playbook`
-5. Reload:
-   - `/plugin reload`
-6. Start architecture:
-   - `/start-scientific-architecture <slug>`
+Install from any directory:
+
+1. `/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git`
+2. `/plugin install scientific-plan-execute@scientific-software-playbook`
+3. `/plugin install scientific-research@scientific-software-playbook`
+4. `/plugin install scientific-house-style@scientific-software-playbook`
+5. `/plugin reload`
+
+Then open your project directory and run:
+
+- `/start-scientific-architecture <slug>`
 
 ## Workflow At A Glance
 

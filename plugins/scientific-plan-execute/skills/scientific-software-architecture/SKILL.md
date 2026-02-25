@@ -24,7 +24,7 @@ Use this skill to design or review scientific software that separates ingress, o
 - `docs/...` paths in this skill are relative to the active downstream project root.
 2. Installation-local plugin asset path examples:
 - Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/...`
-- Claude plugin install: `<claude-plugin-root>/...`
+- Claude Code plugin install: `<claude-plugin-root>/...`
 3. Skill references:
 - Names like `new-design-plan` or `simulation-for-inference-validation` refer to skill IDs, not relative file paths.
 
@@ -185,7 +185,7 @@ Before any implementation-oriented skill is used, produce a plan in:
 - `<project-root>/docs/design-plans/YYYY-MM-DD-<slug>.md` when repository docs are available.
 - Conversation output with the same structure if no writable plan location exists.
 - Prefer creating files via:
-`/new-design-plan <slug>` (Claude) or `new-design-plan` (Codex).
+`/new-design-plan <slug>` (Claude Code) or `new-design-plan` (Codex).
 
 Plan structure (minimum):
 
@@ -227,7 +227,7 @@ Companion artifact files (required when model/update rules are in scope):
 8. If `suggested-model` is used and candidate model citations/user selection are missing, keep status as `In Review`.
 9. If `provided-model` is selected but model sources/update rules are still missing, keep status as `In Review`.
 10. If simulation is in scope and no simulation contract/validation experiments are documented, keep status as `In Review`.
-11. Use `/set-design-plan-status` (Claude) or `set-design-plan-status` (Codex) for status transitions when the plan file exists.
+11. Use `/set-design-plan-status` (Claude Code) or `set-design-plan-status` (Codex) for status transitions when the plan file exists.
 12. After approval, start implementation orchestration with `start-scientific-implementation-plan` before phase execution.
 
 ## Model Selection Branch (Early Gate)

@@ -18,7 +18,7 @@ Plugin prerequisite:
 ## Phase Workflow
 
 1. Architecture kickoff
-- Claude path: run `/start-scientific-architecture <slug>`.
+- Claude Code path: run `/start-scientific-architecture <slug>`.
 - Codex path:
   - If this repo is not bootstrapped yet, invoke `bootstrap-scientific-software-playbook`.
   - Use `scientific-software-architecture` directly (see `AGENTS.md`).
@@ -28,7 +28,7 @@ Plugin prerequisite:
   - `provided-model`: user supplies model artifacts/update rules.
   - `suggested-model`: planner proposes literature-backed model options and user selects.
 - If inference validation should include synthetic-data checks, define simulation contract:
-  - Claude: `/start-simulation-validation <plan-path>`
+  - Claude Code: `/start-simulation-validation <plan-path>`
   - Codex: invoke `simulation-for-inference-validation`
 - If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
 - Delegate `internet-researcher` for general/API internet research needs.
@@ -43,17 +43,17 @@ Plugin prerequisite:
   - `solver-feasibility-matrix.md`
   - `Simulation And Inference-Consistency Validation` section in the design plan (when in scope)
 - Validate readiness before approval:
-- Claude: `/validate-design-plan <plan-path> --phase in-review`
+- Claude Code: `/validate-design-plan <plan-path> --phase in-review`
 - Codex: invoke `validate-design-plan` with phase `in-review`
 - Move status to approved only when architecture and math checks are acceptable:
-- Claude: `/set-design-plan-status <plan-path> approved-for-implementation`
+- Claude Code: `/set-design-plan-status <plan-path> approved-for-implementation`
 - Codex: invoke `set-design-plan-status` with `approved-for-implementation`
 - If approved plans are revised later, move back to review:
-- Claude: `/set-design-plan-status <plan-path> in-review`
+- Claude Code: `/set-design-plan-status <plan-path> in-review`
 - Codex: invoke `set-design-plan-status` with `in-review`
 
 3. Build implementation orchestration artifacts
-- Claude: `/start-scientific-implementation-plan <design-plan-path> [slug]`
+- Claude Code: `/start-scientific-implementation-plan <design-plan-path> [slug]`
 - Codex: invoke `start-scientific-implementation-plan`
 - Outcome:
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
@@ -64,7 +64,7 @@ Plugin prerequisite:
 - Recommended: start a fresh session/context before execution.
 
 4. Execute implementation phases
-- Claude: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
+- Claude Code: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
 - Codex: invoke `execute-scientific-implementation-plan` with the same absolute path
 - Outcome: phase-by-phase implementation with TDD, reviewer/fix loops, and traceability coverage checks.
 - During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
@@ -82,33 +82,33 @@ Plugin prerequisite:
 ## Plan Utilities
 
 1. Create plan + artifact stubs:
-- Claude: `/new-design-plan <slug>`
+- Claude Code: `/new-design-plan <slug>`
 - Codex: invoke `new-design-plan` with a slug
 
 2. Change plan status:
-- Claude: `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
+- Claude Code: `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
 - Codex: invoke `set-design-plan-status`
 
 3. Validate plan readiness:
-- Claude: `/validate-design-plan <plan-path> --phase in-review`
+- Claude Code: `/validate-design-plan <plan-path> --phase in-review`
 - Codex: invoke `validate-design-plan` with phase `in-review`
 
 4. Run external research pass when triggered:
-- Claude/Codex:
+- Claude Code/Codex:
   - `scientific-internet-research-pass` for external claims
   - delegate `internet-researcher` for general/API web evidence
   - delegate `scientific-literature-researcher` for paper-backed support
 
 5. Define simulation contract when in scope:
-- Claude: `/start-simulation-validation <plan-path>`
+- Claude Code: `/start-simulation-validation <plan-path>`
 - Codex: invoke `simulation-for-inference-validation`
 
 6. Start implementation planning:
-- Claude: `/start-scientific-implementation-plan <design-plan-path> [slug]`
+- Claude Code: `/start-scientific-implementation-plan <design-plan-path> [slug]`
 - Codex: invoke `start-scientific-implementation-plan`
 
 7. Execute implementation plan:
-- Claude: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
+- Claude Code: `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
 - Codex: invoke `execute-scientific-implementation-plan`
 
 ## Non-Negotiable Gates

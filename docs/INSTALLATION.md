@@ -6,7 +6,7 @@ This repository hosts three plugins in one codebase:
 2. `scientific-research`
 3. `scientific-house-style`
 
-Day-to-day usage is command/skill driven inside Claude or Codex. The only
+Day-to-day usage is command/skill driven inside Claude Code or Codex. The only
 user-facing shell command is the Codex install step (`install-codex-home.sh`).
 All other scripts are internal and invoked by commands, skills, hooks, or agents.
 
@@ -28,19 +28,14 @@ Audience and scope:
 ## Prerequisites
 
 1. `git`
-2. Codex and/or Claude
+2. Codex and/or Claude Code
 
-## Clone
+## Claude Code Installation (Native)
 
-```bash
-git clone <your-repo-url>
-cd <your-repo-directory>
-```
+Installation can be done from any directory:
 
-## Claude Installation (Native)
-
-1. Add this repository as a marketplace from inside Claude:
-- `/plugin marketplace add file:///absolute/path/to/<your-repo-directory>`
+1. Add this repository as a marketplace directly from GitHub:
+- `/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git`
 2. Install workflow plugin:
 - `/plugin install scientific-plan-execute@scientific-software-playbook`
 3. Install research plugin:
@@ -49,12 +44,19 @@ cd <your-repo-directory>
 - `/plugin install scientific-house-style@scientific-software-playbook`
 5. Reload plugin:
 - `/plugin reload`
-6. Start workflow:
+
+## Running Workflows (Claude Code)
+
+Open Claude Code in your scientific project directory, then start:
 - `/start-scientific-architecture <slug>`
 
 ## Codex Installation (Native)
 
-1. Open this repository in Codex.
+1. Clone the repository:
+```bash
+git clone https://github.com/mancusolab/scientific-software-playbook.git
+cd scientific-software-playbook
+```
 2. Run installation from repository root:
 ```bash
 bash scripts/install-codex-home.sh --force
@@ -106,7 +108,7 @@ What Codex install/bootstrap provides:
 
 ## Usage Example (Downstream Project)
 
-Claude path:
+Claude Code path:
 1. `/start-scientific-architecture <example-slug>`
 2. Choose model path early: `provided-model` or `suggested-model`.
 3. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
@@ -148,8 +150,9 @@ bash scripts/install-codex-home.sh --force
 3. Re-run `bootstrap-scientific-software-playbook` in any downstream project that should receive updates.
    - In minimal mode this refreshes `AGENTS.md` only.
 
-Claude:
-1. Re-add marketplace from the updated checkout (`/plugin marketplace add ...`) if needed.
+Claude Code:
+1. Re-add marketplace if needed:
+   - `/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git`
 2. Re-install required plugin(s):
    - `/plugin install scientific-plan-execute@scientific-software-playbook`
    - `/plugin install scientific-research@scientific-software-playbook`

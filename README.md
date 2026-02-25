@@ -75,18 +75,16 @@ Then:
 
 ### Claude Code
 
-1. Add this repository as a local marketplace:
-   - `/plugin marketplace add /absolute/path/to/scientific-software-playbook`
-2. Install the workflow plugin:
-   - `/plugin install scientific-plan-execute@scientific-software-playbook`
-3. Install research plugin:
-   - `/plugin install scientific-research@scientific-software-playbook`
-4. Optional: install house-style plugin:
-   - `/plugin install scientific-house-style@scientific-software-playbook`
-5. Reload:
-   - `/plugin reload`
-6. Start architecture:
-   - `/start-scientific-architecture <slug>`
+Install from any directory:
+
+1. `/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git`
+2. `/plugin install scientific-plan-execute@scientific-software-playbook`
+3. `/plugin install scientific-research@scientific-software-playbook`
+4. `/plugin reload`
+
+Then open your project directory and run:
+
+- `/start-scientific-architecture <slug>`
 
 ## Workflow At A Glance
 

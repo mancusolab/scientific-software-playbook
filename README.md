@@ -80,7 +80,8 @@ Install from any directory:
 1. `/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git`
 2. `/plugin install scientific-plan-execute@scientific-software-playbook`
 3. `/plugin install scientific-research@scientific-software-playbook`
-4. `/plugin reload`
+4. `/plugin install scientific-house-style@scientific-software-playbook`
+5. `/plugin reload`
 
 Then open your project directory and run:
 

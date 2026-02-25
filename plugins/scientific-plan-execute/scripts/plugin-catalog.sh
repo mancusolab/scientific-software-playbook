@@ -22,11 +22,8 @@ validate-design-plan
 set-design-plan-status
 writing-design-plans
 starting-an-implementation-plan
-start-scientific-implementation-plan
 writing-implementation-plans
 executing-an-implementation-plan
-execute-scientific-implementation-plan
-scientific-software-architecture
 simulation-for-inference-validation
 validation-first-pipeline-api
 requesting-code-review

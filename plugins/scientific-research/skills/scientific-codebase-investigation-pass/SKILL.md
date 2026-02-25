@@ -21,9 +21,7 @@ Apply this translation before following the remaining steps.
 
 ## Path Contract (Unambiguous)
 
-1. This skill has no installation-local file dependencies and is valid in either runtime:
-- Codex installation example: `${CODEX_HOME:-$HOME/.codex}/skills/scientific-codebase-investigation-pass/SKILL.md`
-- Claude Code plugin installation example: `${CLAUDE_PLUGIN_ROOT}/skills/scientific-codebase-investigation-pass/SKILL.md`
+1. This skill has no installation-local file dependencies and is valid in either runtime.
 2. All discovered code paths are project-local paths in the currently investigated workspace.
 
 ## Overview

@@ -9,13 +9,10 @@
     "./commands/flesh-it-out.md",
     "./commands/how-to-customize.md",
     "./commands/start-scientific-kickoff.md",
-    "./commands/start-scientific-architecture.md",
     "./commands/start-simulation-validation.md",
     "./commands/new-design-plan.md",
     "./commands/set-design-plan-status.md",
-    "./commands/validate-design-plan.md",
-    "./commands/start-scientific-implementation-plan.md",
-    "./commands/execute-scientific-implementation-plan.md"
+    "./commands/validate-design-plan.md"
   ],
   "agents": [
     "./agents/scientific-architecture-reviewer.md",

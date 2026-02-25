@@ -74,7 +74,7 @@ Required inputs:
 ## Core Skill Inputs
 
 Use these skill IDs when evaluating architecture and solver decisions:
-1. `scientific-software-architecture`
+1. `starting-a-design-plan`
 2. `validation-first-pipeline-api`
 3. `jax-equinox-numerics` (from `scientific-house-style`)
 4. `scientific-internet-research-pass`

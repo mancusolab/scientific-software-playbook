@@ -68,7 +68,12 @@
    - numerics change -> `numerics-interface-auditor`
    - CLI/API change -> `scientific-cli-api-reviewer`
    - objective/update-rule/solver/inference change -> `scientific-inference-algorithm-reviewer`
-4. Resolve blocking findings before phase status is `completed`.
+4. Compute final specialized reviewer list deterministically in fixed order:
+   - `scientific-architecture-reviewer`
+   - `numerics-interface-auditor`
+   - `scientific-cli-api-reviewer`
+   - `scientific-inference-algorithm-reviewer`
+5. Resolve blocking findings before phase status is `completed`.
 
 ## Completion Checklist
 - [ ] All task-level failing tests observed before implementation.

@@ -23,9 +23,7 @@ Apply this translation before following the remaining steps.
 
 ## Path Contract (Unambiguous)
 
-1. This skill has no installation-local file dependencies and is valid in either runtime:
-- Codex installation example: `${CODEX_HOME:-$HOME/.codex}/skills/coding-effectively/SKILL.md`
-- Claude plugin installation example: `${CLAUDE_PLUGIN_ROOT}/skills/coding-effectively/SKILL.md`
+1. This skill has no installation-local file dependencies and is valid in either runtime.
 2. Skill references in this file are skill IDs, not repository-relative paths.
 
 

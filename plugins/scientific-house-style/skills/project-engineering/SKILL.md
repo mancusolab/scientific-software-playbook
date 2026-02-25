@@ -25,8 +25,7 @@ Guidance for software engineering practices around numerical/JAX codebases.
 ## Path Contract (Unambiguous)
 
 1. All relative paths in this file resolve from this skill directory (the directory containing this `SKILL.md`).
-2. Codex install location example: `${CODEX_HOME:-$HOME/.codex}/skills/project-engineering/`.
-3. Claude Code plugin location example: `${CLAUDE_PLUGIN_ROOT}/skills/project-engineering/`.
+2. Companion checklist and snippet paths are installation-local paths relative to this directory.
 
 ## Companion checklists
 

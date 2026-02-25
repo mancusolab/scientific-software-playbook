@@ -9,10 +9,6 @@ Prefer logical IDs over filesystem paths whenever runtime tools support them:
 - Agents: `scientific-architecture-reviewer`, `scientific-code-reviewer`
 - Commands: `start-design-plan`, `start-implementation-plan`, `execute-implementation-plan`
 
-Compatibility wrappers remain available:
-- Skills: `scientific-software-architecture`, `start-scientific-implementation-plan`, `execute-scientific-implementation-plan`
-- Commands: `start-scientific-architecture`, `start-scientific-implementation-plan`, `execute-scientific-implementation-plan`
-
 Do not encode repository-relative skill/agent paths in workflow logic.
 
 ## Rule 2: Resolve Filesystem Assets Through Shared Resolver

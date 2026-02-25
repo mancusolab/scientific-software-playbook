@@ -68,6 +68,55 @@ If `docs/implementation-plans/` doesn't exist or is empty, ask the user to provi
 
 ## The Process
 
+### Deterministic Reviewer Routing
+
+Reviewer selection must be deterministic. Use this exact process in this exact order for each phase and final review.
+
+1. Inputs:
+- `profile`: value from `## Review Profile` in `phase_XX.md` (`minimal|api-cli|numerics|inference|full`).
+- `phase_text`: full phase file text.
+- `changed_files`: `git diff --name-only BASE_SHA..HEAD_SHA` for the current review scope.
+
+2. Surface flags (set true if any condition matches):
+- `cli_api_surface`:
+  - phase text contains one of: `cli`, `api`, `endpoint`, `route`, `command`, `schema`.
+  - OR any changed path matches: `cli|command|api|http|route|openapi|schema`.
+- `numerics_surface`:
+  - phase text contains one of: `numerics`, `jax`, `equinox`, `solver`, `kernel`, `lineax`, `optimistix`.
+  - OR any changed path matches: `numerics|solver|kernel|jax|equinox|lineax|optimistix`.
+- `inference_surface`:
+  - phase text contains one of: `inference`, `posterior`, `likelihood`, `objective`, `simulate`, `sbc`, `ppc`, `calibration`.
+  - OR any changed path matches: `inference|posterior|likelihood|objective|simulate|sbc|ppc|calibration`.
+- `architecture_surface`:
+  - phase text contains one of: `boundary contract`, `architecture`, `ingress`, `pipeline`, `interface`.
+  - OR any changed path matches: `docs/design-plans|docs/implementation-plans|AGENTS.md|CLAUDE.md`.
+
+3. Baseline reviewers from `profile`:
+- `minimal`: none
+- `api-cli`: `scientific-cli-api-reviewer`
+- `numerics`: `numerics-interface-auditor`
+- `inference`: `numerics-interface-auditor`, `scientific-inference-algorithm-reviewer`
+- `full`: `scientific-architecture-reviewer`, `numerics-interface-auditor`, `scientific-cli-api-reviewer`, `scientific-inference-algorithm-reviewer`
+
+4. Escalation reviewers from surface flags:
+- if `architecture_surface`: add `scientific-architecture-reviewer`
+- if `numerics_surface`: add `numerics-interface-auditor`
+- if `cli_api_surface`: add `scientific-cli-api-reviewer`
+- if `inference_surface`: add `scientific-inference-algorithm-reviewer`
+
+5. Final reviewer set:
+- Always include `scientific-code-reviewer`.
+- Add baseline + escalation reviewers.
+- Deduplicate.
+- Run in this fixed order:
+  1. `scientific-code-reviewer`
+  2. `scientific-architecture-reviewer`
+  3. `numerics-interface-auditor`
+  4. `scientific-cli-api-reviewer`
+  5. `scientific-inference-algorithm-reviewer`
+
+Never choose reviewers ad hoc outside this process.
+
 ### 1. Discover Phases
 
 **DO NOT read the full phase files yet.** List them and read only the header and task markers.
@@ -320,16 +369,14 @@ The phase changed too much for a single review. Chunk the review:
 
 Mark "Phase Nc: Code review" as complete.
 
-#### 3c.1 Scientific Review Escalations
+#### 3c.1 Deterministic Specialized Review Pass
 
-After the baseline `requesting-code-review` loop reaches zero issues, run specialized reviewers when the touched surfaces require them:
+After baseline `requesting-code-review` reaches zero issues, compute reviewers using `Deterministic Reviewer Routing` above and run every reviewer in the computed fixed-order list (excluding `scientific-code-reviewer`, already covered by baseline).
 
-- `scientific-cli-api-reviewer` when CLI/API surfaces changed.
-- `scientific-inference-algorithm-reviewer` when inference-algorithm behavior changed.
-- `numerics-interface-auditor` when numerics kernels/interfaces changed.
-- `scientific-architecture-reviewer` when boundary contracts or architecture assumptions changed.
-
-If any escalation reviewer returns findings, route fixes through `scientific-task-bug-fixer` and re-run the same reviewer until issues are zero.
+If any specialized reviewer returns findings:
+1. Route fixes through `scientific-task-bug-fixer`.
+2. Re-run only reviewers that previously returned findings.
+3. Repeat until each reviewer in this subset returns zero issues.
 
 #### 3d. Move to Next Phase
 
@@ -367,11 +414,11 @@ Use the `requesting-code-review` skill for final code review:
 
 Continue the review loop until zero issues remain.
 
-Then run final escalation reviewers on the full diff/range when applicable:
-- `scientific-cli-api-reviewer` if any phase touched CLI/API surfaces.
-- `scientific-inference-algorithm-reviewer` if any phase touched inference behavior.
-- `numerics-interface-auditor` if any phase touched numerics interfaces.
-- `scientific-architecture-reviewer` if any phase changed architecture boundary contracts.
+Then run deterministic final specialized reviewers on the full diff/range:
+1. Build union surface flags across all phases (`cli_api_surface`, `numerics_surface`, `inference_surface`, `architecture_surface`).
+2. Use `profile=full` for final review baseline.
+3. Compute final reviewer set from `Deterministic Reviewer Routing`.
+4. Run reviewers in fixed order and loop fixes per reviewer until all return zero issues.
 
 #### 5b. Test Analysis
 

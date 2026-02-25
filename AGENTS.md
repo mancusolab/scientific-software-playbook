@@ -41,12 +41,9 @@ Dependency contract:
 - `validate-design-plan`: `plugins/scientific-plan-execute/skills/validate-design-plan/SKILL.md`
 - `set-design-plan-status`: `plugins/scientific-plan-execute/skills/set-design-plan-status/SKILL.md`
 - `starting-an-implementation-plan`: `plugins/scientific-plan-execute/skills/starting-an-implementation-plan/SKILL.md`
-- `start-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/start-scientific-implementation-plan/SKILL.md`
 - `executing-an-implementation-plan`: `plugins/scientific-plan-execute/skills/executing-an-implementation-plan/SKILL.md`
-- `execute-scientific-implementation-plan`: `plugins/scientific-plan-execute/skills/execute-scientific-implementation-plan/SKILL.md`
 - `writing-design-plans`: `plugins/scientific-plan-execute/skills/writing-design-plans/SKILL.md`
 - `writing-implementation-plans`: `plugins/scientific-plan-execute/skills/writing-implementation-plans/SKILL.md`
-- `scientific-software-architecture`: `plugins/scientific-plan-execute/skills/scientific-software-architecture/SKILL.md`
 - `simulation-for-inference-validation`: `plugins/scientific-plan-execute/skills/simulation-for-inference-validation/SKILL.md`
 - `validation-first-pipeline-api`: `plugins/scientific-plan-execute/skills/validation-first-pipeline-api/SKILL.md`
 - `requesting-code-review`: `plugins/scientific-plan-execute/skills/requesting-code-review/SKILL.md`
@@ -153,18 +150,13 @@ Run a downstream project:
 6. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
 7. Create implementation phases and traceability with `starting-an-implementation-plan` (or `start-implementation-plan` command wrapper).
 8. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
-9. Compatibility wrappers are available:
-   - `scientific-software-architecture` -> `starting-a-design-plan`
-   - `start-scientific-architecture` -> `start-design-plan`
-   - `start-scientific-implementation-plan` -> `start-implementation-plan`
-   - `execute-scientific-implementation-plan` -> `execute-implementation-plan`
-10. During phase execution, apply layer skills in order when relevant:
+9. During phase execution, apply layer skills in order when relevant:
    - `validation-first-pipeline-api`
    - `jax-equinox-numerics` (from `scientific-house-style`)
    - `test-driven-development` for behavior-changing work
    - `systematic-debugging` for failing tests or persistent blockers
    - `using-git-worktrees` when branch/worktree isolation is required
-11. Before phase or branch completion:
+10. Before phase or branch completion:
    - run `requesting-code-review` for reviewer/fix closure to zero findings
    - run `verification-before-completion` to ensure fresh, command-level completion evidence
 

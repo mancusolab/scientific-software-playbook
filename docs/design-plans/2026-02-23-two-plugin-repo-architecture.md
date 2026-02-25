@@ -59,10 +59,10 @@ scientific-software-playbook/
         new-design-plan/
         validate-design-plan/
         set-design-plan-status/
-        start-scientific-implementation-plan/
-        execute-scientific-implementation-plan/
+        starting-an-implementation-plan/
+        executing-an-implementation-plan/
         scientific-internet-research-pass/
-        scientific-software-architecture/
+        starting-a-design-plan/
         simulation-for-inference-validation/
         validation-first-pipeline-api/
       docs/

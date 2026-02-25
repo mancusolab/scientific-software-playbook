@@ -29,8 +29,7 @@ implementation details.
 ## Path Contract (Unambiguous)
 
 1. All relative paths in this file resolve from this skill directory (the directory containing this `SKILL.md`).
-2. Codex install location example: `${CODEX_HOME:-$HOME/.codex}/skills/jax-equinox-numerics/`.
-3. Claude Code plugin location example: `${CLAUDE_PLUGIN_ROOT}/skills/jax-equinox-numerics/`.
+2. Companion checklist and snippet paths are installation-local paths relative to this directory.
 
 ## Companion checklists
 

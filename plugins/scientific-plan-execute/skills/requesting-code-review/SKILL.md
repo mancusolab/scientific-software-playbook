@@ -24,6 +24,13 @@ Run the scientific-plan-execute:scientific-code-reviewer workflow to catch issue
 
 **Core principle:** Review early, review often. Fix ALL issues before proceeding.
 
+## Reviewer Scope
+
+This skill is baseline-only:
+1. It always invokes `scientific-code-reviewer`.
+2. It does not select specialized reviewers.
+3. Specialized reviewer routing is owned by `executing-an-implementation-plan` via its deterministic routing table.
+
 ## When to Request Review
 
 **Mandatory:**

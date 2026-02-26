@@ -92,6 +92,51 @@ Set state:
 - set `simulation_contract_complete_if_in_scope: n/a`
 
 6. Write `.scientific/kickoff.md` and summarize the chosen mode + readiness state.
+7. Conclude kickoff with the required handoff instructions in the "Kickoff Handoff" section below.
+
+## Kickoff Handoff
+
+After kickoff output is written, guide the user to start design planning with kickoff handoff ingestion.
+
+**Do NOT run full design orchestration from this skill.** Hand off to `starting-a-design-plan` (or `/start-design-plan`) explicitly.
+
+Announce kickoff completion and provide next steps:
+
+Kickoff complete! Kickoff handoff saved to `.scientific/kickoff.md`.
+
+Ready to start design planning?
+
+**IMPORTANT: Copy the command for your runtime below before clearing context or starting a new session.**
+
+(1) Copy this command now:
+
+Claude Code:
+```
+/start-design-plan <slug>
+```
+
+Codex:
+```
+$starting-a-design-plan [plan-slug]
+```
+
+(2) If the kickoff conversation is long/noisy, start fresh context first (recommended).
+
+Claude Code:
+```
+/clear  # if your runtime supports it
+```
+
+Codex:
+```
+/new  # if your runtime supports it
+```
+
+If neither `/clear` nor `/new` is available, open a new session/conversation in the same repository.
+
+(3) Paste and run the copied command.
+
+`starting-a-design-plan` (or `/start-design-plan`) must ingest `.scientific/kickoff.md` before clarification/brainstorming proceeds.
 
 ## Hard Stops
 

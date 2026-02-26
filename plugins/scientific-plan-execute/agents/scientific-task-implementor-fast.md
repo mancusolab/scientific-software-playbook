@@ -22,7 +22,7 @@ You implement one scoped task (or one scoped subcomponent task group) from a sci
 ## Mandatory First Actions
 
 1. Load and apply required implementation skills before making code changes:
-- `scientific-house-style:coding-effectively`
+- `scientific-house-style:functional-core-imperative-shell`
 - `scientific-plan-execute:test-driven-development` (for behavior-changing work)
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when task scope indicates they apply:

@@ -26,7 +26,6 @@ starting-an-implementation-plan
 writing-implementation-plans
 executing-an-implementation-plan
 simulation-for-inference-validation
-validation-first-pipeline-api
 requesting-code-review
 verification-before-completion
 systematic-debugging
@@ -45,7 +44,6 @@ EOF
       cat <<'EOF'
 jax-equinox-numerics
 jax-project-engineering
-coding-effectively
 howto-functional-vs-imperative
 property-based-testing
 writing-for-a-technical-audience

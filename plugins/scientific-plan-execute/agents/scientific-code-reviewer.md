@@ -24,7 +24,7 @@ Optional inputs:
 ## Mandatory First Actions
 
 1. Load and apply relevant skills when available:
-- `coding-effectively`
+- `functional-core-imperative-shell`
 - `jax-equinox-numerics` (when numerics scope exists)
 
 2. Build a verification command set:

@@ -24,9 +24,8 @@ Dependency contract:
 5. Required house-style skills must be resolvable at runtime:
 - `jax-equinox-numerics`
 - `jax-project-engineering`
-- `coding-effectively`
+- `functional-core-imperative-shell`
 6. Mandatory scientific correctness constraints remain in `scientific-plan-execute`:
-   - `validation-first-pipeline-api`
    - `simulation-for-inference-validation`
 7. `scientific-house-style` should carry reusable implementation-style guidance, while `scientific-plan-execute` enforces orchestration and hard-stop gates.
 
@@ -46,7 +45,6 @@ Dependency contract:
 - `writing-design-plans`: `plugins/scientific-plan-execute/skills/writing-design-plans/SKILL.md`
 - `writing-implementation-plans`: `plugins/scientific-plan-execute/skills/writing-implementation-plans/SKILL.md`
 - `simulation-for-inference-validation`: `plugins/scientific-plan-execute/skills/simulation-for-inference-validation/SKILL.md`
-- `validation-first-pipeline-api`: `plugins/scientific-plan-execute/skills/validation-first-pipeline-api/SKILL.md`
 - `requesting-code-review`: `plugins/scientific-plan-execute/skills/requesting-code-review/SKILL.md`
 - `verification-before-completion`: `plugins/scientific-plan-execute/skills/verification-before-completion/SKILL.md`
 - `systematic-debugging`: `plugins/scientific-plan-execute/skills/systematic-debugging/SKILL.md`
@@ -61,7 +59,6 @@ Dependency contract:
 ### Skills (`scientific-house-style`)
 - `jax-equinox-numerics`: `plugins/scientific-house-style/skills/jax-equinox-numerics/SKILL.md`
 - `jax-project-engineering`: `plugins/scientific-house-style/skills/jax-project-engineering/SKILL.md`
-- `coding-effectively`: `plugins/scientific-house-style/skills/coding-effectively/SKILL.md`
 - `functional-core-imperative-shell`: `plugins/scientific-house-style/skills/howto-functional-vs-imperative/SKILL.md`
 - `property-based-testing`: `plugins/scientific-house-style/skills/property-based-testing/SKILL.md`
 - `writing-for-a-technical-audience`: `plugins/scientific-house-style/skills/writing-for-a-technical-audience/SKILL.md`
@@ -154,7 +151,6 @@ Run a downstream project:
 9. Create implementation phases and traceability with `starting-an-implementation-plan` (or `start-implementation-plan` command wrapper).
 10. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
 11. During phase execution, apply layer skills in order when relevant:
-   - `validation-first-pipeline-api`
    - `jax-equinox-numerics` (from `scientific-house-style`)
    - `test-driven-development` for behavior-changing work
    - `systematic-debugging` for failing tests or persistent blockers

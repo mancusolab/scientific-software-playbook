@@ -75,7 +75,6 @@ Plugin prerequisite:
 - During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
 
 5. During phase execution, apply layer skills in order when relevant
-- `validation-first-pipeline-api`
 - `jax-equinox-numerics` (from `scientific-house-style`)
 - `test-driven-development` for behavior-changing work
 - `systematic-debugging` for failing tests or persistent blockers

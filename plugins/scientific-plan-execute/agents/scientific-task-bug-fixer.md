@@ -19,7 +19,7 @@ You resolve implementation findings from reviewers and verification runs.
 ## Mandatory First Actions
 
 1. Load and apply required implementation skills before making code changes:
-- `scientific-house-style:coding-effectively`
+- `scientific-house-style:functional-core-imperative-shell`
 - `scientific-plan-execute:test-driven-development` (for behavior-changing fixes and regression tests)
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when fix scope indicates they apply:

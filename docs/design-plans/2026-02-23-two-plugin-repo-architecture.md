@@ -64,7 +64,6 @@ scientific-software-playbook/
         scientific-internet-research-pass/
         starting-a-design-plan/
         simulation-for-inference-validation/
-        validation-first-pipeline-api/
       docs/
         design-plans/templates/
         implementation-plans/templates/

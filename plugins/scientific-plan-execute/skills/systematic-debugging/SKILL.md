@@ -292,7 +292,7 @@ If systematic investigation reveals issue is truly environmental, timing-depende
 - **test-driven-development** - REQUIRED for creating failing test case (see Phase 4, Step 1)
 
 **Complementary skills:**
-- **coding-effectively** - Includes `defense-in-depth` for adding validation at multiple layers
+- **functional-core-imperative-shell** - Helps isolate faulty pure logic from I/O orchestration during root-cause analysis
 - **verification-before-completion** - Verify fix worked before claiming success
 
 ## Real-World Impact

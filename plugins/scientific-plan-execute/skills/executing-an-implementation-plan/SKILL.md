@@ -27,7 +27,7 @@ Execute plan phase-by-phase, loading each phase just-in-time to minimize context
 **REQUIRED SKILL:** `requesting-code-review` - The review loop (dispatch, fix, re-review until zero issues)
 
 **Required execution skill bundle:**
-- `scientific-house-style:coding-effectively` (all implementation tasks)
+- `scientific-house-style:functional-core-imperative-shell` (all implementation tasks)
 - `scientific-plan-execute:test-driven-development` (behavior-changing work)
 - `scientific-plan-execute:verification-before-completion` (before completion claims)
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics work)
@@ -199,7 +199,7 @@ Use `update_plan` (or `TaskCreate` where available) to create **three task entri
 Before dispatching task implementors for a phase, define the phase skill set from phase content:
 
 1. Always include:
-- `scientific-house-style:coding-effectively`
+- `scientific-house-style:functional-core-imperative-shell`
 2. Include when behavior changes are implemented:
 - `scientific-plan-execute:test-driven-development`
 - `scientific-plan-execute:verification-before-completion`
@@ -256,7 +256,7 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
   Your job is to:
   1. Read the phase file to understand context
   2. Load and apply required skills before editing:
-     - scientific-house-style:coding-effectively
+     - scientific-house-style:functional-core-imperative-shell
      - scientific-plan-execute:test-driven-development (if behavior-changing)
      - scientific-plan-execute:verification-before-completion
      - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
@@ -290,7 +290,7 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
   Your job is to:
   1. Read the phase file to understand context
   2. Load and apply required skills before editing:
-     - scientific-house-style:coding-effectively
+     - scientific-house-style:functional-core-imperative-shell
      - scientific-plan-execute:test-driven-development (if behavior-changing)
      - scientific-plan-execute:verification-before-completion
      - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
@@ -373,7 +373,7 @@ The phase changed too much for a single review. Chunk the review:
   Your job is to:
   1. Understand root cause of each issue
   2. Load and apply required skills before editing:
-     - scientific-house-style:coding-effectively
+     - scientific-house-style:functional-core-imperative-shell
      - scientific-plan-execute:test-driven-development (for behavior-changing fixes and regression tests)
      - scientific-plan-execute:verification-before-completion
      - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
@@ -508,7 +508,7 @@ Return coverage validation result. If PASS, include the human test plan.
    For each missing test:
    1. Read the acceptance criterion carefully
    2. Load and apply required skills before editing:
-      - scientific-house-style:coding-effectively
+      - scientific-house-style:functional-core-imperative-shell
       - scientific-plan-execute:test-driven-development
       - scientific-plan-execute:verification-before-completion
       - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)

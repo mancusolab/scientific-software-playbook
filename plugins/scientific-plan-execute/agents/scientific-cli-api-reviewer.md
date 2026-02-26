@@ -28,18 +28,22 @@ Optional inputs:
 - `compact-workflow`: CLI handlers may include workflow glue if they keep boundary validation explicit and numerics kernels clean.
 - `modular-domain`: keep CLI/HTTP handlers orchestration-focused and domain logic in domain modules.
 3. Verify boundary validation happens before numerics execution.
-4. Verify reproducibility controls are explicit when relevant:
+4. Verify multi-input ingress reconciliation is explicit when multiple tabular sources are accepted:
+- declared join key(s) and join type
+- duplicate/missing-key behavior
+- deterministic row-order and row-drop reporting semantics
+5. Verify reproducibility controls are explicit when relevant:
 - seed handling
 - config/environment capture
 - deterministic execution options
-5. Verify interface usability and safety:
+6. Verify interface usability and safety:
 - help/usage clarity for CLI changes
 - stable argument/flag semantics
 - explicit error messages and non-zero exit behavior on failures
-6. Verify compatibility handling for interface changes:
+7. Verify compatibility handling for interface changes:
 - no silent breaking changes
 - migration notes or plan updates when breaking behavior is intentional
-7. Verify tests cover changed interface behavior (CLI/API contract tests, integration checks).
+8. Verify tests cover changed interface behavior (CLI/API contract tests, integration checks).
 
 ## Workflow
 
@@ -55,12 +59,14 @@ Optional inputs:
 
 1. `critical`
 - unvalidated raw user/source input can reach numerics
+- positional alignment between independent tabular inputs can reach numerics
 - interface change can corrupt results or violate reproducibility guarantees
 
 2. `high`
 - boundary responsibilities conflict with selected architecture profile
 - breaking interface change without explicit migration/plan rationale
 - missing tests for behavior-changing interface updates
+- missing/ambiguous reconciliation policy for multi-input tabular ingress
 - reproducibility-critical options missing or ambiguous when required by scope
 
 3. `medium`
@@ -89,6 +95,7 @@ Critical: <n> | High: <n> | Medium: <n> | Low: <n>
 ## Interface Contract Check
 - Architecture profile honored: ✅ / ❌
 - Validation-before-numerics: ✅ / ❌
+- Multi-input reconciliation policy explicit (when applicable): ✅ / ❌
 - Reproducibility controls explicit: ✅ / ❌
 - Compatibility/migration handling: ✅ / ❌
 

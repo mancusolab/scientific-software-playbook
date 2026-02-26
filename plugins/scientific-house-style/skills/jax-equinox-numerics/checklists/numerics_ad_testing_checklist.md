@@ -4,6 +4,9 @@ Use this for solver implementation and verification.
 
 ## Dtype and stability
 - [ ] Inputs are cast once to an inexact dtype at the boundary.
+- [ ] For multi-source tabular workflows, key-based reconciliation happens in tabular adapters before array conversion (no positional alignment assumptions).
+- [ ] Reconciliation policy is explicit and tested: join key(s), join type, duplicate-key handling, missing-key handling, and dropped-row accounting.
+- [ ] Row ordering after reconciliation is deterministic and tested before numerics dispatch.
 - [ ] External tabular inputs (for example Polars/Pandas frames) are converted to JAX/NumPy arrays at ingress (`to_jax()`, `np.asarray(...)` at assignment boundaries).
 - [ ] Tabular/frame reconstruction happens only at egress adapters, never inside core numerics.
 - [ ] Dtype policy (x32/x64) is explicit and documented.

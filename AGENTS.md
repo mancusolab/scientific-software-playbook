@@ -179,3 +179,4 @@ Run a downstream project:
    - `simulation_contract_complete_if_in_scope: yes|n/a` (as applicable)
 10. If CLI/API surfaces change during implementation, `scientific-cli-api-reviewer` gating is required before phase completion.
 11. If inference-algorithm behavior changes during implementation, `scientific-inference-algorithm-reviewer` gating is required before phase completion.
+12. If multiple independently loaded tabular sources feed numerics, architecture and implementation must specify explicit key-based reconciliation (join type, duplicate/missing-key handling, deterministic row-order policy, and reconciliation counts) before array/PyTree conversion.

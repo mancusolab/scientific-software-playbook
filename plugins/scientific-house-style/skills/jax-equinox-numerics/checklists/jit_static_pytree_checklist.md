@@ -12,7 +12,8 @@ Use this before performance tuning or when encountering retracing.
 - [ ] All non-array config is static (fields or partitioned).
 - [ ] `eqx.filter_jit` is preferred for mixed PyTrees/Modules; `jax.jit` is reserved for array-only functions.
 - [ ] No Python objects or containers flow as dynamic inputs.
-- [ ] Table/dataframe objects (Polars/Pandas) are converted to arrays at ingress; traced functions receive only arrays/PyTrees.
+- [ ] Multi-source tabular inputs are reconciled by explicit key joins in adapters before conversion; positional row matching is not used.
+- [ ] Table/dataframe objects (Polars/Pandas) are converted to arrays at ingress after reconciliation; traced functions receive only arrays/PyTrees.
 - [ ] `eqx.filter_closure_convert` is used for functions passed across JIT/AD boundaries.
 - [ ] Closed-over JAX arrays are blocked at boundaries (`eqxi.nontraceable`) when closure conversion is not enough.
 

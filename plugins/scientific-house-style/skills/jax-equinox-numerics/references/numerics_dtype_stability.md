@@ -20,7 +20,10 @@ if not jnp.issubdtype(x.dtype, jnp.inexact):
 
 ### Rule: Convert dataframe/tabular inputs at ingress
 - Do: Convert external table-like inputs (Polars/Pandas/DataFrame columns) to arrays before numerics (`to_jax()` if available, or `jnp.asarray(df.to_numpy())` where assignment into arrays happens).
+- Do: When combining multiple tabular inputs, reconcile by explicit entity keys in tabular adapters first; then convert reconciled columns to arrays.
+- Do: Make reconciliation deterministic and auditable (join type, duplicate-key handling, missing-key handling, row-order policy, dropped-row counts).
 - Do: Keep internal numerics state as array/PyTree values only.
+- Don’t: Align independent sources by row position.
 - Don’t: Carry dataframe objects through traced functions or solver state.
 - Why: Host-side table containers are not stable traced values and often hide dtype/object conversions.
 - Example:

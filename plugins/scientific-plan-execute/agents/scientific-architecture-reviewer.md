@@ -45,11 +45,12 @@ Required inputs:
 13. Verify external claims are cited with source URLs, access dates, and confidence.
 14. Find boundary leaks where raw source containers cross into numerics without prior validation/conversion.
 15. Detect duplication paths where container and array representations coexist downstream.
-16. Verify architecture-profile contracts are followed (`compact-workflow` or `modular-domain`).
-17. Confirm numerics code stays array/PyTree-only and transformation-safe.
-18. Verify TDD evidence exists for boundary and contract changes.
-19. Verify completion claims are backed by fresh test/verification command output.
-20. Report findings with severity and concrete fixes.
+16. Verify multi-source tabular ingress contracts specify key-based reconciliation before numerics conversion.
+17. Verify architecture-profile contracts are followed (`compact-workflow` or `modular-domain`).
+18. Confirm numerics code stays array/PyTree-only and transformation-safe.
+19. Verify TDD evidence exists for boundary and contract changes.
+20. Verify completion claims are backed by fresh test/verification command output.
+21. Report findings with severity and concrete fixes.
 
 ## Workflow
 
@@ -73,15 +74,16 @@ Required inputs:
 - Parsing/format logic inside numerics kernels.
 - Validation deferred into numerics internals.
 - Re-conversion between host containers and arrays across hot numerics paths.
-16. Check for red-green evidence:
+16. For multi-source tabular ingress, verify reconciliation policy is explicit: entity key(s), join type, duplicate/missing-key handling, deterministic row-order policy, and dropped-row accounting.
+17. Check for red-green evidence:
 - failing test added first for new behavior or bug fix.
 - passing verification command output after changes.
-17. Run readiness validator when plan exists:
+18. Run readiness validator when plan exists:
 - `/validate-design-plan <plan-path> --phase in-review` (or `validate-design-plan` in Codex) for `pre-implementation`.
 - `/validate-design-plan <plan-path> --phase approval` (or `validate-design-plan` in Codex) for `implementation-gate`.
-18. Produce the report using `docs/reviews/review-template.md`.
-19. Fill weighted gates and score summary (`>= 90` required for approval recommendation).
-20. Save report to `docs/reviews/YYYY-MM-DD-<slug>-architecture-review.md`.
+19. Produce the report using `docs/reviews/review-template.md`.
+20. Fill weighted gates and score summary (`>= 90` required for approval recommendation).
+21. Save report to `docs/reviews/YYYY-MM-DD-<slug>-architecture-review.md`.
 
 ## Core Skill Inputs
 
@@ -110,8 +112,10 @@ Use these skill IDs when evaluating architecture and solver decisions:
 13. If explicit update rules exist and solver strategy is undocumented, raise at least `high` severity.
 14. If custom solver is chosen without documented rationale against existing solvers, raise at least `medium` severity.
 15. If numerics accepts raw containers without boundary validation/conversion, raise `critical`.
-16. If research triggers are present and uncited external claims remain, raise at least `high` severity.
-17. If required review skills for the active scope cannot be loaded, return `blocked` and do not continue with partial review.
+16. If multi-source tabular inputs feed numerics and key-based reconciliation policy is missing, raise at least `high` severity.
+17. If multi-source tabular reconciliation relies on row position instead of explicit keys, raise `critical`.
+18. If research triggers are present and uncited external claims remain, raise at least `high` severity.
+19. If required review skills for the active scope cannot be loaded, return `blocked` and do not continue with partial review.
 
 ## Findings Format
 

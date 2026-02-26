@@ -20,6 +20,13 @@
 - Profile: `compact-workflow` | `modular-domain`
 - Why this profile:
 
+## Multi-Input Reconciliation (When Applicable)
+- Entity key(s):
+- Join type and rationale:
+- Duplicate/missing-key policy:
+- Row-order determinism policy:
+- Reconciliation verification command(s):
+
 ## Tasks
 
 <!-- START_TASK_1 -->
@@ -83,5 +90,6 @@
 ## Completion Checklist
 - [ ] All task-level failing tests observed before implementation.
 - [ ] All phase verification commands pass.
+- [ ] Multi-input reconciliation behavior is explicit and verified (when applicable).
 - [ ] Review findings resolved or explicitly accepted as non-blocking risk.
 - [ ] AC and test traceability updated in implementation plan README.

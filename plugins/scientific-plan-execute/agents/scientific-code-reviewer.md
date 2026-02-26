@@ -38,6 +38,8 @@ Optional inputs:
 3. Audit boundary contracts against the selected architecture profile (`compact-workflow` or `modular-domain`):
 - no parser/file-format logic inside numerics
 - boundary validation/conversion occurs before numerics dispatch
+- multi-input tabular sources are reconciled by explicit entity-key joins in adapters before array conversion
+- reconciliation behavior is explicit (join type, duplicate/missing-key policy, deterministic row order, dropped-row accounting)
 - numerics APIs remain array/PyTree-only
 4. Audit test quality and coverage evidence for changed behavior.
 5. Classify findings by severity and provide concrete fixes.
@@ -48,11 +50,13 @@ Optional inputs:
 - failing required verification command
 - unresolved security/correctness defect
 - boundary contract violation allowing raw containers into numerics
+- positional alignment of independent tabular sources in numerics-facing paths
 - missing tests for behavior-changing work
 
 2. `high`
 - plan deviation without rationale
 - missing error-handling in external IO boundaries
+- missing or untested key-based reconciliation policy for multi-source tabular ingress
 - missing TDD evidence for behavior change
 
 3. `medium`
@@ -92,6 +96,7 @@ Critical: <n> | High: <n> | Medium: <n> | Low: <n>
 - Profile contract honored (`compact-workflow` or `modular-domain`): ✅ / ❌
 - Numerics array/PyTree-only: ✅ / ❌
 - Validation/conversion before numerics dispatch: ✅ / ❌
+- Multi-input reconciliation before numerics (when applicable): ✅ / ❌
 
 ## Decision
 `APPROVED FOR NEXT PHASE` or `BLOCKED - FIX REQUIRED`

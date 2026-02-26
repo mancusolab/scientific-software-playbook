@@ -89,7 +89,10 @@ Use these snippets as implementation starters when they match the task.
 
 ### Rule: Convert tabular/dataframe inputs at boundaries
 - Do: Convert Polars/Pandas/table-like inputs to JAX/NumPy arrays immediately at ingress (`to_jax()` and `jnp.asarray(...)` where values are assigned into arrays).
+- Do: For workflows with multiple tabular sources (for example phenotype, sample metadata for genotype, covariates), reconcile rows in tabular adapters first using explicit entity keys before array conversion.
+- Do: Document reconciliation policy at ingress: join keys, join type, duplicate-key handling, missing-key handling, deterministic row-order freeze, and dropped-row accounting.
 - Do: Convert back to tabular formats only at egress adapters.
+- Don't: Assume positional row alignment across independently loaded inputs.
 - Don’t: Pass dataframe objects into `jit`/`vmap`/`scan` or core solver internals.
 - Why: Tabular containers are host-side objects that destabilize tracing, dtype policy, and reproducibility.
 
@@ -103,6 +106,7 @@ Use these snippets as implementation starters when they match the task.
 ### Rule: Define ingress adapter contracts and tests
 - Do: Specify format name, canonical output type, copy mode, and validation checks for each adapter.
 - Do: Validate required fields, dtype normalization, shape/index alignment, and domain invariants before adapter output.
+- Do: When reconciling multiple tabular inputs, include key-level validation tests (duplicate/missing keys, overlap expectations, deterministic row ordering, and reconciliation counts).
 - Do: Use TDD for adapters: failing tests first for boundary rejection, conversion correctness, and copy-mode behavior.
 - Don’t: Mark an adapter complete if copy behavior is undefined or untested.
 - Why: Ingress defects are hard to diagnose once propagated into numerics.

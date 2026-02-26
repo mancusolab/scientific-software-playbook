@@ -1,9 +1,9 @@
 # Scientific Software Playbook (Claude Code + Codex)
 
 Scientific Software Playbook is an opinionated workflow for building scientific
-software with explicit design gates before implementation. It is aimed at teams
-that want traceable decisions, review artifacts, and consistent execution from
-architecture through delivery.
+software with explicit design gates before implementation. It is aimed at
+research teams that want traceable decisions, review artifacts, and consistent
+execution from architecture through delivery.
 
 
 This repository hosts three plugins in one codebase:
@@ -12,7 +12,7 @@ This repository hosts three plugins in one codebase:
 2. `scientific-research`, eeusable research workflows and delegates:
 3. `scientific-house-style`, reusable JAX/Equinox house-style skills
 
-Recommended entrypoints:
+Recommended entrypoints (in Claude Code or Codex environment):
 
 1. New project: `scientific-kickoff` (or `/start-scientific-kickoff`)
    1. Implement (inferential) software based on local document, online reference.
@@ -31,7 +31,7 @@ Recommended entrypoints:
 
 ## Who This Is For
 
-- Teams building modeling, simulation, or inference-heavy systems.
+- Research teams building modeling, simulation, or inference-heavy systems.
 - Projects that need architecture and model assumptions reviewed before coding.
 - Contributors using Claude Code and/or Codex in a plan-and-execute workflow.
 

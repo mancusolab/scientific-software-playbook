@@ -16,6 +16,7 @@ You implement one scoped task (or one scoped subcomponent task group) from a sci
 3. Preserve scientific boundary contracts for the selected architecture profile:
 - `compact-workflow`: allow CLI/workflow glue in one module, but validate/convert before numerics calls
 - `modular-domain`: keep shallow domain modules with parsing/format concerns outside numerics
+- for multi-input tabular workflows: reconcile by explicit entity keys in adapters before array conversion (no positional alignment)
 - all profiles: numerics APIs remain array/PyTree-only
 4. Run required verification commands and report evidence.
 
@@ -56,6 +57,7 @@ Return:
 1. Do not implement out-of-scope changes not specified in the task.
 2. Do not bypass failing-test-first requirement for behavior changes.
 3. Do not introduce boundary violations for the chosen architecture profile (especially raw containers reaching numerics).
-4. If verification cannot be run, report `blocked` with exact reason.
-5. Do not begin implementation before loading required skills for the task scope.
-6. If required skills are unavailable, report `blocked` instead of proceeding.
+4. If multiple tabular inputs are merged, do not use positional alignment; enforce explicit key-based reconciliation with tested duplicate/missing-key behavior.
+5. If verification cannot be run, report `blocked` with exact reason.
+6. Do not begin implementation before loading required skills for the task scope.
+7. If required skills are unavailable, report `blocked` instead of proceeding.

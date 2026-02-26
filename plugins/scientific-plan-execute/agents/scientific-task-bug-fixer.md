@@ -15,6 +15,7 @@ You resolve implementation findings from reviewers and verification runs.
 2. Preserve scientific architecture contracts while fixing defects.
 3. Add regression tests for each confirmed defect.
 4. Re-run verification commands and report closure status per finding.
+5. Preserve explicit key-based reconciliation for multi-input tabular ingress paths (no positional alignment assumptions).
 
 ## Mandatory First Actions
 
@@ -55,6 +56,7 @@ Return:
 1. Do not mark findings resolved without verification evidence.
 2. Do not drop unresolved critical/high findings.
 3. Do not introduce new boundary violations while fixing issues.
-4. If a finding is ambiguous, report `blocked` and request clarification.
-5. Do not begin implementation before loading required skills for the fix scope.
-6. If required skills are unavailable, report `blocked` instead of proceeding.
+4. Do not implement or retain positional alignment for independently loaded tabular sources; require explicit key-based reconciliation and tests.
+5. If a finding is ambiguous, report `blocked` and request clarification.
+6. Do not begin implementation before loading required skills for the fix scope.
+7. If required skills are unavailable, report `blocked` instead of proceeding.

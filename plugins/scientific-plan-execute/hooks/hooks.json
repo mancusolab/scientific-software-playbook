@@ -1,19 +1,37 @@
 {
-  "hooks": [
-    {
-      "event": "SessionStart",
-      "matcher": "*",
-      "command": "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/session-start.sh"
-    },
-    {
-      "event": "PostToolUse",
-      "matcher": "Edit|Write|MultiEdit",
-      "command": "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit.sh"
-    },
-    {
-      "event": "Stop",
-      "matcher": "*",
-      "command": "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/stop.sh"
-    }
-  ]
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/post-edit.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/hooks/stop.sh"
+          }
+        ]
+      }
+    ]
+  }
 }

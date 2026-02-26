@@ -1,7 +1,7 @@
 ---
 name: scientific-task-bug-fixer
 description: Use when review findings or verification failures must be fixed for a scientific implementation phase - loads required execution skills, resolves issues by severity, adds regression tests, and returns closure evidence.
-tools: Read, Edit, Write, Grep, Glob, Bash
+tools: Read, Edit, Write, Grep, Glob, Bash, Skill
 model: sonnet
 ---
 

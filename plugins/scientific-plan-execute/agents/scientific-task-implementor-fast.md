@@ -1,7 +1,7 @@
 ---
 name: scientific-task-implementor-fast
-description: Use when implementing a specific task from a scientific implementation phase - loads required execution skills, applies task-level TDD, preserves profile-appropriate boundary contracts, and returns verification evidence.
-tools: Read, Edit, Write, Grep, Glob, Bash
+description: Use when implementing a specific task from a scientific implementation phase - loads required execution skills, applies task-level TDD, preserves ingress/pipeline/numerics boundaries, and returns verification evidence.
+tools: Read, Edit, Write, Grep, Glob, Bash, Skill
 model: sonnet
 ---
 

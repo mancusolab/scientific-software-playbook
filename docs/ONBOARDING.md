@@ -11,7 +11,7 @@ steps from `docs/INSTALLATION.md` first.
 Plugin prerequisite:
 1. This onboarding flow requires `scientific-plan-execute`.
 2. This onboarding flow also requires `scientific-research` for research-gated steps.
-3. This onboarding flow requires `scientific-house-style` for numerics/project-engineering guidance gates.
+3. This onboarding flow requires `scientific-house-style` for numerics/jax-project-engineering guidance gates.
 4. If `scientific-house-style` is missing, workflow preflight checks will fail.
 5. Compatibility and breaking-change path policy is documented in `docs/COMPATIBILITY.md`.
 

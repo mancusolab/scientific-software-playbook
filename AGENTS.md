@@ -23,7 +23,7 @@ Dependency contract:
 4. `scripts/install-codex-home.sh` auto-adds `scientific-research` and `scientific-house-style` when `scientific-plan-execute` is selected.
 5. Required house-style skills must be resolvable at runtime:
 - `jax-equinox-numerics`
-- `project-engineering`
+- `jax-project-engineering`
 - `coding-effectively`
 6. Mandatory scientific correctness constraints remain in `scientific-plan-execute`:
    - `validation-first-pipeline-api`
@@ -60,7 +60,7 @@ Dependency contract:
 
 ### Skills (`scientific-house-style`)
 - `jax-equinox-numerics`: `plugins/scientific-house-style/skills/jax-equinox-numerics/SKILL.md`
-- `project-engineering`: `plugins/scientific-house-style/skills/project-engineering/SKILL.md`
+- `jax-project-engineering`: `plugins/scientific-house-style/skills/jax-project-engineering/SKILL.md`
 - `coding-effectively`: `plugins/scientific-house-style/skills/coding-effectively/SKILL.md`
 - `functional-core-imperative-shell`: `plugins/scientific-house-style/skills/howto-functional-vs-imperative/SKILL.md`
 - `property-based-testing`: `plugins/scientific-house-style/skills/property-based-testing/SKILL.md`

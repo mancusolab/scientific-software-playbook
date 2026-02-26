@@ -31,7 +31,7 @@ Apply this translation before following the remaining steps.
 
 **ALWAYS REQUIRED:**
 - `functional-core-imperative-shell` - Separate pure logic from side effects
-- `project-engineering` - Apply baseline project-level engineering contracts
+- `jax-project-engineering` - Apply baseline JAX/Equinox project-level engineering contracts
 
 **CONDITIONAL:** Use these sub-skills when applicable:
 - `jax-equinox-numerics` - JAX and Equinox numerical best practices

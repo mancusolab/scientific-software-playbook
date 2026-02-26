@@ -6,7 +6,7 @@ independently or alongside `scientific-plan-execute`.
 ## Included Skills
 
 1. `jax-equinox-numerics`
-2. `project-engineering`
+2. `jax-project-engineering`
 3. `coding-effectively`
 4. `functional-core-imperative-shell` (installed at `howto-functional-vs-imperative`)
 5. `property-based-testing`

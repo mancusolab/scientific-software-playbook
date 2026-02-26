@@ -76,10 +76,14 @@ jobs:
           bash scripts/install-codex-home.sh --codex-home "$codex_home_plan" --force --plugin scientific-plan-execute
           test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-plan-execute"
           test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-research"
-          test ! -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-house-style"
-          test -f "$codex_home_plan/skills/scientific-software-architecture/SKILL.md"
+          test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-house-style"
+          test -f "$codex_home_plan/skills/using-plan-and-execute/SKILL.md"
+          test -f "$codex_home_plan/skills/starting-a-design-plan/SKILL.md"
+          test -f "$codex_home_plan/skills/scientific-kickoff/SKILL.md"
+          test -f "$codex_home_plan/skills/new-design-plan/SKILL.md"
           test -f "$codex_home_plan/skills/scientific-internet-research-pass/SKILL.md"
-          test ! -d "$codex_home_plan/skills/jax-equinox-numerics"
+          test -f "$codex_home_plan/skills/jax-equinox-numerics/SKILL.md"
+          test -f "$codex_home_plan/skills/jax-project-engineering/SKILL.md"
 
           codex_home_research="$(mktemp -d)"
           bash scripts/install-codex-home.sh --codex-home "$codex_home_research" --force --plugin scientific-research
@@ -88,11 +92,14 @@ jobs:
           test ! -d "$codex_home_research/scientific-software-playbook/plugins/scientific-house-style"
           test -f "$codex_home_research/skills/scientific-internet-research-pass/SKILL.md"
           test -f "$codex_home_research/skills/scientific-codebase-investigation-pass/SKILL.md"
-          test ! -d "$codex_home_research/skills/scientific-software-architecture"
+          test ! -d "$codex_home_research/skills/starting-a-design-plan"
+          test ! -d "$codex_home_research/skills/scientific-kickoff"
+          test ! -d "$codex_home_research/skills/jax-project-engineering"
 
           codex_home_house="$(mktemp -d)"
           bash scripts/install-codex-home.sh --codex-home "$codex_home_house" --force --plugin scientific-house-style
           test -d "$codex_home_house/scientific-software-playbook/plugins/scientific-house-style"
           test ! -d "$codex_home_house/scientific-software-playbook/plugins/scientific-plan-execute"
           test -f "$codex_home_house/skills/jax-equinox-numerics/SKILL.md"
-          test ! -d "$codex_home_house/skills/scientific-software-architecture"
+          test -f "$codex_home_house/skills/jax-project-engineering/SKILL.md"
+          test ! -d "$codex_home_house/skills/starting-a-design-plan"

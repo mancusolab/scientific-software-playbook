@@ -211,4 +211,4 @@ to reduce instruction weight and improve retrieval quality.
 ## See also: project engineering
 
 For API stability, documentation style, type checking, CLI patterns, CI gates, and
-serialization guidance, see `../project-engineering/SKILL.md`.
+serialization guidance, see `../jax-project-engineering/SKILL.md`.

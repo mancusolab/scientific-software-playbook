@@ -1,11 +1,11 @@
 ---
-name: project-engineering
+name: jax-project-engineering
 description: Engineering rules for JAX/Equinox scientific computing; API stability, docs, CI, serialization.
 metadata:
   short-description: Project engineering
 ---
 
-# Project Engineering (JAX/Equinox Scientific Computing)
+# JAX Project Engineering (JAX/Equinox Scientific Computing)
 
 <!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
@@ -32,7 +32,7 @@ Guidance for software engineering practices around numerical/JAX codebases.
 Apply these checklists when using this skill.
 
 ### Installation-local paths (relative to this `SKILL.md`)
-- `checklists/project_engineering_checklist.md`
+- `checklists/jax_project_engineering_checklist.md`
 - `checklists/testing_checklist.md`
 
 ## Checklist workflow
@@ -47,7 +47,6 @@ Use these snippets as implementation starters when they match the task.
 ### Installation-local paths (relative to this `SKILL.md`)
 - `snippets/cli_skeleton.py`
 - `snippets/pyproject_minimal.toml`
-- `snippets/test_jvp_finite_difference.py`
 
 ## Snippet workflow
 - Before implementation: start from the closest snippet and align it with repository conventions.

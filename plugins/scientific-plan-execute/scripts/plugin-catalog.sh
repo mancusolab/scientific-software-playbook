@@ -44,7 +44,7 @@ EOF
     scientific-house-style)
       cat <<'EOF'
 jax-equinox-numerics
-project-engineering
+jax-project-engineering
 coding-effectively
 howto-functional-vs-imperative
 property-based-testing

@@ -9,7 +9,7 @@ required_skills=("$@")
 if [[ ${#required_skills[@]} -eq 0 ]]; then
   required_skills=(
     "jax-equinox-numerics"
-    "project-engineering"
+    "jax-project-engineering"
     "coding-effectively"
   )
 fi

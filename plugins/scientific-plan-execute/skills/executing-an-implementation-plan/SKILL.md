@@ -26,6 +26,13 @@ Execute plan phase-by-phase, loading each phase just-in-time to minimize context
 
 **REQUIRED SKILL:** `requesting-code-review` - The review loop (dispatch, fix, re-review until zero issues)
 
+**Required execution skill bundle:**
+- `scientific-house-style:coding-effectively` (all implementation tasks)
+- `scientific-plan-execute:test-driven-development` (behavior-changing work)
+- `scientific-plan-execute:verification-before-completion` (before completion claims)
+- `scientific-plan-execute:validation-first-pipeline-api` (ingress/pipeline API or boundary changes)
+- `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics work)
+
 ## Overview
 
 **When NOT to use:**
@@ -188,6 +195,25 @@ Use `update_plan` (or `TaskCreate` where available) to create **three task entri
 
 **Why include the title:** Gives visibility into what each phase covers without loading full content.
 
+### 2b. Skill Activation Gate (Before Task Dispatch)
+
+Before dispatching task implementors for a phase, define the phase skill set from phase content:
+
+1. Always include:
+- `scientific-house-style:coding-effectively`
+2. Include when behavior changes are implemented:
+- `scientific-plan-execute:test-driven-development`
+- `scientific-plan-execute:verification-before-completion`
+3. Include when ingress/pipeline contracts are touched:
+- `scientific-plan-execute:validation-first-pipeline-api`
+4. Include when JAX/Equinox/numerics surfaces are in scope:
+- `scientific-house-style:jax-equinox-numerics`
+- `scientific-house-style:jax-project-engineering`
+
+If any required skill for the phase cannot be loaded, STOP and report blocked with the missing skill IDs and installation guidance.
+
+Pass this skill list explicitly in every `task-implementor-fast` and `task-bug-fixer` dispatch prompt, and require each delegate to report `Skills Applied`.
+
 ### 3. Execute Each Phase
 
 For each phase, follow this cycle:
@@ -232,11 +258,17 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 
   Your job is to:
   1. Read the phase file to understand context
-  2. Apply all relevant skills, such as (if available) scientific-house-style:coding-effectively
+  2. Load and apply required skills before editing:
+     - scientific-house-style:coding-effectively
+     - scientific-plan-execute:test-driven-development (if behavior-changing)
+     - scientific-plan-execute:verification-before-completion
+     - scientific-plan-execute:validation-first-pipeline-api (if ingress/pipeline contracts change)
+     - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
+     If any required skill is unavailable, stop and report blocked with missing skill IDs.
   3. Implement exactly what Task N specifies
   4. Verify with tests/build/lint
   5. Commit your work
-  6. Report back with evidence
+  6. Report back with evidence, including "Skills Applied"
 
   Work from: [directory]
 
@@ -261,11 +293,17 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 
   Your job is to:
   1. Read the phase file to understand context
-  2. Apply all relevant skills, such as (if available) scientific-house-style:coding-effectively
+  2. Load and apply required skills before editing:
+     - scientific-house-style:coding-effectively
+     - scientific-plan-execute:test-driven-development (if behavior-changing)
+     - scientific-plan-execute:verification-before-completion
+     - scientific-plan-execute:validation-first-pipeline-api (if ingress/pipeline contracts change)
+     - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
+     If any required skill is unavailable, stop and report blocked with missing skill IDs.
   3. Implement all tasks in sequence
   4. Verify with tests/build/lint after completing all tasks
   5. Commit your work (one commit per task, or logical commits)
-  6. Report back with evidence for each task
+  6. Report back with evidence for each task, including "Skills Applied"
 
   Work from: [directory]
 
@@ -339,10 +377,18 @@ The phase changed too much for a single review. Chunk the review:
 
   Your job is to:
   1. Understand root cause of each issue
-  2. Apply fixes systematically (Critical → Important → Minor)
-  3. Verify with tests/build/lint
-  4. Commit your fixes
-  5. Report back with evidence
+  2. Load and apply required skills before editing:
+     - scientific-house-style:coding-effectively
+     - scientific-plan-execute:test-driven-development (for behavior-changing fixes and regression tests)
+     - scientific-plan-execute:verification-before-completion
+     - scientific-plan-execute:validation-first-pipeline-api (if ingress/pipeline contracts change)
+     - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
+     - scientific-plan-execute:systematic-debugging (if root cause is unclear or failures persist)
+     If any required skill is unavailable, stop and report blocked with missing skill IDs.
+  3. Apply fixes systematically (Critical → Important → Minor)
+  4. Verify with tests/build/lint
+  5. Commit your fixes
+  6. Report back with evidence, including "Skills Applied"
 
   Work from: [directory]
 
@@ -467,10 +513,17 @@ Return coverage validation result. If PASS, include the human test plan.
 
    For each missing test:
    1. Read the acceptance criterion carefully
-   2. Create the test file at the expected location
-   3. Write tests that verify the criterion's actual behavior—not just code that passes, but code that would fail if the criterion weren't met
-   4. Run tests to confirm they pass
-   5. Commit the new tests
+   2. Load and apply required skills before editing:
+      - scientific-house-style:coding-effectively
+      - scientific-plan-execute:test-driven-development
+      - scientific-plan-execute:verification-before-completion
+      - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
+      If any required skill is unavailable, stop and report blocked with missing skill IDs.
+   3. Create the test file at the expected location
+   4. Write tests that verify the criterion's actual behavior—not just code that passes, but code that would fail if the criterion weren't met
+   5. Run tests to confirm they pass
+   6. Commit the new tests
+   7. Report back with evidence, including "Skills Applied"
 
    Work from: [directory]
    </parameter>
@@ -601,3 +654,4 @@ You: I'm using the `executing-an-implementation-plan` skill.
 | "I'll review after each task to catch issues early" | No. Review once per phase. Task-level review wastes context. |
 | "Context error on review, I'll skip the review" | No. Chunk the review into halves. Never skip review. |
 | "Minor issues can wait" | No. Fix ALL issues including Minor. |
+| "I'll skip loading skills and just implement quickly" | No. Enforce the phase skill-activation gate and require `Skills Applied` evidence from task-implementor and task-bug-fixer. |

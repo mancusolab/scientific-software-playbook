@@ -15,6 +15,7 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - `Task` delegate calls (for example `<invoke name="Task">`) -> perform the requested work directly in the current session when delegation is unavailable
 - `Skill` tool calls -> load the named skill with your runtime skill-loading mechanism
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
+- Slash-command workflow wrappers (for example `/start-implementation-plan`) -> in Codex, invoke the matching skill with `$` (for example `$starting-an-implementation-plan`)
 
 Apply this translation before following the remaining steps.
 <!-- SYNC:END runtime-compatibility -->
@@ -345,29 +346,41 @@ Use `update_plan` updates (or `TaskUpdate` where available) to mark Phase 6 as i
 
 Announce design completion and provide next steps:
 
-```
 Design complete! Design document committed to `docs/design-plans/[filename]`.
 
 Ready to create the implementation plan? This requires fresh context to work effectively.
 
-**IMPORTANT: Copy the command below BEFORE clearing context or starting a new session.**
+**IMPORTANT: Copy the command for your runtime below BEFORE clearing context or starting a new session.**
 
 (1) Copy this command now:
+
+Claude Code:
 ```
 /start-implementation-plan @docs/design-plans/[full-filename].md
 ```
 
+Codex:
+```
+$starting-an-implementation-plan docs/design-plans/[full-filename].md
+```
+
 (2) Start fresh context:
+
+Claude Code:
 ```
 /clear  # if your runtime supports it
 ```
 
-If `/clear` is unavailable, open a new session/conversation in the same repository.
+Codex:
+```
+/new  # if your runtime supports it
+```
+
+If neither `/clear` nor `/new` is available, open a new session/conversation in the same repository.
 
 (3) Paste and run the copied command in the fresh session.
 
-The start-implementation-plan command will create detailed tasks, set up a branch, and prepare for execution.
-```
+The `starting-an-implementation-plan` skill (or `/start-implementation-plan` command wrapper) will create detailed tasks, set up a branch, and prepare for execution.
 
 **Why fresh context instead of continuing:**
 - Implementation planning needs fresh context for codebase investigation

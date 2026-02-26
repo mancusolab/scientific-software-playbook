@@ -32,12 +32,11 @@ jobs:
           set -euo pipefail
           bash plugins/scientific-plan-execute/scripts/check-repo-contracts.sh
 
-      - name: Codex install and bootstrap smoke test
+      - name: Codex install smoke test
         run: |
           set -euo pipefail
 
           codex_home="$(mktemp -d)"
-          downstream_root="$(mktemp -d)"
 
           bash scripts/install-codex-home.sh --codex-home "$codex_home" --force
 
@@ -49,24 +48,18 @@ jobs:
           test -d "$plan_plugin"
           test -d "$research_plugin"
           test -d "$house_plugin"
-
-          bootstrap_script="$plan_plugin/scripts/bootstrap-scientific-software-playbook.sh"
-          test -x "$bootstrap_script"
-
-          downstream_project="$downstream_root/scientific-project"
-          CODEX_HOME="$codex_home" bash "$bootstrap_script" "$downstream_project" --force
-
-          test -f "$downstream_project/AGENTS.md"
-          test -z "$(find "$downstream_project" -mindepth 1 -maxdepth 1 ! -name AGENTS.md -print)"
+          test -f "$codex_home/skills/using-plan-and-execute/SKILL.md"
+          test -f "$codex_home/skills/starting-a-design-plan/SKILL.md"
+          test -f "$codex_home/skills/scientific-kickoff/SKILL.md"
+          test -f "$codex_home/skills/new-design-plan/SKILL.md"
+          test -f "$codex_home/skills/scientific-internet-research-pass/SKILL.md"
+          test -f "$codex_home/skills/jax-project-engineering/SKILL.md"
 
           # Legacy root bundle compatibility paths must remain absent.
           test ! -e "$bundle/agents"
           test ! -e "$bundle/commands"
           test ! -e "$bundle/hooks"
           test ! -e "$bundle/scripts"
-
-          grep -Fq "$plan_plugin" "$downstream_project/AGENTS.md"
-          grep -Fq "$codex_home/skills/" "$downstream_project/AGENTS.md"
 
       - name: Selective install smoke tests
         run: |

@@ -20,12 +20,14 @@ Plugin prerequisite:
 1. Architecture kickoff
 - Claude Code path: run `/start-design-plan <slug>`.
 - Codex path:
+  - Use `using-plan-and-execute` first to choose the correct entrypoint.
   - Use `starting-a-design-plan` directly (see `AGENTS.md`).
   - Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
-- Run `scientific-kickoff` to force one mode (`provided-model`, `suggested-model`, `existing-codebase-port`) before full architecture expansion.
+- Run `scientific-kickoff` for fresh-project/model-path tracks to force one mode (`provided-model`, `suggested-model`, `existing-codebase-port`) before full architecture expansion.
+- Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`; design workflow should ingest this handoff when present.
 - Run `asking-clarifying-questions` to resolve contradictions and narrow scope.
 - Run `brainstorming` to compare alternatives and validate a direction.
-- Choose one model path early:
+- For fresh-project/model-path tracks, choose one model path early:
   - `provided-model`: user supplies model artifacts/update rules.
   - `suggested-model`: planner proposes literature-backed model options and user selects.
   - `existing-codebase-port`: user supplies a local directory or GitHub URL and defines a pinned source + behavior parity contract.

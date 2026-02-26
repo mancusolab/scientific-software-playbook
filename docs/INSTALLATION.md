@@ -67,7 +67,8 @@ bash scripts/install-codex-home.sh --plugin scientific-research --force
 bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 ```
 3. Open the downstream target project root in Codex.
-4. Invoke `starting-a-design-plan`.
+4. Invoke `using-plan-and-execute` to choose the correct entrypoint.
+5. For general design work, invoke `starting-a-design-plan`.
 
 What Codex install provides:
 1. Skills in `${CODEX_HOME:-$HOME/.codex}/skills/`
@@ -85,21 +86,23 @@ Canonical inventory is maintained in:
 Core scientific workflow skills:
 1. `asking-clarifying-questions`
 2. `brainstorming`
-3. `scientific-kickoff`
-4. `starting-a-design-plan`
-5. `new-design-plan`
-6. `validate-design-plan`
-7. `set-design-plan-status`
-8. `starting-an-implementation-plan`
-9. `executing-an-implementation-plan`
+3. `using-plan-and-execute`
+4. `scientific-kickoff`
+5. `starting-a-design-plan`
+6. `new-design-plan`
+7. `validate-design-plan`
+8. `set-design-plan-status`
+9. `starting-an-implementation-plan`
+10. `executing-an-implementation-plan`
 
 ## Usage Example (Downstream Project)
 
 Claude Code path:
 1. `/start-design-plan <example-slug>`
 2. Use `asking-clarifying-questions` and `brainstorming` to refine scope and alternatives.
-3. Choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
+3. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
    - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
+   - Pass kickoff output (`.scientific/kickoff.md`) into the design flow.
 4. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
 5. `scientific-internet-research-pass` (external/scientific/API claims)
 6. `/validate-design-plan <plan-path> --phase in-review`
@@ -109,20 +112,22 @@ Claude Code path:
 10. `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
 
 Codex path:
-1. Invoke `starting-a-design-plan`.
-2. Invoke `asking-clarifying-questions` and `brainstorming` during architecture kickoff.
-3. Choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
+1. Invoke `using-plan-and-execute`.
+2. Invoke `starting-a-design-plan`.
+3. Invoke `asking-clarifying-questions` and `brainstorming` during architecture kickoff.
+4. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
    - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
-4. Invoke `simulation-for-inference-validation` when simulation-based inference checks are in scope.
-5. Invoke `new-design-plan` with slug `<example-slug>` when plan scaffolding is needed.
-6. Invoke `scientific-internet-research-pass` when external claims need citations.
+   - Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`.
+5. Invoke `simulation-for-inference-validation` when simulation-based inference checks are in scope.
+6. Invoke `new-design-plan` with slug `<example-slug>` when plan scaffolding is needed.
+7. Invoke `scientific-internet-research-pass` when external claims need citations.
    - Delegate `internet-researcher` for general/API internet claims.
    - Delegate `scientific-literature-researcher` for paper-backed method/model support.
-7. Invoke `validate-design-plan` with phase `in-review`.
-8. Invoke `set-design-plan-status` with `approved-for-implementation`.
-9. Invoke `starting-an-implementation-plan`.
-10. Start a fresh session/context (recommended).
-11. Invoke `executing-an-implementation-plan` with absolute implementation plan and working-directory paths.
+8. Invoke `validate-design-plan` with phase `in-review`.
+9. Invoke `set-design-plan-status` with `approved-for-implementation`.
+10. Invoke `starting-an-implementation-plan`.
+11. Start a fresh session/context (recommended).
+12. Invoke `executing-an-implementation-plan` with absolute implementation plan and working-directory paths.
 
 ## Compatibility Policy
 

@@ -1,5 +1,5 @@
 ---
-description: Start collaborative design process with scientific kickoff and planning
+description: Start collaborative design process; ingest scientific kickoff handoff when present
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch
 model: sonnet
 argument-hint: "[plan-slug]"

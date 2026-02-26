@@ -22,7 +22,9 @@ Apply this translation before following the remaining steps.
 
 ## Overview
 
-Orchestrate the complete design workflow from initial idea to implementation-ready documentation through seven structured phases: context gathering, kickoff path decision, clarification, definition of done, brainstorming, design documentation, and planning handoff.
+Orchestrate the complete design workflow from initial idea to implementation-ready documentation through six core phases: context gathering, clarification, definition of done, brainstorming, design documentation, and planning handoff.
+
+This skill is kickoff-agnostic. If kickoff artifacts already exist, ingest and carry them forward. If not, continue with general design orchestration.
 
 **Core principle:** Progressive information gathering -> clear understanding -> creative exploration -> validated design -> documented plan.
 
@@ -33,7 +35,7 @@ Orchestrate the complete design workflow from initial idea to implementation-rea
 | Phase | Key Activities | Output |
 |-------|---------------|--------|
 | **1. Context Gathering** | Ask for freeform description, constraints, goals, URLs, files | Initial context bundle |
-| **1.5 Kickoff** | Invoke scientific-kickoff skill | Chosen path: provided-model, suggested-model, or existing-codebase-port |
+| **(conditional) Kickoff Handoff Ingestion** | Read `.scientific/kickoff.md` when present | Kickoff definitions folded into design context |
 | **2. Clarification** | Invoke asking-clarifying-questions skill | Disambiguated requirements |
 | **3. Definition of Done** | Synthesize and confirm deliverables before brainstorming | Confirmed success criteria |
 | **4. Brainstorming** | Invoke brainstorming skill | Validated design (in conversation) |
@@ -48,7 +50,7 @@ Use `update_plan` (or `TaskCreate` where available) to create todos for each pha
 
 - Phase 1: Context Gathering (initial information collected)
 - (conditional) Read project design guidance (if `.scientific/design-plan-guidance.md` exists)
-- Phase 1.5: Scientific Kickoff (model path chosen and recorded)
+- (conditional) Read kickoff handoff (if `.scientific/kickoff.md` exists)
 - Phase 2: Clarification (requirements disambiguated)
 - Phase 3: Definition of Done (deliverables confirmed)
 - Phase 4: Brainstorming (design validated)
@@ -106,15 +108,15 @@ Use the Read tool to check if `.scientific/design-plan-guidance.md` exists in th
 
 1. Use `update_plan` (or `TaskCreate` where available) to add: "Read project design guidance from [absolute path to .scientific/design-plan-guidance.md]"
    - Set this task as blocked by Phase 1 (Context Gathering)
-   - Update Phase 1.5 (Scientific Kickoff) to be blocked by this new task
+   - Update the next phase task (Kickoff Handoff Ingestion when `.scientific/kickoff.md` exists, otherwise Phase 2) to be blocked by this new task
 2. Mark the task in_progress
 3. Read the file and incorporate the guidance into your understanding
 4. Mark the task completed
-5. Proceed to Phase 2
+5. Proceed to Kickoff Handoff Ingestion (if `.scientific/kickoff.md` exists), then Phase 2.
 
 **If the file does not exist:**
 
-Proceed directly to Phase 2. Do not create a task or mention the missing file.
+Proceed to Kickoff Handoff Ingestion check. Do not create a task or mention the missing guidance file.
 
 **What project guidance provides:**
 - Domain-specific terminology to use in clarification
@@ -125,25 +127,32 @@ Proceed directly to Phase 2. Do not create a task or mention the missing file.
 
 The guidance informs what questions you ask during clarification.
 
-### Between Phase 1 and Phase 2: Scientific Kickoff
+### Between Phase 1 and Phase 2: Kickoff Handoff Ingestion (Conditional)
 
-Use `update_plan` updates (or `TaskUpdate` where available) to mark Phase 1.5 as in_progress.
+If kickoff was run earlier, ingest its output before clarification.
 
-**REQUIRED SUB-SKILL:** Use scientific-plan-execute:scientific-kickoff
+**Check if `.scientific/kickoff.md` exists:**
 
-Announce: "I'm using the scientific-kickoff skill to lock the model path before full design exploration."
+Use the Read tool to check if `.scientific/kickoff.md` exists in the session's working directory.
 
-The kickoff skill must force one and only one model path:
-- `provided-model`
-- `suggested-model`
-- `existing-codebase-port`
+**If the file exists:**
 
-The kickoff output must also capture required readiness state:
-- `model_path_decided: yes`
-- `codebase_investigation_complete_if_port: yes|n/a`
-- `simulation_contract_complete_if_in_scope: yes|n/a`
+1. Use `update_plan` (or `TaskCreate` where available) to add: "Read kickoff handoff from [absolute path to .scientific/kickoff.md]"
+2. Mark the task in_progress
+3. Read the file and extract:
+- `mode`
+- `model_path_decided`
+- `codebase_investigation_complete_if_port`
+- `simulation_contract_complete_if_in_scope`
+- mode-specific evidence entries
+4. Carry these fields forward as design constraints and readiness context.
+5. Mark the task completed.
 
-Mark Phase 1.5 as completed when kickoff output exists and a single model path is chosen.
+**If the file does not exist:**
+
+Continue directly to Phase 2 with no kickoff assumptions.
+
+**Important:** This skill does not run kickoff directly. `scientific-kickoff` is a separate entry skill for fresh-project/model-path tracks. When kickoff outputs exist, this skill must ingest them.
 
 ### Phase 2: Clarification
 
@@ -250,6 +259,10 @@ Use today's date and the user-chosen slug.
 
 ## Definition of Done
 [The confirmed Definition of Done - copy exactly as confirmed with user]
+
+## Scientific Kickoff Handoff (Optional)
+<!-- Include only when `.scientific/kickoff.md` was ingested -->
+<!-- Record mode + readiness fields + key evidence from kickoff -->
 
 ## Acceptance Criteria
 <!-- TO BE GENERATED and validated before glossary -->
@@ -367,9 +380,9 @@ Mark Phase 6 as completed after providing instructions.
 
 You can and should go backward when:
 - Phase 2 reveals fundamental gaps -> Return to Phase 1
-- Phase 2 reveals kickoff-path mismatch -> Return to Phase 1.5
+- Phase 2 reveals missing kickoff context -> Return to Kickoff Handoff Ingestion (and ask user to run kickoff if needed)
 - Phase 3 reveals unclear deliverables -> Return to Phase 2 for more clarification
-- Phase 4 uncovers new constraints -> Return to Phase 1, 1.5, 2, or 3
+- Phase 4 uncovers new constraints -> Return to Phase 1, Kickoff Handoff Ingestion, 2, or 3
 - User questions approach during Phase 4 -> Return to Phase 2
 - Phase 4 changes the Definition of Done -> Return to Phase 3 to reconfirm
 - Design documentation reveals missing details -> Return to Phase 4
@@ -381,16 +394,16 @@ You can and should go backward when:
 | Excuse | Reality |
 |--------|---------|
 | "User provided details, can skip context gathering" | Always run Phase 1. Ask for what's missing. |
-| "Model path can be decided later" | Kickoff is an early gate. Always run Phase 1.5 before clarification. |
+| "Kickoff outputs can be ignored" | If `.scientific/kickoff.md` exists, ingest it before clarification and carry it into design context. |
 | "Requirements are clear, skip clarification" | Clarification prevents misunderstandings. Always run Phase 2. |
 | "I know what done looks like, skip confirmation" | Confirm Definition of Done explicitly. Always run Phase 3. |
 | "Simple idea, skip brainstorming" | Brainstorming explores alternatives. Always run Phase 4. |
 | "Design is in conversation, don't need documentation" | Documentation is contract with writing-implementation-plans. Always run Phase 5. |
 | "Can invoke implementation planning directly" | Must use fresh context first. Provide copy-then-clear/new-session workflow. |
-| "I can combine phases for efficiency" | Each phase has distinct purpose. Run all seven. |
+| "I can combine phases for efficiency" | Each phase has distinct purpose. Run all six core phases and include kickoff handoff ingestion when present. |
 | "User knows what they want, less structure needed" | Structure ensures nothing is missed. Follow all phases. |
 
-**All of these mean: STOP. Run all seven phases in order.**
+**All of these mean: STOP. Run the full phased workflow and ingest kickoff handoff when available.**
 
 ## Key Principles
 
@@ -398,6 +411,7 @@ You can and should go backward when:
 |-----------|-------------|
 | **Never skip brainstorming** | Even with detailed specs, always run Phase 4 (may be shorter) |
 | **Progressive prompting** | Ask for less if user already provided some context |
+| **Kickoff handoff ingestion** | If kickoff artifact exists, treat it as required input to downstream design work |
 | **Clarify before ideating** | Phase 2 prevents building the wrong thing |
 | **Lock in the goal before exploring** | Phase 3 confirms what "done" means before brainstorming the how |
 | **All brains in skills** | This skill orchestrates; sub-skills contain domain expertise |

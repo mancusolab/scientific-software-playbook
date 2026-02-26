@@ -1,42 +1,33 @@
 # Scientific Software Playbook (Claude Code + Codex)
 
-Audience and intent:
-1. This README is for users visiting the GitHub repository to understand, install, and use these plugins.
-2. For agent/developer contracts used when developing this repository itself, use `AGENTS.md`.
-
 Scientific Software Playbook is an opinionated workflow for building scientific
 software with explicit design gates before implementation. It is aimed at teams
 that want traceable decisions, review artifacts, and consistent execution from
 architecture through delivery.
 
+
 This repository hosts three plugins in one codebase:
 
-1. `scientific-plan-execute`
-2. `scientific-research`
-3. `scientific-house-style`
+1. `scientific-plan-execute`, workflow orchestration for architecture, planning, status gates, and phase execution.
+2. `scientific-research`, eeusable research workflows and delegates:
+3. `scientific-house-style`, reusable JAX/Equinox house-style skills
 
-## Plugin Boundaries
+Recommended entrypoints:
 
-1. `scientific-plan-execute`
-- Workflow orchestration for architecture, planning, status gates, and phase execution.
-- Keeps required scientific execution gates (validation-first pipeline boundaries, thin CLI/API shell, and simulation-for-inference validation contracts).
-- Owns agents, commands, hooks, and playbook scripts/templates.
-2. `scientific-research`
-- Reusable research workflows and delegates:
-  - `scientific-internet-research-pass`
-  - `scientific-codebase-investigation-pass`
-  - `codebase-investigator`, `internet-researcher`, `remote-code-researcher`, `combined-researcher`, `scientific-literature-researcher`
-3. `scientific-house-style`
-- Reusable JAX/Equinox house-style skills (`jax-equinox-numerics`, `project-engineering`).
-- Provides required implementation-style guidance used by workflow gates.
-- Can be installed independently.
+1. New project: `scientific-kickoff` (or `/start-scientific-kickoff`)
+   1. Implement (inferential) software based on local document, online reference.
+   2. Implement (inferential) software based on AGENT-based suggestion after questioning user.
+   3. Port existing codebase to JAX-based backend.
+2. Existing project/iteration: `new-design-plan` (or `/new-design-plan <slug>`)
 
-Dependency contract:
-1. `scientific-plan-execute` is required for workflow commands.
-2. `scientific-research` is required for external-fact validation gates in workflow planning.
-3. `scientific-house-style` is required for workflow execution and review gates.
-4. Codex installer auto-adds `scientific-research` and `scientific-house-style` when `scientific-plan-execute` is selected.
-5. If `scientific-house-style` is missing, workflow hard-fails preflight checks.
+
+   [**Who This Is For**](#who-this-is-for)
+   | [**What You Get**](#what-you-get)
+   | [**Quickstart**](#quickstart)
+   | [**Workflow At A Glance**](#workflow-at-a-glance)
+   | [**Documentation Map**](#documentation-map)
+   | [**Repository Layout**](#repository-layout)
+
 
 ## Who This Is For
 
@@ -56,6 +47,7 @@ Dependency contract:
   engineering guidance.
 
 ## Quickstart
+Here is a quickstart on installation and usage. Please see [Installation Guide](docs/INSTALLATION.md) for details.
 
 ### Codex
 
@@ -72,7 +64,9 @@ bash scripts/install-codex-home.sh --force
 Then:
 
 1. Open your target project in Codex.
-2. Start with `starting-a-design-plan` or `/start-design-plan`.
+2. New project entrypoint: run `scientific-kickoff` first.
+3. Continue with `starting-a-design-plan` so kickoff output is ingested.
+4. Existing project/iteration entrypoint: run `new-design-plan` first.
 
 ### Claude Code
 
@@ -86,7 +80,8 @@ Install from any directory:
 
 Then open your project directory and run:
 
-- `/start-design-plan <slug>`
+- New project: `/start-scientific-kickoff` then `/start-design-plan <slug>`
+- Existing project/iteration: `/new-design-plan <slug>`
 
 ## Workflow At A Glance
 
@@ -100,16 +95,17 @@ Architecture plan
 
 Typical entry points:
 
-1. Architecture: `starting-a-design-plan` or `/start-design-plan`
-2. Clarification and option exploration: `asking-clarifying-questions`, `brainstorming`
-3. Scientific mode kickoff: `scientific-kickoff` or `/start-scientific-kickoff`
-4. Plan scaffolding: `new-design-plan` or `/new-design-plan`
-5. Research passes: `scientific-internet-research-pass`, `scientific-codebase-investigation-pass`
-6. Readiness check: `validate-design-plan` or `/validate-design-plan --phase in-review`
-7. Approval transition: `set-design-plan-status` or `/set-design-plan-status`
-8. Implementation planning: `starting-an-implementation-plan` or `/start-implementation-plan`
-9. Execution: `executing-an-implementation-plan` or `/execute-implementation-plan`
-10. Idea refinement/customization helpers: `flesh-it-out`, `how-to-customize`
+1. New projects: `scientific-kickoff` or `/start-scientific-kickoff`
+2. Design orchestration after kickoff: `starting-a-design-plan` or `/start-design-plan`
+3. Existing project/iteration design path: `new-design-plan` or `/new-design-plan`
+4. Workflow router (optional): `using-plan-and-execute`
+5. Clarification and option exploration: `asking-clarifying-questions`, `brainstorming`
+6. Research passes: `scientific-internet-research-pass`, `scientific-codebase-investigation-pass`
+7. Readiness check: `validate-design-plan` or `/validate-design-plan --phase in-review`
+8. Approval transition: `set-design-plan-status` or `/set-design-plan-status`
+9. Implementation planning: `starting-an-implementation-plan` or `/start-implementation-plan`
+10. Execution: `executing-an-implementation-plan` or `/execute-implementation-plan`
+11. Idea refinement/customization helpers: `flesh-it-out`, `how-to-customize`
 
 ## Documentation Map
 

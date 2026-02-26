@@ -5,7 +5,7 @@ Use this contract to avoid duplicating Codex/Claude install-path logic.
 ## Rule 1: Reference Skills/Agents/Commands By ID
 
 Prefer logical IDs over filesystem paths whenever runtime tools support them:
-- Skills: `starting-a-design-plan`, `scientific-kickoff`, `starting-an-implementation-plan`, `executing-an-implementation-plan`
+- Skills: `using-plan-and-execute`, `starting-a-design-plan`, `new-design-plan`, `scientific-kickoff`, `starting-an-implementation-plan`, `executing-an-implementation-plan`
 - Agents: `scientific-architecture-reviewer`, `scientific-code-reviewer`
 - Commands: `start-design-plan`, `start-implementation-plan`, `execute-implementation-plan`
 

@@ -327,7 +327,7 @@ If brainstorming reveals new ambiguities, you can return to clarification.
 This skill sits between context gathering and brainstorming:
 
 ```
-Context Gathering (start-design-plan kickoff)
+Context Gathering (start-design-plan; kickoff handoff ingestion when present)
   -> User provides: "Build OAuth2 integration for our API"
 
 Clarification (this skill)

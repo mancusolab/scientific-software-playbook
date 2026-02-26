@@ -15,6 +15,7 @@ ssp_plugin_skills() {
       cat <<'EOF'
 asking-clarifying-questions
 brainstorming
+using-plan-and-execute
 scientific-kickoff
 starting-a-design-plan
 new-design-plan

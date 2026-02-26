@@ -35,6 +35,7 @@ Dependency contract:
 ### Skills (`scientific-plan-execute`)
 - `asking-clarifying-questions`: `plugins/scientific-plan-execute/skills/asking-clarifying-questions/SKILL.md`
 - `brainstorming`: `plugins/scientific-plan-execute/skills/brainstorming/SKILL.md`
+- `using-plan-and-execute`: `plugins/scientific-plan-execute/skills/using-plan-and-execute/SKILL.md`
 - `scientific-kickoff`: `plugins/scientific-plan-execute/skills/scientific-kickoff/SKILL.md`
 - `starting-a-design-plan`: `plugins/scientific-plan-execute/skills/starting-a-design-plan/SKILL.md`
 - `new-design-plan`: `plugins/scientific-plan-execute/skills/new-design-plan/SKILL.md`
@@ -130,33 +131,35 @@ bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 Run a downstream project:
 
 1. Open the target project root in Codex.
-2. Start architecture planning with `starting-a-design-plan` (Codex skill) or `start-design-plan` (command wrapper).
+2. Choose entrypoint with `using-plan-and-execute`, then continue with the suggested workflow skill/command.
 
 ## Workflow
 
-1. Start architecture with `starting-a-design-plan` (or `start-design-plan` command wrapper).
-2. Run `scientific-kickoff` early to choose exactly one model path:
+1. Choose workflow entrypoint with `using-plan-and-execute`.
+2. For general design requests, start with `starting-a-design-plan` (or `start-design-plan` command wrapper). Use `new-design-plan` when plan scaffolding is needed directly.
+3. For fresh-project/model-path tracks, run `scientific-kickoff` early to choose exactly one model path:
    - `provided-model` (user-supplied model/update rules), or
    - `suggested-model` (literature-backed model candidates + explicit user selection), or
    - `existing-codebase-port` (source-pinned local directory or GitHub URL with parity targets).
    - when `existing-codebase-port` is selected, run `scientific-codebase-investigation-pass` and capture file-level findings before approval.
-3. Set required workflow states before approval:
+4. Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`; design orchestration must ingest kickoff state/evidence when present.
+5. Set required workflow states before approval:
    - `model_path_decided: yes`
    - `codebase_investigation_complete_if_port: yes|n/a`
    - `simulation_contract_complete_if_in_scope: yes|n/a`
-4. Define simulation scope for inference validation:
+6. Define simulation scope for inference validation:
    - use `simulation-for-inference-validation` when simulation-based checks are required.
-5. Validate in review phase with `validate-design-plan` (`phase=in-review`).
-6. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
-7. Create implementation phases and traceability with `starting-an-implementation-plan` (or `start-implementation-plan` command wrapper).
-8. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
-9. During phase execution, apply layer skills in order when relevant:
+7. Validate in review phase with `validate-design-plan` (`phase=in-review`).
+8. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
+9. Create implementation phases and traceability with `starting-an-implementation-plan` (or `start-implementation-plan` command wrapper).
+10. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
+11. During phase execution, apply layer skills in order when relevant:
    - `validation-first-pipeline-api`
    - `jax-equinox-numerics` (from `scientific-house-style`)
    - `test-driven-development` for behavior-changing work
    - `systematic-debugging` for failing tests or persistent blockers
    - `using-git-worktrees` when branch/worktree isolation is required
-10. Before phase or branch completion:
+12. Before phase or branch completion:
    - run `requesting-code-review` for reviewer/fix closure to zero findings
    - run `verification-before-completion` to ensure fresh, command-level completion evidence
 

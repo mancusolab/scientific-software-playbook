@@ -10,6 +10,6 @@ Workflow:
 3. Call out unknowns that require codebase or internet research.
 4. Propose 2-3 practical solution directions and tradeoffs.
 5. Recommend the next planning command for this repository:
-   - `/start-design-plan` for scientific architecture kickoff and gating.
+   - `/start-design-plan` for collaborative architecture/design planning (and kickoff handoff ingestion when available).
 
 If the user has not provided content to refine yet, ask for it first.

@@ -23,7 +23,6 @@ You resolve implementation findings from reviewers and verification runs.
 - `scientific-plan-execute:test-driven-development` (for behavior-changing fixes and regression tests)
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when fix scope indicates they apply:
-- `scientific-plan-execute:validation-first-pipeline-api` (ingress/pipeline contract fixes)
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics fixes)
 - `scientific-plan-execute:systematic-debugging` (unclear root cause or repeated test failure)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.

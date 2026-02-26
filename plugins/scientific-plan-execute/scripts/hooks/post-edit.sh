@@ -12,5 +12,5 @@ fi
 if [[ "$paths" == *"docs/implementation-plans/"* ]]; then
   echo "[scientific-software-playbook] Implementation artifacts changed. Ensure source design path + model/solver/simulation decisions remain traceable." >&2
   echo "[scientific-software-playbook] Ensure simulation mappings/phases exist when in scope and AC-to-task-to-test traceability is complete." >&2
-  echo "[scientific-software-playbook] Ensure pipeline validation gates happen before numerics execution." >&2
+  echo "[scientific-software-playbook] Ensure selected architecture profile is documented and validation/conversion happens before numerics execution." >&2
 fi

@@ -30,7 +30,7 @@ What to include:
 - Test requirements and evidence expectations
 - Review criteria beyond defaults
 - Commit conventions
-- Project-specific boundary rules (ingress/pipeline/numerics/CLI)
+- Project-specific architecture profile and boundary rules (`compact-workflow` or `modular-domain`)
 
 ## Example: `.scientific/design-plan-guidance.md`
 
@@ -43,7 +43,9 @@ What to include:
 
 ## Architecture Constraints
 - Keep numerics functions array/PyTree-only
-- Keep CLI and file parsing out of numerics
+- Choose one architecture profile:
+  - `compact-workflow`: single-file/small-module CLI glue is allowed
+  - `modular-domain`: shallow domain-grouped modules with clear ownership
 
 ## Scope Defaults
 - Schema migrations are in scope for model-shape changes
@@ -56,8 +58,8 @@ What to include:
 # Implementation Guidance
 
 ## Coding Standards
-- Preserve validation-first API boundaries
-- Keep CLI shell thin and deterministic
+- Preserve boundary validation/conversion before numerics
+- Document the selected architecture profile (`compact-workflow` or `modular-domain`) and apply it consistently
 
 ## Testing Requirements
 - Every behavior change starts with a failing test

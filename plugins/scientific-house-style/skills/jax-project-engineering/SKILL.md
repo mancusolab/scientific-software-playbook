@@ -56,32 +56,32 @@ Use these snippets as implementation starters when they match the task.
 ## Public API stability
 
 ### Rule: Keep API structure stable and explicit
-- Do: Preserve return shapes/fields and document result codes/statuses.
+- Do: Preserve return shapes/fields and document failure semantics (status channels and/or exceptions).
 - Don’t: Change return structures or error semantics without deprecation.
 - Why: Scientific workflows rely on stable interfaces.
 - Example:
 ```python
-# Return a structured result: value + result + stats/state
-return Solution(value=out, result=result, stats=stats, state=state)
+# Return a stable, documented contract
+return out
 ```
 - Allowed break: Major version bump with migration guide.
 
-### Rule: Use structured results with a `RESULTS` enum and `Solution` container in core numerics APIs
-- Do: Define a `RESULTS` enum with human-readable messages and return a typed `Solution` from solver/core numerics entrypoints.
-- Do: Translate `Solution` into domain-specific outputs at user/product boundaries (for example CLI summaries or workflow-specific return objects).
-- Don’t: Expose `Solution` as the default UX for non-numerics public helpers that do not need solver-style status channels.
-- Why: Core numerics need deterministic failure channels, while user-facing surfaces should stay task-oriented.
+### Rule: Choose one explicit failure contract per numerics surface
+- Do: Pick either (a) structured status/result channels or (b) exception-first semantics, and document/test it.
+- Do: Use structured `RESULTS`/`Solution` contracts when failures are expected/recoverable and callers branch on non-success states.
+- Do: Use exception-first contracts when fail-fast behavior is the intended product UX and callers should stop on failure.
+- Don’t: mix both channels by default unless a concrete interoperability requirement exists.
+- Why: single-channel contracts reduce wrapper churn and ambiguity.
 - Example:
 ```python
-class RESULTS(eqxi.Enumeration):
-    successful = ""
-    max_steps_reached = "The maximum number of steps was reached."
+# Option A: structured status channel
+sol = lx.linear_solve(op, b, throw=False)
+if sol.result != lx.RESULTS.successful:
+    ...
 
-class Solution(eqx.Module):
-    value: PyTree[Array]
-    result: RESULTS
-    stats: dict[str, PyTree[ArrayLike]]
-    state: PyTree[Any]
+# Option B: exception-first fail-fast
+sol = lx.linear_solve(op, b, throw=True)
+return sol.value
 ```
 - Allowed break: Tiny internal helpers that are not part of the public API.
 
@@ -95,10 +95,10 @@ class Solution(eqx.Module):
 - Don’t: Add one-line wrappers around core functionality with unchanged semantics.
 - Why: Thin wrappers increase API surface and maintenance cost without improving behavior.
 
-### Rule: Treat `RESULTS` messages as the canonical error UX
+### Rule: If using `RESULTS`, keep messages actionable
 - Do: Write actionable, user-facing messages on each non-success result.
-- Don’t: Leave messages empty or force users to decode numeric codes.
-- Why: Users rely on `RESULTS[...]` for guidance without digging into code.
+- Don’t: leave messages empty or force users to decode numeric codes.
+- Why: status-channel consumers rely on these messages for operator guidance.
 
 ### Rule: Do not add custom exception classes unless they provide real contract value
 - Do: Prefer built-in exceptions (`ValueError`, `TypeError`, `RuntimeError`, etc.) with precise, actionable messages.
@@ -119,7 +119,7 @@ class GWASError(ValueError):
 ### Rule: Prefer Lineax/Optimistix primitives over bespoke solver kernels
 - Do: Build linear/nonlinear solver APIs on top of `lineax.linear_solve` and `optimistix` entry points (`root_find`, `least_squares`, `minimise`) when they fit.
 - Don’t: Reimplement generic solver loops unless introducing a genuinely new algorithm.
-- Why: Reuses mature result semantics (`Solution`, `RESULTS`, `throw`) and reduces maintenance risk.
+- Why: Reuses mature solver behavior (`throw`, `result`, transforms) and reduces maintenance risk.
 
 ## Documentation
 
@@ -141,11 +141,12 @@ class GWASError(ValueError):
 - Why: Reproducibility depends on clear constraints.
 
 ### Rule: Document `throw` behavior across transforms and backends
-- Do: Document how `throw=True` behaves under batching (`vmap`) and any backend caveats for runtime errors.
+- Do: Document how your chosen failure contract behaves under batching (`vmap`) and backend caveats.
+- Do: when using `throw=True`, document whole-batch failure behavior explicitly.
 - Don’t: Assume identical exception behavior on CPU/GPU/TPU or per-batch isolation.
 - Why: Error propagation can differ by backend, and `vmap` can fail the whole batch.
 
-### Rule: Preserve enum compatibility with deprecations
+### Rule: Preserve enum compatibility with deprecations (when enums are public API)
 - Do: Keep deprecated `RESULTS` members with warnings on access and a removal plan; prefer compatibility aliases over silent removal.
 - Do: Extend enums compatibly (e.g., subclassing and promotion) when adding domain-specific result codes.
 - Don’t: Remove or rename enum members without a deprecation window.
@@ -207,8 +208,10 @@ def f(x: PyTree[Array]) -> PyTree[Array]:
 
 ## CLI building
 
-### Rule: Keep CLI thin and side‑effect free
-- Do: Parse args in `main()`, call into library functions, and return exit codes.
+### Rule: Keep CLI deterministic and profile-aligned
+- Do: Parse args in `main()` and return explicit exit codes.
+- Do: for `compact-workflow`, allow CLI-level workflow glue (load -> validate -> numerics -> write output) in one file/module.
+- Do: for `modular-domain`, keep orchestration in shallow domain modules and keep CLI handlers focused on dispatch.
 - Don’t: Execute JAX code at import time or use global state.
 - Why: Keeps CLI deterministic and testable.
 - Example:
@@ -228,8 +231,8 @@ if __name__ == "__main__":
 
 ### Rule: Validate early at boundaries; keep JITable kernels exception-free
 - Do: Validate ranges, enums, shape contracts, and file/path assumptions at boundary layers (CLI/public adapters) and raise actionable exceptions there.
-- Do: Inside traced numerics, use structured status channels (`RESULTS`, `throw` + `result.error_if`, `eqx.error_if`) instead of Python `raise`.
-- Don’t: Defer basic user-input validation to deep solver internals or raise Python exceptions inside JIT-compiled loops.
+- Do: inside traced numerics, use JAX-compatible signaling (`result` channels and/or `eqx.error_if`) rather than Python `raise`.
+- Don’t: defer basic user-input validation to deep solver internals or raise Python exceptions inside JIT-compiled loops.
 - Why: Boundary failures should be immediate and clear; traced kernels require JAX-compatible error signaling.
 
 ### Rule: Validate and normalize boundary inputs in `main()`
@@ -249,7 +252,7 @@ def main(argv=None):
 
 ### Rule: Define stable stdout/stderr and exit-code contracts
 - Do: Reserve `stdout` for primary results (plain text  `--json`) and route diagnostics/errors to `stderr`.
-- Do: Document exit-code semantics (for example: `0` success, `2` usage errors, `1` runtime/result failures).
+- Do: Document exit-code semantics (for example: `0` success, `2` usage errors, `1` runtime failures).
 - Don’t: Mix logs with machine-readable output or rely on Python tracebacks as user-facing error UX.
 - Why: Scientific CLIs are often used in automation and shell pipelines.
 - Example:
@@ -257,11 +260,13 @@ def main(argv=None):
 import json
 import sys
 
-if sol.result == RESULTS.successful:
-    sys.stdout.write(json.dumps({"value": sol.value}) + "\n")
-    return 0
-sys.stderr.write(f"error: {RESULTS[sol.result]}\n")
-return 1
+try:
+    value = run(...)
+except RuntimeError as exc:
+    sys.stderr.write(f"error: {exc}\n")
+    return 1
+sys.stdout.write(json.dumps({"value": value}) + "\n")
+return 0
 ```
 - Allowed break: Purely interactive demos not intended for scripting.
 
@@ -375,23 +380,23 @@ Invalid `max_steps` sometimes reaches a jitted solver. A teammate suggests raisi
 
 Options:
 A) Raise Python exceptions inside the jitted loop.
-B) Validate and raise at boundary layers; keep traced kernels on `RESULTS`/`error_if` channels.
+B) Validate and raise at boundary layers; keep traced kernels on JAX-compatible signaling (`result`/`error_if`).
 C) Leave it unvalidated and rely on downstream failures.
 
 Choose A, B, or C.
 ```
 
-5. `Solution` scope pressure
+5. Failure-contract scope pressure
 ```markdown
 IMPORTANT: This is a real scenario. Choose and act.
 
 You have a non-numerics public helper that returns a user summary report.
-A teammate wants it to return internal `Solution` directly "for consistency".
+A teammate wants it to return internal solver containers directly "for consistency".
 
 Options:
-A) Return `Solution` from every public helper.
-B) Keep `Solution` in core numerics and translate to domain outputs at user/product boundaries.
-C) Return `Solution` plus a summary string.
+A) Return internal solver containers from every public helper.
+B) Keep one contract per surface (status-channel or exception-first) and expose domain-oriented outputs at boundaries.
+C) Return both container and ad-hoc summary everywhere.
 
 Choose A, B, or C.
 ```
@@ -403,10 +408,11 @@ Choose A, B, or C.
 - Don’t: Persist opaque state without compatibility notes.
 - Why: Long‑running experiments need stable restore paths.
 
-### Rule: Support `throw`-style error escalation using `result.error_if`
-- Do: Expose a `throw` flag and use `result.error_if` to raise inside JIT when desired.
-- Don’t: Raise Python exceptions inside jitted code paths.
-- Why: Keeps error handling consistent with `RESULTS` while still allowing hard failures.
+### Rule: Support explicit fail-fast policy when needed
+- Do: Use `throw=True`/`result.error_if` when the selected contract requires hard-fail semantics in traced code.
+- Do: keep fail-fast behavior explicit and tested.
+- Don’t: raise Python exceptions inside jitted code paths.
+- Why: preserves JAX compatibility while enabling strict failure behavior where required.
 - Example:
 ```python
 if throw:

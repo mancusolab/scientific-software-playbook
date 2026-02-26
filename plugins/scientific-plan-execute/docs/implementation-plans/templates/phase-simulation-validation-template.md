@@ -25,6 +25,10 @@
 - Profile: `inference` | `full`
 - Why this profile:
 
+## Architecture Profile
+- Profile: `compact-workflow` | `modular-domain`
+- Why this profile:
+
 ## Tasks
 
 <!-- START_TASK_1 -->
@@ -110,7 +114,8 @@
    - boundary-contract change -> `scientific-architecture-reviewer`
    - CLI/API change -> `scientific-cli-api-reviewer`
 4. Run `scientific-test-analyst` checks for simulation traceability coverage.
-5. Resolve blocking findings before phase status is `completed`.
+5. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
+6. Resolve blocking findings before phase status is `completed`.
 
 ## Completion Checklist
 - [ ] `simulate` contract is implemented and deterministic seed behavior is verified.

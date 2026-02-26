@@ -1,6 +1,6 @@
 ---
 name: numerics-interface-auditor
-description: Use when reviewing JAX or Equinox numerics for interface contract compliance, transform safety, structured result semantics, and numerical-stability risks (including precision loss).
+description: Use when reviewing JAX or Equinox numerics for interface contract compliance, transform safety, explicit failure semantics (status channels or exceptions), and numerical-stability risks (including precision loss).
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
@@ -19,7 +19,7 @@ Required inputs:
 ## Responsibilities
 
 1. Verify numerics APIs consume canonical arrays/PyTrees only.
-2. Verify result/status channels are structured and documented.
+2. Verify failure semantics are explicit and documented (status channels and/or exceptions).
 3. Detect Python exceptions raised inside traced kernels.
 4. Check for missing AD/JIT/VMAP validation coverage.
 5. Ensure boundary validation occurs before numerics execution.
@@ -31,8 +31,8 @@ Required inputs:
 ## Workflow
 
 1. Identify numerics entrypoints and public API signatures.
-2. Inspect integration points with pipeline and CLI boundaries.
-3. Validate failure semantics (`throw`/status/result behavior).
+2. Inspect integration points with workflow orchestration and CLI boundaries.
+3. Validate failure semantics (status channels, `throw`, and/or exception behavior).
 4. Inspect kernels and solver steps for numerical-risk patterns and dtype-policy mismatches.
 5. Check tests for JIT, VMAP, AD, and numerics-stability behaviors.
 6. Check red-green evidence and final verification command output.
@@ -65,7 +65,6 @@ Audit at least these risk classes:
 
 Use these skill IDs when auditing numerics interfaces:
 1. `jax-equinox-numerics` (from `scientific-house-style`)
-2. `validation-first-pipeline-api`
 
 ## Hard Gates
 

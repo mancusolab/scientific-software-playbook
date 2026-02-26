@@ -43,7 +43,7 @@ out = num / den
 - Allowed break: When invariants guarantee nonzero denominators (and you validate them).
 
 ### Rule: Validate and surface nonfinite values early
-- Do: Use `eqx.error_if` or explicit result codes for nonfinite outputs.
+- Do: Use `eqx.error_if`, explicit result codes, or explicit exceptions at non-traced boundaries for nonfinite outputs.
 - Don’t: Let NaNs/inf silently propagate.
 - Why: Makes failures debuggable and reproducible.
 - Example:
@@ -57,7 +57,7 @@ x = eqx.error_if(x, ~jnp.isfinite(x), "nonfinite")
 
 ### Rule: Raise Python exceptions at boundaries, not inside traced kernels
 - Do: Validate user/config input in boundary layers and raise actionable exceptions there.
-- Do: Use `eqx.error_if` or result-code channels inside traced numerics.
+- Do: Use `eqx.error_if` and/or result-code channels inside traced numerics.
 - Don’t: Raise Python exceptions from JIT-compiled loops/steps.
 - Why: Boundary validation needs clear UX, while traced kernels need JAX-compatible control flow.
 

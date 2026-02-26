@@ -21,17 +21,17 @@ Use this for linear solves, least squares, Jacobian operators, and preconditioni
 - [ ] Model systems as `lineax.AbstractLinearOperator` and solve with `lineax.linear_solve`.
 - [ ] Choose `AutoLinearSolver(well_posed=...)` intentionally (or document explicit concrete solver choice).
 - [ ] Treat operator tags as contracts and only apply tags guaranteed by construction.
-- [ ] Handle solver outcomes explicitly (`throw=False` + `sol.result` for recoverable flows; `throw=True` for fail-fast paths).
+- [ ] Handle solver outcomes explicitly with the chosen contract (`throw=False` + `sol.result` for recoverable flows, or `throw=True` for fail-fast paths).
 
 ## Optimistix nonlinear solves
 - [ ] Use `optimistix` entry points (`root_find`, `least_squares`, `minimise`) with explicit solver objects.
 - [ ] Pass problem structure via `has_aux`, `tags`, and solver options instead of hidden closure state.
-- [ ] Handle nonlinear failures explicitly (`throw=False` + `sol.result` in recoverable flows; `throw=True` in strict flows).
+- [ ] Handle nonlinear failures explicitly with the chosen contract (`throw=False` + `sol.result` for recoverable flows, or `throw=True` in strict flows).
 
 ## Numerical stability
 - [ ] Guard ill-conditioned solves with scaling or regularization.
 - [ ] Prefer stable norm/conditioning checks over raw inverse operations.
-- [ ] Detect nonfinite outputs and propagate result codes.
+- [ ] Detect nonfinite outputs and propagate failures through the chosen contract.
 
 ## AD considerations
 - [ ] Use custom JVP/VJP when default gradients are unstable.

@@ -30,7 +30,6 @@ Execute plan phase-by-phase, loading each phase just-in-time to minimize context
 - `scientific-house-style:coding-effectively` (all implementation tasks)
 - `scientific-plan-execute:test-driven-development` (behavior-changing work)
 - `scientific-plan-execute:verification-before-completion` (before completion claims)
-- `scientific-plan-execute:validation-first-pipeline-api` (ingress/pipeline API or boundary changes)
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics work)
 
 ## Overview
@@ -95,7 +94,7 @@ Reviewer selection must be deterministic. Use this exact process in this exact o
   - phase text contains one of: `inference`, `posterior`, `likelihood`, `objective`, `simulate`, `sbc`, `ppc`, `calibration`.
   - OR any changed path matches: `inference|posterior|likelihood|objective|simulate|sbc|ppc|calibration`.
 - `architecture_surface`:
-  - phase text contains one of: `boundary contract`, `architecture`, `ingress`, `pipeline`, `interface`.
+  - phase text contains one of: `boundary contract`, `architecture`, `interface`, `compact-workflow`, `modular-domain`.
   - OR any changed path matches: `docs/design-plans|docs/implementation-plans|AGENTS.md|CLAUDE.md`.
 
 3. Baseline reviewers from `profile`:
@@ -204,9 +203,7 @@ Before dispatching task implementors for a phase, define the phase skill set fro
 2. Include when behavior changes are implemented:
 - `scientific-plan-execute:test-driven-development`
 - `scientific-plan-execute:verification-before-completion`
-3. Include when ingress/pipeline contracts are touched:
-- `scientific-plan-execute:validation-first-pipeline-api`
-4. Include when JAX/Equinox/numerics surfaces are in scope:
+3. Include when JAX/Equinox/numerics surfaces are in scope:
 - `scientific-house-style:jax-equinox-numerics`
 - `scientific-house-style:jax-project-engineering`
 
@@ -262,7 +259,6 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
      - scientific-house-style:coding-effectively
      - scientific-plan-execute:test-driven-development (if behavior-changing)
      - scientific-plan-execute:verification-before-completion
-     - scientific-plan-execute:validation-first-pipeline-api (if ingress/pipeline contracts change)
      - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
      If any required skill is unavailable, stop and report blocked with missing skill IDs.
   3. Implement exactly what Task N specifies
@@ -297,7 +293,6 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
      - scientific-house-style:coding-effectively
      - scientific-plan-execute:test-driven-development (if behavior-changing)
      - scientific-plan-execute:verification-before-completion
-     - scientific-plan-execute:validation-first-pipeline-api (if ingress/pipeline contracts change)
      - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
      If any required skill is unavailable, stop and report blocked with missing skill IDs.
   3. Implement all tasks in sequence
@@ -381,7 +376,6 @@ The phase changed too much for a single review. Chunk the review:
      - scientific-house-style:coding-effectively
      - scientific-plan-execute:test-driven-development (for behavior-changing fixes and regression tests)
      - scientific-plan-execute:verification-before-completion
-     - scientific-plan-execute:validation-first-pipeline-api (if ingress/pipeline contracts change)
      - scientific-house-style:jax-equinox-numerics and scientific-house-style:jax-project-engineering (if JAX/Equinox/numerics scope)
      - scientific-plan-execute:systematic-debugging (if root cause is unclear or failures persist)
      If any required skill is unavailable, stop and report blocked with missing skill IDs.

@@ -1,6 +1,6 @@
 ---
 name: scientific-code-reviewer
-description: Use when a phase or feature is implemented and requires evidence-based quality gating - runs verification commands, checks plan alignment, audits scientific boundary contracts, and returns severity-ranked findings.
+description: Use when a phase or feature is implemented and requires evidence-based quality gating - runs verification commands, checks plan alignment, audits profile-aware boundary contracts, and returns severity-ranked findings.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
@@ -25,7 +25,6 @@ Optional inputs:
 
 1. Load and apply relevant skills when available:
 - `coding-effectively`
-- `validation-first-pipeline-api`
 - `jax-equinox-numerics` (when numerics scope exists)
 
 2. Build a verification command set:
@@ -36,9 +35,9 @@ Optional inputs:
 
 1. Run verification commands first (tests, build/static checks, lint/type checks where defined).
 2. Compare implemented behavior against the plan scope.
-3. Audit boundary contracts:
+3. Audit boundary contracts against the selected architecture profile (`compact-workflow` or `modular-domain`):
 - no parser/file-format logic inside numerics
-- pipeline receives canonical objects only
+- boundary validation/conversion occurs before numerics dispatch
 - numerics APIs remain array/PyTree-only
 4. Audit test quality and coverage evidence for changed behavior.
 5. Classify findings by severity and provide concrete fixes.
@@ -48,7 +47,7 @@ Optional inputs:
 1. `critical`
 - failing required verification command
 - unresolved security/correctness defect
-- boundary contract violation allowing raw containers into pipeline/numerics
+- boundary contract violation allowing raw containers into numerics
 - missing tests for behavior-changing work
 
 2. `high`
@@ -90,9 +89,9 @@ Critical: <n> | High: <n> | Medium: <n> | Low: <n>
   - Fix: `<concrete action>`
 
 ## Boundary Contract Check
-- Pipeline canonical-input-only: ✅ / ❌
+- Profile contract honored (`compact-workflow` or `modular-domain`): ✅ / ❌
 - Numerics array/PyTree-only: ✅ / ❌
-- CLI/ingress parsing isolated: ✅ / ❌
+- Validation/conversion before numerics dispatch: ✅ / ❌
 
 ## Decision
 `APPROVED FOR NEXT PHASE` or `BLOCKED - FIX REQUIRED`

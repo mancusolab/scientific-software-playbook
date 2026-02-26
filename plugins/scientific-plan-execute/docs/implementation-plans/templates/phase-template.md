@@ -16,6 +16,10 @@
 - Profile: `minimal` | `api-cli` | `numerics` | `inference` | `full`
 - Why this profile:
 
+## Architecture Profile
+- Profile: `compact-workflow` | `modular-domain`
+- Why this profile:
+
 ## Tasks
 
 <!-- START_TASK_1 -->
@@ -74,6 +78,7 @@
    - `scientific-cli-api-reviewer`
    - `scientific-inference-algorithm-reviewer`
 5. Resolve blocking findings before phase status is `completed`.
+6. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
 
 ## Completion Checklist
 - [ ] All task-level failing tests observed before implementation.

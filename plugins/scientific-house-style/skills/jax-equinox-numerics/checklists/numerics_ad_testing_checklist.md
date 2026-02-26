@@ -18,7 +18,7 @@ Use this for solver implementation and verification.
 ## Custom AD
 - [ ] For mixed PyTrees/Modules, custom AD uses `eqx.filter_custom_jvp`/`eqx.filter_custom_vjp`.
 - [ ] JVP/VJP calls on PyTree inputs use `eqx.filter_jvp`/`eqx.filter_vjp`.
-- [ ] Tangent-path solves use `throw=True` when failures cannot be returned through a result channel.
+- [ ] Tangent-path solves use an explicit failure contract (`throw=True` or equivalent fail-fast behavior) when failures cannot be returned through a status channel.
 - [ ] Custom primitives include abstract_eval + JVP + transpose.
 - [ ] Nondifferentiable state/options/metadata are guarded (`eqxi.nondifferentiable` / `eqxi.nondifferentiable_backward`).
 

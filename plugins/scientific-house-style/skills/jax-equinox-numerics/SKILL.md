@@ -117,17 +117,17 @@ Use these snippets as implementation starters when they match the task.
 - Don’t: Reimplement generic solver loops unless introducing a new algorithm.
 - Why: Reuses mature APIs for results, failure signaling, and transform compatibility.
 
-### Rule: Handle failures through structured result channels
-- Do: Default to structured result/status channels and branch on `result` at clear boundary points.
-- Do: Keep failure handling explicit in return values instead of threading exception toggles through every API.
-- Do: Treat `throw=True`/`throw=False` as advanced, opt-in behavior for specialized use cases only.
-- Don’t: Assume convergence or silently ignore non-success statuses.
-- Don’t: Add `throw` options unless a concrete requirement demands hard-fail behavior.
-- Why: Solver failures are normal control flow; result channels keep most implementations simpler and easier to maintain.
+### Rule: Pick one failure contract per numerics surface
+- Do: use structured result/status channels when callers must recover/branch on solver outcomes.
+- Do: use exception-first semantics when fail-fast behavior is desired for the workflow.
+- Do: keep the chosen contract explicit, documented, and tested.
+- Don’t: assume convergence or silently ignore solver failures.
+- Don’t: mix multiple failure channels by default unless an integration requirement demands it.
+- Why: explicit single-channel contracts reduce accidental complexity.
 
 ### Rule: Raise early at boundaries; keep traced kernels exception-free
 - Do: Perform structural/range/input validation before entering the JIT boundary and raise actionable Python exceptions there.
-- Do: Inside traced numerics, use `result` channels and `eqx.error_if` for runtime checks.
+- Do: Inside traced numerics, use JAX-compatible checks (`result` channels and/or `eqx.error_if`) for runtime checks.
 - Don’t: Raise Python exceptions from JIT-compiled loops or solver steps.
 - Why: Boundary validation should fail fast, while traced execution requires JAX-compatible control flow.
 
@@ -138,7 +138,7 @@ Use these snippets as implementation starters when they match the task.
 
 ## Pressure-test scenarios (for `testing-skills-with-subagents`)
 
-Use these prompts to harden boundary-conversion and exception-policy compliance:
+Use these prompts to harden boundary-conversion and failure-policy compliance:
 
 1. Dataframe ingress pressure
 ```markdown
@@ -164,7 +164,7 @@ the jitted loop because it is the fastest patch.
 
 Options:
 A) Raise Python exceptions from the traced loop.
-B) Validate earlier at boundaries and use `result`/`eqx.error_if` inside traced numerics.
+B) Validate earlier at boundaries and use JAX-compatible signaling (`result` and/or `eqx.error_if`) inside traced numerics.
 C) Ignore and hope downstream checks catch it.
 
 Choose A, B, or C.

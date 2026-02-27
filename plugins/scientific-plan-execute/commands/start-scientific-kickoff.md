@@ -8,5 +8,5 @@ Use your Skill tool to engage the `scientific-kickoff` skill. Follow it exactly 
 
 Before concluding, follow the skill's "Kickoff Handoff" section exactly and include command-notation next steps:
 - Claude Code: `/start-design-plan <slug>`
-- Codex: `$starting-a-design-plan [plan-slug]`
+- Codex: `$starting-a-design-plan <slug>`
 - Explicitly require `.scientific/kickoff.md` handoff ingestion in that next step.

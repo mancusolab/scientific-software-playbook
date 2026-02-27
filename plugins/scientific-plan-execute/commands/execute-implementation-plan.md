@@ -2,7 +2,7 @@
 description: Execute implementation plan task-by-task with subagents
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task
 model: sonnet
-argument-hint: [absolute-plan-dir] [absolute-working-dir]
+argument-hint: "<absolute-plan-dir> <absolute-working-dir>"
 ---
 
 # Execute Implementation Plan

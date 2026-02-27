@@ -47,7 +47,8 @@ Installation can be done from any directory:
 ## Running Workflows (Claude Code)
 
 Open Claude Code in your scientific project directory, then start:
-- `/start-design-plan <slug>`
+- New project/model-path selection: `/start-scientific-kickoff`
+- Existing project/iteration: `/new-design-plan <slug>`
 
 ## Codex Installation (Native)
 
@@ -98,36 +99,38 @@ Core scientific workflow skills:
 ## Usage Example (Downstream Project)
 
 Claude Code path:
-1. `/start-design-plan <example-slug>`
-2. Use `asking-clarifying-questions` and `brainstorming` to refine scope and alternatives.
-3. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
+1. For fresh-project/model-path tracks, run `/start-scientific-kickoff` first.
+2. Continue with `/start-design-plan <example-slug>` and ingest `.scientific/kickoff.md` when present.
+3. Use `asking-clarifying-questions` and `brainstorming` to refine scope and alternatives.
+4. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
    - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
    - Pass kickoff output (`.scientific/kickoff.md`) into the design flow.
-4. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
-5. `scientific-internet-research-pass` (external/scientific/API claims)
-6. `/validate-design-plan <plan-path> --phase in-review`
-7. `/set-design-plan-status <plan-path> approved-for-implementation`
-8. `/start-implementation-plan <plan-path>`
-9. Start a fresh session/context (recommended).
-10. `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+5. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
+6. `scientific-internet-research-pass` (external/scientific/API claims)
+7. `/validate-design-plan <plan-path> --phase in-review`
+8. `/set-design-plan-status <plan-path> approved-for-implementation`
+9. `/start-implementation-plan <plan-path>`
+10. Start a fresh session/context (recommended).
+11. `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
 
 Codex path:
 1. Invoke `using-plan-and-execute`.
-2. Invoke `starting-a-design-plan`.
-3. Invoke `asking-clarifying-questions` and `brainstorming` during architecture kickoff.
-4. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
+2. For fresh-project/model-path tracks, invoke `scientific-kickoff` first.
+3. Invoke `starting-a-design-plan` and ingest `.scientific/kickoff.md` when present.
+4. Invoke `asking-clarifying-questions` and `brainstorming` during architecture kickoff.
+5. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
    - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
    - Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`.
-5. Invoke `simulation-for-inference-validation` when simulation-based inference checks are in scope.
-6. Invoke `new-design-plan` with slug `<example-slug>` when plan scaffolding is needed.
-7. Invoke `scientific-internet-research-pass` when external claims need citations.
+6. Invoke `simulation-for-inference-validation` when simulation-based inference checks are in scope.
+7. Invoke `new-design-plan` with slug `<example-slug>` when plan scaffolding is needed.
+8. Invoke `scientific-internet-research-pass` when external claims need citations.
    - Delegate `internet-researcher` for general/API internet claims.
    - Delegate `scientific-literature-researcher` for paper-backed method/model support.
-8. Invoke `validate-design-plan` with phase `in-review`.
-9. Invoke `set-design-plan-status` with `approved-for-implementation`.
-10. Invoke `starting-an-implementation-plan`.
-11. Start a fresh session/context (recommended).
-12. Invoke `executing-an-implementation-plan` with absolute implementation plan and working-directory paths.
+9. Invoke `validate-design-plan` with phase `in-review`.
+10. Invoke `set-design-plan-status` with `approved-for-implementation`.
+11. Invoke `starting-an-implementation-plan`.
+12. Start a fresh session/context (recommended).
+13. Invoke `executing-an-implementation-plan` with absolute implementation plan and working-directory paths.
 
 ## Compatibility Policy
 

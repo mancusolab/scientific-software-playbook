@@ -18,10 +18,11 @@ Plugin prerequisite:
 ## Phase Workflow
 
 1. Architecture kickoff
-- Claude Code path: run `/start-design-plan <slug>`.
+- Claude Code path (fresh-project/model-path tracks): run `/start-scientific-kickoff` first, then `/start-design-plan <slug>`.
 - Codex path:
   - Use `using-plan-and-execute` first to choose the correct entrypoint.
-  - Use `starting-a-design-plan` directly (see `AGENTS.md`).
+  - For fresh-project/model-path tracks, run `scientific-kickoff` first.
+  - Then use `starting-a-design-plan` (see `AGENTS.md`).
   - Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
 - Run `scientific-kickoff` for fresh-project/model-path tracks to force one mode (`provided-model`, `suggested-model`, `existing-codebase-port`) before full architecture expansion.
 - Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`; design workflow should ingest this handoff when present.

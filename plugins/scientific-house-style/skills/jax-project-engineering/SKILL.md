@@ -53,6 +53,22 @@ Use these snippets as implementation starters when they match the task.
 - During implementation: keep public API shape, docs style, and error semantics consistent with this skill.
 - Before completion: remove placeholders and verify snippet-derived code is fully integrated.
 
+## Scope boundary (authoritative split)
+
+This skill is authoritative for project-level engineering contracts:
+- public API stability and compatibility policy
+- CLI/user-facing interface contracts
+- docs/docstring policy
+- type-checking and CI gates
+- packaging/versioning/serialization policy
+
+This skill is not the source of truth for numerics runtime semantics. For:
+- JIT/PyTree/static-dynamic rules
+- solver failure-channel semantics inside numerics surfaces
+- traced-kernel error signaling (`result`/`eqx.error_if`) behavior
+- AD/batching/transform correctness
+use `../jax-equinox-numerics/SKILL.md`.
+
 ## Public API stability
 
 ### Rule: Keep API structure stable and explicit
@@ -65,25 +81,6 @@ Use these snippets as implementation starters when they match the task.
 return out
 ```
 - Allowed break: Major version bump with migration guide.
-
-### Rule: Choose one explicit failure contract per numerics surface
-- Do: Pick either (a) structured status/result channels or (b) exception-first semantics, and document/test it.
-- Do: Use structured `RESULTS`/`Solution` contracts when failures are expected/recoverable and callers branch on non-success states.
-- Do: Use exception-first contracts when fail-fast behavior is the intended product UX and callers should stop on failure.
-- Don’t: mix both channels by default unless a concrete interoperability requirement exists.
-- Why: single-channel contracts reduce wrapper churn and ambiguity.
-- Example:
-```python
-# Option A: structured status channel
-sol = lx.linear_solve(op, b, throw=False)
-if sol.result != lx.RESULTS.successful:
-    ...
-
-# Option B: exception-first fail-fast
-sol = lx.linear_solve(op, b, throw=True)
-return sol.value
-```
-- Allowed break: Tiny internal helpers that are not part of the public API.
 
 ### Rule: Keep one canonical entrypoint per workflow
 - Do: Route each workflow through one stable entrypoint and express variants through typed options/config.
@@ -116,10 +113,11 @@ class GWASError(ValueError):
 - Don’t: Subclass or override concrete modules.
 - Why: Aligns with Equinox abstract‑or‑final pattern and avoids override ambiguity.
 
-### Rule: Prefer Lineax/Optimistix primitives over bespoke solver kernels
-- Do: Build linear/nonlinear solver APIs on top of `lineax.linear_solve` and `optimistix` entry points (`root_find`, `least_squares`, `minimise`) when they fit.
-- Don’t: Reimplement generic solver loops unless introducing a genuinely new algorithm.
-- Why: Reuses mature solver behavior (`throw`, `result`, transforms) and reduces maintenance risk.
+### Rule: Keep numerics policy references explicit at API boundaries
+- Do: Reference the active numerics policy/contract docs when API behavior depends on numerics semantics.
+- Do: Keep API docs aligned with the numerics skill's chosen failure/result semantics.
+- Don’t: redefine numerics semantics in this skill.
+- Why: one numerics authority prevents drift between API docs and runtime behavior.
 
 ## Documentation
 
@@ -141,7 +139,7 @@ class GWASError(ValueError):
 - Why: Reproducibility depends on clear constraints.
 
 ### Rule: Document `throw` behavior across transforms and backends
-- Do: Document how your chosen failure contract behaves under batching (`vmap`) and backend caveats.
+- Do: Document how the numerics contract (defined in `jax-equinox-numerics`) behaves under batching (`vmap`) and backend caveats.
 - Do: when using `throw=True`, document whole-batch failure behavior explicitly.
 - Don’t: Assume identical exception behavior on CPU/GPU/TPU or per-batch isolation.
 - Why: Error propagation can differ by backend, and `vmap` can fail the whole batch.
@@ -229,11 +227,11 @@ if __name__ == "__main__":
 ```
 - Allowed break: Tiny scripts not shipped as part of the library.
 
-### Rule: Validate early at boundaries; keep JITable kernels exception-free
+### Rule: Validate early at boundaries
 - Do: Validate ranges, enums, shape contracts, and file/path assumptions at boundary layers (CLI/public adapters) and raise actionable exceptions there.
-- Do: inside traced numerics, use JAX-compatible signaling (`result` channels and/or `eqx.error_if`) rather than Python `raise`.
-- Don’t: defer basic user-input validation to deep solver internals or raise Python exceptions inside JIT-compiled loops.
-- Why: Boundary failures should be immediate and clear; traced kernels require JAX-compatible error signaling.
+- Don’t: defer basic user-input validation to deep solver internals.
+- Why: Boundary failures should be immediate and clear.
+- Note: traced-kernel semantics and JIT-safe failure behavior are governed by `jax-equinox-numerics`.
 
 ### Rule: Validate and normalize boundary inputs in `main()`
 - Do: Validate numeric ranges, enum-like flags (`dtype`, `device`), and path existence before calling numerics code.
@@ -371,7 +369,7 @@ C) Add one-off now and deprecate later.
 Choose A, B, or C.
 ```
 
-4. Boundary validation vs traced exceptions
+4. Boundary validation ownership
 ```markdown
 IMPORTANT: This is a real scenario. Choose and act.
 
@@ -380,13 +378,13 @@ Invalid `max_steps` sometimes reaches a jitted solver. A teammate suggests raisi
 
 Options:
 A) Raise Python exceptions inside the jitted loop.
-B) Validate and raise at boundary layers; keep traced kernels on JAX-compatible signaling (`result`/`error_if`).
+B) Validate and raise at boundary layers; apply traced-kernel rules from `jax-equinox-numerics`.
 C) Leave it unvalidated and rely on downstream failures.
 
 Choose A, B, or C.
 ```
 
-5. Failure-contract scope pressure
+5. Public API contract scope pressure
 ```markdown
 IMPORTANT: This is a real scenario. Choose and act.
 
@@ -395,7 +393,7 @@ A teammate wants it to return internal solver containers directly "for consisten
 
 Options:
 A) Return internal solver containers from every public helper.
-B) Keep one contract per surface (status-channel or exception-first) and expose domain-oriented outputs at boundaries.
+B) Keep public helper contracts domain-oriented and document numerics-container usage explicitly only where needed.
 C) Return both container and ad-hoc summary everywhere.
 
 Choose A, B, or C.
@@ -408,17 +406,7 @@ Choose A, B, or C.
 - Don’t: Persist opaque state without compatibility notes.
 - Why: Long‑running experiments need stable restore paths.
 
-### Rule: Support explicit fail-fast policy when needed
-- Do: Use `throw=True`/`result.error_if` when the selected contract requires hard-fail semantics in traced code.
-- Do: keep fail-fast behavior explicit and tested.
-- Don’t: raise Python exceptions inside jitted code paths.
-- Why: preserves JAX compatibility while enabling strict failure behavior where required.
-- Example:
-```python
-if throw:
-    sol = result.error_if(sol, sol.result != RESULTS.successful)
-
-if throw:
-    value, status, stats = result.error_if((value, status, stats), status != RESULTS.successful)
-```
-- Allowed break: Non-jitted debugging utilities.
+### Rule: Keep serialization contracts independent of traced-failure internals
+- Do: Persist versioned, domain-level state and explicit status fields needed for restore and reproducibility.
+- Don’t: require callers to understand traced-kernel internals to restore checkpoints.
+- Why: serialization contracts should remain stable even when numerics internals evolve.

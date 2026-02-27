@@ -26,6 +26,23 @@ JAX + Equinox + Lineax + Optimistix.
 This file is the entrypoint. Keep it lightweight and load focused references for
 implementation details.
 
+## Scope boundary (authoritative split)
+
+This skill is authoritative for numerics runtime semantics:
+- JIT boundaries and static/dynamic partitioning
+- PyTree and dtype stability in traced execution
+- solver/result/failure semantics for numerics surfaces
+- traced-kernel error signaling (`result` channels and/or `eqx.error_if`)
+- AD/batching/transform correctness checks
+
+This skill is not the source of truth for project-level engineering policy. For:
+- API lifecycle/versioning/deprecation policy
+- CLI UX/exit-code/stdout-stderr contract
+- documentation and docstring style standards
+- type-checking and CI/release gates
+- packaging and distribution policy
+use `../jax-project-engineering/SKILL.md`.
+
 ## Path Contract (Unambiguous)
 
 1. All relative paths in this file resolve from this skill directory (the directory containing this `SKILL.md`).
@@ -214,5 +231,5 @@ to reduce instruction weight and improve retrieval quality.
 
 ## See also: project engineering
 
-For API stability, documentation style, type checking, CLI patterns, CI gates, and
-serialization guidance, see `../jax-project-engineering/SKILL.md`.
+For project-level policy (API lifecycle, CLI contracts, docs standards, type/CI gates,
+and serialization packaging), see `../jax-project-engineering/SKILL.md`.

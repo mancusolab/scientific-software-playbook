@@ -51,8 +51,8 @@ Draft
 | --- | --- | --- | --- | --- |
 | 1 | `phase_01.md` | | `minimal` | |
 
-## Simulation Phase Requirement (When In Scope)
-- If design plan simulation scope is `yes`, include at least one dedicated simulation-validation phase file:
+## Simulation-Validation Phase Requirement (When In Scope)
+- If synthetic-data validation scope is `yes` in the design plan, include at least one dedicated simulation-validation phase file:
   - Example: `phase_0X_simulation_validation.md` or a scoped `phase_0X.md` following `phase-simulation-validation-template.md`.
 - That phase must cover:
   - `simulate` interface implementation
@@ -72,7 +72,7 @@ Draft
 - boundary contracts -> `scientific-architecture-reviewer`
 - numerics changes -> `numerics-interface-auditor`
 - CLI/API changes -> `scientific-cli-api-reviewer`
-- inference/solver changes -> `scientific-inference-algorithm-reviewer`
+- inference-engine or deterministic-solver changes -> `scientific-inference-algorithm-reviewer`
 4. Evaluate boundary findings against the selected architecture profile, not an implicit deep-layering assumption.
 5. Resolve all blocking findings before continuing.
 

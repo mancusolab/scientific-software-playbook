@@ -78,7 +78,7 @@
    - boundary-contract change -> `scientific-architecture-reviewer`
    - numerics change -> `numerics-interface-auditor`
    - CLI/API change -> `scientific-cli-api-reviewer`
-   - objective/update-rule/solver/inference change -> `scientific-inference-algorithm-reviewer`
+   - objective/update-rule/deterministic-solver/inference-engine change -> `scientific-inference-algorithm-reviewer`
 4. Compute final specialized reviewer list deterministically in fixed order:
    - `scientific-architecture-reviewer`
    - `numerics-interface-auditor`

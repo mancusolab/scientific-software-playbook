@@ -1,15 +1,18 @@
 # Scientific Software Playbook (Claude Code + Codex)
 
-Scientific Software Playbook is a plugin collection for scientific labs and research teams building modeling, simulation, and inference software.
+Scientific Software Playbook is a plugin collection for scientific labs and research teams building software that performs inference for explicit scientific models.
 
 The goal is simple: make scientific software development more reliable by adding structure where it matters most.
 - decide model path and assumptions early
 - validate design before implementation
 - execute in phases with explicit test and review evidence
 
+It is optimized for turning a scientific model or existing scientific implementation into robust software with explicit design decisions, staged implementation, and evidence-backed review.
+It is not a general workflow for exploratory analysis, one-off notebooks, or every kind of scientific computing task.
+It is also heavily tuned for Python/JAX implementations; additional implementation languages are currently out of scope,
+but will be carefully included after additional testing and validation.
 
 ## What you get
-
 
 This repository ships three plugins that work together:
 
@@ -43,18 +46,21 @@ Implementation planning  ───────► Implementation plan (phase fil
 Phase execution loop  ──────────► Working code (reviewed & committed)
 ```
 
-## Kickoff: for starting "fresh" scientific software
+## Kickoff: when model provenance or parity still needs to be decided
 
 ### What kickoff does
 
 `/start-scientific-kickoff` (Claude Code) and `$scientific-kickoff` (Codex) select exactly one scientific delivery path before design planning continues.
+
+Use kickoff when you still need to decide where the model comes from or what existing implementation you are matching.
+If the model and software contract are already established and you are working on a scoped feature, start with design planning instead.
 
 Kickoff forces a single mode:
 1. `provided-model`: you already have model equations/artifacts and (optionally) update rules.
 2. `suggested-model`: the system proposes model-family options with citations, and you explicitly select one.
 3. `existing-codebase-port`: you provide an existing source implementation and define behavior/parity targets.
 
-Kickoff writes `.scientific/kickoff.md` with required readiness state (`model_path_decided`, codebase-investigation state for ports, and simulation-contract state when simulation is in scope). Handover instructions for the next phase are provided by kickoff itself.
+Kickoff writes `.scientific/kickoff.md` with required readiness state (`model_path_decided`, codebase-investigation state for ports, and synthetic-data-validation-contract state when synthetic-data validation is in scope). Handover instructions for the next phase are provided by kickoff itself.
 
 ### Example 1: choosing a model path before implementation
 
@@ -74,8 +80,8 @@ Recommended kickoff option:
 
 > "Add simulation-based calibration checks to the current inference workflow and keep existing CLI behavior stable."
 
-Recommended kickoff option:
-- `suggested-model`
+Recommended entrypoint:
+- Start with design planning directly; kickoff is not required
 
 ## Installation
 For full setup and troubleshooting, use `docs/INSTALLATION.md`.

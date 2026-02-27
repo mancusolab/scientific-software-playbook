@@ -40,8 +40,8 @@ Required inputs:
 7. Verify existing-codebase-port investigation findings (if used) include `scientific-codebase-investigation-pass` evidence.
 8. Verify mathematical sanity checks are present for provided/selected model artifacts.
 9. Verify simulation contract exists and is aligned to inferential assumptions when simulation is in scope.
-10. Verify solver strategy is explicit when update rules are provided.
-11. Verify translation feasibility to existing solvers (Optimistix/Lineax) is documented when applicable.
+10. Verify solver or inference-engine strategy is explicit when update rules or sampling workflows are provided.
+11. Verify translation feasibility to existing numerical engines (for example Optimistix, Lineax, or BlackJAX) is documented when applicable.
 12. Verify research triggers were evaluated for uncertain external facts.
 13. Verify external claims are cited with source URLs, access dates, and confidence.
 14. Find boundary leaks where raw source containers cross into numerics without prior validation/conversion.
@@ -67,7 +67,7 @@ Required inputs:
 8. If `existing-codebase-port` path is used, verify `scientific-codebase-investigation-pass` findings are captured with file-level evidence.
 9. Verify mathematical concerns are resolved or explicitly tracked/accepted as risk.
 10. If simulation is in scope, verify `simulate` contract inputs/outputs/RNG controls and validation experiments are explicit.
-11. If explicit update rules are present, verify solver strategy choice and translation-feasibility analysis are captured.
+11. If explicit update rules or sampling workflows are present, verify solver or inference-engine choice and translation-feasibility analysis are captured.
 12. Verify external research section exists when triggers are present and citations are primary-source aligned.
 13. Identify selected architecture profile and discover corresponding boundaries/entrypoints.
 14. Trace one full path from external input boundary to numerics and output.
@@ -88,7 +88,7 @@ Required inputs:
 
 ## Core Skill Inputs
 
-Use these skill IDs when evaluating architecture and solver decisions:
+Use these skill IDs when evaluating architecture and solver or inference-engine decisions:
 1. `starting-a-design-plan`
 2. `jax-equinox-numerics` (from `scientific-house-style`)
 3. `jax-project-engineering` (from `scientific-house-style`)
@@ -110,8 +110,8 @@ Use these skill IDs when evaluating architecture and solver decisions:
 10. If `existing-codebase-port` is selected but investigation findings are missing, raise at least `high` severity.
 11. If simulation is in scope and simulation contract/alignment checks are missing, raise at least `high` severity.
 12. If mathematical inconsistencies are untracked or ignored, raise at least `high` severity.
-13. If explicit update rules exist and solver strategy is undocumented, raise at least `high` severity.
-14. If custom solver is chosen without documented rationale against existing solvers, raise at least `medium` severity.
+13. If explicit update rules or sampling workflows exist and solver or inference-engine strategy is undocumented, raise at least `high` severity.
+14. If a custom numerical engine is chosen without documented rationale against existing options, raise at least `medium` severity.
 15. If numerics accepts raw containers without boundary validation/conversion, raise `critical`.
 16. If multi-source tabular inputs feed numerics and key-based reconciliation policy is missing, raise at least `high` severity.
 17. If multi-source tabular reconciliation relies on row position instead of explicit keys, raise `critical`.
@@ -127,7 +127,7 @@ For each finding include:
 4. Why it matters: risk to correctness/performance/reproducibility
 5. Evidence: missing or present command/test proof
 6. Mathematical impact: if applicable, note inference/model risk
-7. Solver impact: if applicable, note translation/custom-solver implications
+7. Solver/inference-engine impact: if applicable, note translation/custom-engine implications
 8. Fix: boundary-corrected remediation
 
 ## Review Output Contract

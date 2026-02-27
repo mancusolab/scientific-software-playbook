@@ -36,10 +36,12 @@ Optional inputs:
 ## Responsibilities
 
 1. Verify implemented objective functions and update rules match approved design artifacts.
-2. Verify solver strategy fidelity:
-- custom updates vs translation choice matches the plan
-- convergence/termination criteria are explicit
-- failure semantics are explicit (no silent invalid convergence)
+2. Verify inference-engine fidelity:
+- deterministic optimization or nonlinear-solve choice matches the plan when the workflow is objective/update driven
+- linear-solver usage matches the plan when linear subproblems are explicit
+- sampling-engine choice matches the plan when the workflow is posterior sampling
+- convergence/termination criteria or sampler diagnostics are explicit
+- failure semantics are explicit (no silent invalid convergence, adaptation breakdown, or invalid sampling output)
 3. Verify inferential assumptions are preserved through implementation changes.
 4. Verify algorithm-specific validation coverage:
 - failing-test-first evidence for behavior changes
@@ -52,11 +54,11 @@ Optional inputs:
 
 1. Load the design plan and extract:
 - model acquisition path
-- solver strategy decision
+- solver or inference-engine decision
 - simulation scope and validation requirements
 2. Run provided verification commands first.
 3. Inspect algorithm files and tests for objective/update-rule fidelity.
-4. Inspect solver config/termination and failure-handling behavior.
+4. Inspect engine config, termination/diagnostic handling, and failure behavior.
 5. Check simulation-validation alignment when scope is `yes`.
 6. Report findings with severity, evidence, and remediation.
 
@@ -67,10 +69,10 @@ Optional inputs:
 - algorithm can silently return invalid/non-finite outputs without guarded failure semantics
 
 2. `high`
-- solver strategy changed without plan update or rationale
+- solver or inference-engine strategy changed without plan update or rationale
 - missing tests for behavior-changing algorithm updates
 - simulation validation required by scope but missing/placeholder-only checks
-- convergence diagnostics or termination behavior is ambiguous for production use
+- convergence diagnostics, sampler diagnostics, or termination behavior is ambiguous for production use
 
 3. `medium`
 - incomplete edge-case testing for constraints or non-convergence paths
@@ -97,8 +99,8 @@ Critical: <n> | High: <n> | Medium: <n> | Low: <n>
 
 ## Algorithm Contract Check
 - Objective/update-rule fidelity: ✅ / ❌
-- Solver strategy fidelity: ✅ / ❌
-- Convergence/failure semantics explicit: ✅ / ❌
+- Solver/inference-engine fidelity: ✅ / ❌
+- Termination/diagnostic/failure semantics explicit: ✅ / ❌
 - Simulation-validation alignment (if in scope): ✅ / ❌
 
 ## Findings

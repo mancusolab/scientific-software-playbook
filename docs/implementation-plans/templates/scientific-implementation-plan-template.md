@@ -64,7 +64,7 @@ Draft
 - boundary contracts -> `scientific-architecture-reviewer`
 - numerics changes -> `numerics-interface-auditor`
 - CLI/API changes -> `scientific-cli-api-reviewer`
-- inference/solver changes -> `scientific-inference-algorithm-reviewer`
+- inference-engine or deterministic-solver changes -> `scientific-inference-algorithm-reviewer`
 4. Resolve all blocking findings before continuing.
 
 ## Execution Log

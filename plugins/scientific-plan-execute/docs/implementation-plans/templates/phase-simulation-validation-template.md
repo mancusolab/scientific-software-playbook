@@ -34,7 +34,7 @@
 <!-- START_TASK_1 -->
 ### Task 1: Implement `simulate` Interface
 - Inputs:
-  - parameter/config inputs from design simulation contract
+  - parameter/config inputs from the design synthetic-data validation contract
   - seed/PRNG input
 - Deliverables:
   - callable `simulate` entrypoint

@@ -5,6 +5,10 @@ Audience and intent:
 2. It defines implementation-facing contracts, internal workflow rules, and source-of-truth plugin paths.
 3. For user-facing installation and usage guidance on GitHub, use `README.md`.
 
+Implementation-language scope:
+1. This repository is currently tuned for Python/JAX scientific software workflows.
+2. Additional implementation languages are currently out of scope for workflow contracts, house-style guidance, and reviewer expectations unless explicitly added later.
+
 This repository supports one operational mode:
 
 1. Global install mode (install into `CODEX_HOME` and run workflows directly in downstream projects).
@@ -151,28 +155,29 @@ Run a downstream project:
 
 1. Choose workflow entrypoint with `using-plan-and-execute`.
 2. For general design requests, start with `starting-a-design-plan` (or `start-design-plan` command wrapper). Use `new-design-plan` when plan scaffolding is needed directly.
-3. For fresh-project/model-path tracks, run `scientific-kickoff` early to choose exactly one model path:
+3. Run `scientific-kickoff` only when model provenance, model selection, or existing-codebase parity targets must be established before design can proceed. In those cases choose exactly one model path:
    - `provided-model` (user-supplied model/update rules), or
    - `suggested-model` (literature-backed model candidates + explicit user selection), or
    - `existing-codebase-port` (source-pinned local directory or GitHub URL with parity targets).
    - when `existing-codebase-port` is selected, run `scientific-codebase-investigation-pass` and capture file-level findings before approval.
-4. Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`; design orchestration must ingest kickoff state/evidence when present.
-5. Set required workflow states before approval:
+4. If the model/software contract is already established and the request is a scoped feature or iteration, skip kickoff and proceed directly to `starting-a-design-plan`.
+5. Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`; design orchestration must ingest kickoff state/evidence when present.
+6. Set required workflow states before approval:
    - `model_path_decided: yes`
    - `codebase_investigation_complete_if_port: yes|n/a`
    - `simulation_contract_complete_if_in_scope: yes|n/a`
-6. Define simulation scope for inference validation:
+7. Define simulation scope for inference validation:
    - use `simulation-for-inference-validation` when simulation-based checks are required.
-7. Validate in review phase with `validate-design-plan` (`phase=in-review`).
-8. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
-9. Create implementation phases and traceability with `starting-an-implementation-plan` (or `start-implementation-plan` command wrapper).
-10. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
-11. During phase execution, apply layer skills in order when relevant:
+8. Validate in review phase with `validate-design-plan` (`phase=in-review`).
+9. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
+10. Create implementation phases and traceability with `starting-an-implementation-plan` (or `start-implementation-plan` command wrapper).
+11. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
+12. During phase execution, apply layer skills in order when relevant:
    - `jax-equinox-numerics` (from `scientific-house-style`)
    - `test-driven-development` for behavior-changing work
    - `systematic-debugging` for failing tests or persistent blockers
    - `using-git-worktrees` when branch/worktree isolation is required
-12. Before phase or branch completion:
+13. Before phase or branch completion:
    - run `requesting-code-review` for reviewer/fix closure to zero findings
    - run `verification-before-completion` to ensure fresh, command-level completion evidence
 
@@ -180,7 +185,7 @@ Run a downstream project:
 
 1. No implementation before explicit design-plan approval.
 2. If model artifacts exist, mathematical sanity checks are required.
-3. If explicit update rules exist, solver strategy must be documented.
+3. If explicit update rules or inference-engine choices are in scope, the numerical engine strategy must be documented.
 4. Approval transitions must pass strict readiness validation.
 5. Completion claims require TDD evidence and fresh verification output.
 6. Implementation execution requires AC-to-task-to-test traceability.
@@ -189,7 +194,7 @@ Run a downstream project:
    - literature-backed model evidence plus user selection for `suggested-model`
    - source pin plus behavior/parity inventory for `existing-codebase-port`
    - completed `scientific-codebase-investigation-pass` findings with file-level evidence for `existing-codebase-port`
-8. If simulation-based validation is in scope, architecture approval requires an explicit simulation contract aligned to inferential assumptions.
+8. If simulation-based validation is in scope, architecture approval requires an explicit synthetic-data validation contract aligned to inferential assumptions.
 9. Architecture approval requires required workflow states:
    - `model_path_decided: yes`
    - `codebase_investigation_complete_if_port: yes|n/a` (as applicable)

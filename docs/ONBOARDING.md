@@ -1,6 +1,7 @@
 # Scientific Software Playbook Onboarding
 
-Use this workflow when starting from scratch or adding a major feature.
+Use this workflow when starting from scratch or adding a major feature in software that performs inference for an explicit scientific model.
+This playbook is currently tuned for Python/JAX implementations; additional implementation languages are out of scope for the workflow and house-style guidance in this repository.
 
 Before running this flow on a fresh clone, complete setup in:
 `docs/INSTALLATION.md`
@@ -18,22 +19,22 @@ Plugin prerequisite:
 ## Phase Workflow
 
 1. Architecture kickoff
-- Claude Code path (fresh-project/model-path tracks): run `/start-scientific-kickoff` first, then `/start-design-plan <slug>`.
+- Claude Code path (when model provenance or existing-codebase parity still needs to be established): run `/start-scientific-kickoff` first, then `/start-design-plan <slug>`.
 - Codex path:
   - Use `using-plan-and-execute` first to choose the correct entrypoint.
-  - For fresh-project/model-path tracks, run `scientific-kickoff` first.
-  - Then use `starting-a-design-plan` (see `AGENTS.md`).
+  - Run `scientific-kickoff` first only when model provenance, model selection, or existing-codebase parity must be established.
+  - Otherwise start with `starting-a-design-plan` (see `AGENTS.md`).
   - Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
-- Run `scientific-kickoff` for fresh-project/model-path tracks to force one mode (`provided-model`, `suggested-model`, `existing-codebase-port`) before full architecture expansion.
+- Run `scientific-kickoff` only when the project still needs one mode (`provided-model`, `suggested-model`, `existing-codebase-port`) selected before full architecture expansion.
 - Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`; design workflow should ingest this handoff when present.
 - Run `asking-clarifying-questions` to resolve contradictions and narrow scope.
 - Run `brainstorming` to compare alternatives and validate a direction.
-- For fresh-project/model-path tracks, choose one model path early:
+- When model provenance or model selection is still unresolved, choose one model path early:
   - `provided-model`: user supplies model artifacts/update rules.
   - `suggested-model`: planner proposes literature-backed model options and user selects.
   - `existing-codebase-port`: user supplies a local directory or GitHub URL and defines a pinned source + behavior parity contract.
   - for `existing-codebase-port`, run `scientific-codebase-investigation-pass` and record file-level findings before approval.
-- If inference validation should include synthetic-data checks, define simulation contract:
+- If inference validation should include synthetic-data checks, define a synthetic-data validation contract:
   - Claude Code: `/start-simulation-validation <plan-path>`
   - Codex: invoke `simulation-for-inference-validation`
 - If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
@@ -65,7 +66,7 @@ Plugin prerequisite:
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/phase_XX.md`
-  - simulation phase file based on the installed template (when simulation scope is `yes`)
+  - simulation-validation phase file based on the installed template (when synthetic-data validation scope is `yes`)
   - absolute implementation plan path for execution handoff
 - Recommended: start a fresh session/context before execution.
 
@@ -112,7 +113,7 @@ Plugin prerequisite:
   - delegate `internet-researcher` for general/API web evidence
   - delegate `scientific-literature-researcher` for paper-backed support
 
-6. Define simulation contract when in scope:
+6. Define a synthetic-data validation contract when in scope:
 - Claude Code: `/start-simulation-validation <plan-path>`
 - Codex: invoke `simulation-for-inference-validation`
 

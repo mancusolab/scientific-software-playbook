@@ -25,12 +25,16 @@ Apply this translation before following the remaining steps.
 
 Route each request into the correct lifecycle entrypoint before doing work.
 
+This router is optimized for scientific software that implements inference for an explicit model.
+It is not a general-purpose workflow for exploratory analysis or open-ended scientific investigation.
+
 ## Entry Decision Table
 
 | Request Type | First Action | Follow-On |
 |---|---|---|
 | General design request in an existing project | Use `starting-a-design-plan` | Use `new-design-plan` when scaffolding a dated plan file is needed |
 | Fresh-project architecture start with model-path decisions | Use `scientific-kickoff` | Then continue with `starting-a-design-plan` and pass kickoff output (`.scientific/kickoff.md`) |
+| Existing project with established model/software contract and a scoped feature request | Use `starting-a-design-plan` | Only introduce kickoff if model provenance or parity expectations become unclear |
 | User asks for model suggestions with citations | Use `scientific-kickoff` (`suggested-model`) | Run `scientific-internet-research-pass` when evidence is uncertain |
 | User asks to port from an existing codebase | Use `scientific-kickoff` (`existing-codebase-port`) | Run `scientific-codebase-investigation-pass` and capture file-level findings |
 | Approved design plan is ready for task breakdown | Use `starting-an-implementation-plan` | Continue to `executing-an-implementation-plan` in fresh context |
@@ -38,13 +42,13 @@ Route each request into the correct lifecycle entrypoint before doing work.
 
 ## Kickoff Scope Rule
 
-`scientific-kickoff` is for fresh-project/model-path tracks. It is not required for every general design request.
+`scientific-kickoff` is for cases where model provenance or parity expectations must be established before design can proceed. It is not required for every design request.
 
 Run kickoff when any of these apply:
 - model path is not yet selected
 - user requests model-family suggestion/selection
 - user requests existing-codebase porting
-- architecture readiness will be validated for scientific approval
+- parity expectations against an existing implementation must be defined before architecture approval
 
 If none apply, continue with normal design orchestration and only introduce kickoff if scope changes.
 
@@ -59,4 +63,4 @@ When kickoff is used, treat `.scientific/kickoff.md` as handoff input to `starti
 
 ## Default Recommendation
 
-When uncertain, start with `starting-a-design-plan`. If model-path gating becomes necessary, run `scientific-kickoff`, then resume design with kickoff handoff.
+When uncertain, start with `starting-a-design-plan`. If the conversation reveals unresolved model provenance, model selection, or port-parity requirements, run `scientific-kickoff`, then resume design with kickoff handoff.

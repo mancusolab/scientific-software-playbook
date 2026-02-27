@@ -1,6 +1,6 @@
 ---
 name: validate-design-plan
-description: Use when validating scientific design-plan readiness in Codex or Claude Code for in-review or approval phases, including model-path and simulation-contract gating checks, without requiring users to run validation scripts directly.
+description: Use when validating scientific design-plan readiness in Codex or Claude Code for in-review or approval phases, including model-path and synthetic-data-validation-contract gating checks, without requiring users to run validation scripts directly.
 ---
 
 # Validate Design Plan
@@ -54,7 +54,7 @@ Runs design-plan readiness checks and reports pass/fail gaps.
 - placeholder content status
 - required workflow-state gating failures (for example `model_path_decided`, `codebase_investigation_complete_if_port`, `simulation_contract_complete_if_in_scope`)
 - model-path/evidence gating failures (for example missing model-path decision, suggested-model selection without citations, or existing-codebase-port source pin/parity/investigation gaps)
-- simulation gating failures (for example simulation scope `yes` without explicit simulate contract or validation experiments)
+- synthetic-data-validation gating failures (for example validation scope `yes` without explicit simulate contract or validation experiments)
 
 ## Output
 

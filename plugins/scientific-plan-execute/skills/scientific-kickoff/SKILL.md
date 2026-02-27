@@ -23,6 +23,9 @@ Apply this translation before following the remaining steps.
 
 Select exactly one kickoff mode and capture the minimum scientific contract needed for the rest of the loop.
 
+Use kickoff when the project still needs an explicit decision about model provenance, model selection, or existing-codebase parity targets before architecture planning can stabilize.
+Do not use kickoff for every existing-project feature request when the model/software contract is already established.
+
 Allowed modes:
 1. `provided-model`
 2. `suggested-model`
@@ -50,7 +53,7 @@ If a design plan file already exists, mirror this kickoff output into its workfl
 Collect and record:
 - model source(s) (file path, URL, or pasted equations)
 - update/inference rules (if provided)
-- solver preference (custom updates vs existing solvers)
+- deterministic solver or inference-engine preference (for example custom updates, Optimistix, Lineax subproblems, or BlackJAX sampling)
 - known mathematical risks/unknowns
 
 Set state:

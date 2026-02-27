@@ -165,10 +165,29 @@ in the same layer unless a boundary contract explicitly requires conversion.
 - Don’t: Use hidden global RNG state.
 - Why: Determinism across `jit`/`vmap`/`scan` depends on explicit key flow.
 
-### Rule: Prefer Lineax/Optimistix primitives for solver APIs
-- Do: Build linear/nonlinear solves using Lineax/Optimistix entry points first.
-- Don’t: Reimplement generic solver loops unless introducing a new algorithm.
-- Why: Reuses mature APIs for results, failure signaling, and transform compatibility.
+### Rule: Choose the right numerical engine family for the task
+- Do: distinguish among linear solves, deterministic nonlinear/optimization routines, and sampling-based inference before selecting libraries or API shapes.
+- Do: treat variational inference and other objective-minimizing approximations as deterministic optimization work, not as sampling.
+- Don't: use generic "solver" language when the implementation contract is actually posterior sampling.
+- Why: linear algebra, optimization, and sampling have different state models, diagnostics, and output contracts.
+
+### Rule: Prefer Lineax for linear solves
+- Do: use Lineax first for linear systems, operator-based regression subproblems, and linear steps inside larger algorithms.
+- Don't: hand-roll generic linear solve code unless the algorithm is genuinely novel.
+- Why: Lineax gives operator-centric APIs, explicit result handling, and structure-aware solver choices.
+
+### Rule: Prefer Optimistix or custom methods for deterministic optimization/nonlinear solves
+- Do: use Optimistix entry points first for root finding, least squares, minimization, and other deterministic update loops.
+- Do: place variational inference and similar objective-driven approximations in this bucket unless there is a clear reason not to.
+- Don’t: reimplement generic nonlinear solver loops unless introducing a new algorithm.
+- Why: deterministic optimization needs mature failure signaling, adjoint support, and explicit termination behavior.
+
+### Rule: Prefer BlackJAX for sampling-based inference workflows
+- Do: treat MCMC/HMC/NUTS-style workflows as sampling engines with posterior-draw outputs and sampler diagnostics.
+- Do: use BlackJAX first when the primary contract is posterior sampling rather than point estimation.
+- Do: make chain count, warmup/adaptation, sampling length, PRNG splitting, and diagnostics part of the public contract.
+- Don’t: describe sampling workflows as mere "solver" calls or collapse them into optimization terminology.
+- Why: samplers have different correctness signals: diagnostics, adaptation behavior, and posterior sample contracts rather than convergence to a single optimum.
 
 ### Rule: Pick one failure contract per numerics surface
 - Do: use structured result/status channels when callers must recover/branch on solver outcomes.
@@ -188,6 +207,12 @@ in the same layer unless a boundary contract explicitly requires conversion.
 - Do: Test JVP/VJP vs finite differences under JIT and mapped execution.
 - Don’t: Treat successful forward values as sufficient verification.
 - Why: Most regressions in numerics show up first in gradients and batching semantics.
+
+### Rule: Treat sampler state and sampler outputs as first-class contracts
+- Do: specify sampler inputs/outputs explicitly: initial state, warmup/adaptation state, posterior draws, diagnostics, and reproducibility metadata.
+- Do: document what constitutes a warning versus a hard failure (for example, divergences, invalid log density, or adaptation breakdown).
+- Don’t: return unlabeled arrays of samples without chain/draw/parameter semantics and diagnostic context.
+- Why: inference users need interpretable posterior artifacts, not just raw tensors.
 
 ## Pressure-test scenarios (for `testing-skills-with-subagents`)
 
@@ -235,6 +260,10 @@ Load only the files relevant to your task.
   Covers operator-centric linear solves, `AutoLinearSolver(well_posed=...)`, trusted tags,
   and nonlinear solve APIs (`root_find`, `least_squares`, `minimise`) with failure handling.
 
+- `references/blackjax_sampling_patterns.md`
+  Covers chain-axis structure, warmup/adaptation contracts, PRNG splitting, diagnostics,
+  and posterior-sample output conventions for sampling-based inference.
+
 - `references/ad_checkpointing_callbacks.md`
   Covers Equinox AD wrappers, tangent-path failure rules, checkpointing, callback guidance,
   custom primitive helpers, and AD-focused test/diagnostic patterns.
@@ -252,6 +281,9 @@ load `snippets/abc_module_pattern.py` and `references/jit_pytree_controlflow.md`
 
 If the task is primarily about linear/nonlinear solver API design or solver result handling,
 load `references/lineax_optimistix_patterns.md` first.
+
+If the task is primarily about sampling-based inference, chain management, warmup/adaptation,
+or posterior-sample contracts, load `references/blackjax_sampling_patterns.md` first.
 
 If the task is primarily about custom derivatives, checkpointing, callbacks, or primitive
 registration, load `references/ad_checkpointing_callbacks.md` first.

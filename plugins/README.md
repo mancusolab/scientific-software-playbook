@@ -13,6 +13,8 @@ This repository now hosts multiple plugins.
 1. Keep workflow orchestration (`plan-execute`) separate from reusable
    engineering doctrine (`house-style`).
 2. Allow independent install/update cadence while preserving compatibility.
+3. Keep runtime command/handoff conventions centralized in repository-root
+   `README.md` and `AGENTS.md` to avoid drift across plugin docs.
 
 See compatibility matrix and shim timeline in:
 1. `docs/COMPATIBILITY.md`

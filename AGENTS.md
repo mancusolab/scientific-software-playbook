@@ -109,6 +109,23 @@ Script policy:
 1. User-facing script usage is limited to `scripts/install-codex-home.sh`.
 2. All other scripts are internal and agent-invoked from installed plugin paths.
 
+Agent-definition contract:
+1. Every `plugins/scientific-plan-execute/agents/*.md` definition must include `## Mandatory First Actions`.
+2. `## Mandatory First Actions` must appear before `## Responsibilities`.
+3. `## Mandatory First Actions` must be split into:
+   - required skills that must be loaded first
+   - additional skills loaded only when scope indicates they apply
+   - fail action: stop and report `blocked` when required skills cannot be loaded
+
+Handoff snippet contract:
+1. Workflow handoff snippets must use a consistent 3-step structure:
+   - copy command
+   - start fresh context (recommended)
+   - paste/run command in fresh session
+2. Handoff snippets must include both runtime forms when applicable:
+   - Claude Code command wrapper (for example `/start-design-plan`, `/start-implementation-plan`, `/execute-implementation-plan`)
+   - Codex skill/command form (for example `$starting-a-design-plan`, `$starting-an-implementation-plan`, `$executing-an-implementation-plan`)
+
 ## Global Install Mode (Required)
 
 Install globally:

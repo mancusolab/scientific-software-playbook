@@ -9,16 +9,13 @@ execution from architecture through delivery.
 This repository hosts three plugins in one codebase:
 
 1. `scientific-plan-execute`, workflow orchestration for architecture, planning, status gates, and phase execution.
-2. `scientific-research`, eeusable research workflows and delegates:
-3. `scientific-house-style`, reusable JAX/Equinox house-style skills
+2. `scientific-research`, reusable research workflows and delegates.
+3. `scientific-house-style`, reusable JAX/Equinox house-style skills.
 
 Recommended entrypoints (in Claude Code or Codex environment):
 
-1. New project: `scientific-kickoff` (or `/start-scientific-kickoff`)
-   1. Implement (inferential) software based on local document, online reference.
-   2. Implement (inferential) software based on AGENT-based suggestion after questioning user.
-   3. Port existing codebase to JAX-based backend.
-2. Existing project/iteration: `new-design-plan` (or `/new-design-plan <slug>`)
+1. New project/model-path selection: `scientific-kickoff` (or `/start-scientific-kickoff`).
+2. Existing project/iteration: `new-design-plan` (or `/new-design-plan <slug>`).
 
 
    [**Who This Is For**](#who-this-is-for)
@@ -106,6 +103,19 @@ Typical entry points:
 9. Implementation planning: `starting-an-implementation-plan` or `/start-implementation-plan`
 10. Execution: `executing-an-implementation-plan` or `/execute-implementation-plan`
 11. Idea refinement/customization helpers: `flesh-it-out`, `how-to-customize`
+
+## Runtime Handoff Conventions
+
+Workflow handoffs use the same structure across kickoff/design/implementation planning:
+
+1. Copy the command for your runtime.
+2. Start fresh context (recommended).
+3. Paste and run the copied command in the fresh session.
+
+When both runtimes are in scope, provide both command forms:
+
+1. Claude Code command wrapper (for example `/start-design-plan`, `/start-implementation-plan`, `/execute-implementation-plan`)
+2. Codex skill/command form (for example `$starting-a-design-plan`, `$starting-an-implementation-plan`, `$executing-an-implementation-plan`)
 
 ## Documentation Map
 

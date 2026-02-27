@@ -20,12 +20,13 @@ Required inputs:
 ## Mandatory First Actions
 
 1. Load and apply required architecture-review skills before evaluating artifacts:
-- `starting-a-design-plan`
-- `scientific-internet-research-pass` (when uncertain external facts or citations are in scope)
-2. Load conditional skills when review scope indicates they apply:
-- `simulation-for-inference-validation` (simulation/inference-alignment checks)
-- `scientific-codebase-investigation-pass` (required evidence checks for `existing-codebase-port`)
-- `jax-equinox-numerics` and `jax-project-engineering` (numerics/JAX/Equinox boundary + project-engineering checks)
+- `scientific-plan-execute:starting-a-design-plan`
+- `scientific-plan-execute:validate-design-plan`
+2. Load additional project/domain skills when review scope indicates they apply:
+- `scientific-plan-execute:simulation-for-inference-validation` (simulation/inference-alignment checks)
+- `scientific-research:scientific-internet-research-pass` (when uncertain external facts or citations are in scope)
+- `scientific-research:scientific-codebase-investigation-pass` (required evidence checks for `existing-codebase-port`)
+- `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (numerics/JAX/Equinox boundary + project-engineering checks)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
 ## Responsibilities

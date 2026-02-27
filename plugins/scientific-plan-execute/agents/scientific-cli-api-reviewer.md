@@ -21,6 +21,17 @@ Optional inputs:
 2. Base/Head commit references.
 3. Interface files to prioritize.
 
+## Mandatory First Actions
+
+1. Load and apply required review skills before evaluating artifacts:
+- `scientific-house-style:functional-core-imperative-shell`
+- `scientific-plan-execute:verification-before-completion`
+2. Load additional project/domain skills when review scope indicates they apply:
+- `scientific-house-style:jax-project-engineering` (API/CLI compatibility and project-level interface guarantees)
+- `scientific-house-style:jax-equinox-numerics` (CLI/API paths that dispatch numerics/JAX/Equinox code)
+- `scientific-plan-execute:test-driven-development` (behavior-changing interface updates requiring explicit red/green evidence)
+3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
+
 ## Responsibilities
 
 1. Verify CLI/API surface changes match implementation-plan and design-plan contracts.

@@ -345,7 +345,7 @@ Use `update_plan` updates (or `TaskUpdate` where available) to mark Phase 6 as i
 
 Announce design completion and provide next steps:
 
-Design complete! Design document committed to `docs/design-plans/[filename]`.
+Design complete! Design document committed to `docs/design-plans/<filename>`.
 
 Ready to create the implementation plan? This requires fresh context to work effectively.
 
@@ -355,15 +355,15 @@ Ready to create the implementation plan? This requires fresh context to work eff
 
 Claude Code:
 ```
-/start-implementation-plan @docs/design-plans/[full-filename].md
+/start-implementation-plan @docs/design-plans/<full-filename>.md
 ```
 
 Codex:
 ```
-$starting-an-implementation-plan docs/design-plans/[full-filename].md
+$starting-an-implementation-plan docs/design-plans/<full-filename>.md
 ```
 
-(2) Start fresh context:
+(2) Start fresh context (recommended):
 
 Claude Code:
 ```

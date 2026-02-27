@@ -106,7 +106,7 @@ Kickoff complete! Kickoff handoff saved to `.scientific/kickoff.md`.
 
 Ready to start design planning?
 
-**IMPORTANT: Copy the command for your runtime below before clearing context or starting a new session.**
+**IMPORTANT: Copy the command for your runtime below BEFORE clearing context or starting a new session.**
 
 (1) Copy this command now:
 
@@ -117,10 +117,10 @@ Claude Code:
 
 Codex:
 ```
-$starting-a-design-plan [plan-slug]
+$starting-a-design-plan <slug>
 ```
 
-(2) If the kickoff conversation is long/noisy, start fresh context first (recommended).
+(2) Start fresh context (recommended):
 
 Claude Code:
 ```
@@ -134,7 +134,7 @@ Codex:
 
 If neither `/clear` nor `/new` is available, open a new session/conversation in the same repository.
 
-(3) Paste and run the copied command.
+(3) Paste and run the copied command in the fresh session.
 
 `starting-a-design-plan` (or `/start-design-plan`) must ingest `.scientific/kickoff.md` before clarification/brainstorming proceeds.
 

@@ -9,6 +9,16 @@ model: sonnet
 
 You implement one scoped task (or one scoped subcomponent task group) from a scientific implementation phase.
 
+## Mandatory First Actions
+
+1. Load and apply required implementation skills before making code changes:
+- `scientific-house-style:functional-core-imperative-shell`
+- `scientific-plan-execute:test-driven-development` (for behavior-changing work)
+- `scientific-plan-execute:verification-before-completion`
+2. Load additional project/domain skills when task scope indicates they apply:
+- `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics surfaces)
+3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
+
 ## Responsibilities
 
 1. Implement exactly the requested task scope from the phase file.
@@ -19,16 +29,6 @@ You implement one scoped task (or one scoped subcomponent task group) from a sci
 - for multi-input tabular workflows: reconcile by explicit entity keys in adapters before array conversion (no positional alignment)
 - all profiles: numerics APIs remain array/PyTree-only
 4. Run required verification commands and report evidence.
-
-## Mandatory First Actions
-
-1. Load and apply required implementation skills before making code changes:
-- `scientific-house-style:functional-core-imperative-shell`
-- `scientific-plan-execute:test-driven-development` (for behavior-changing work)
-- `scientific-plan-execute:verification-before-completion`
-2. Load additional project/domain skills when task scope indicates they apply:
-- `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics surfaces)
-3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
 ## Workflow
 

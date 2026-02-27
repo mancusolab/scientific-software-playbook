@@ -23,26 +23,37 @@ Optional inputs:
 
 ## Mandatory First Actions
 
-1. Load and apply relevant skills when available:
-- `functional-core-imperative-shell`
-- `jax-equinox-numerics` (when numerics scope exists)
+1. Load and apply required review skills before evaluating artifacts:
+- `scientific-house-style:functional-core-imperative-shell`
+- `scientific-plan-execute:verification-before-completion`
+2. Load additional project/domain skills when review scope indicates they apply:
+- `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (numerics/JAX/Equinox and project-engineering scope)
+- `scientific-plan-execute:test-driven-development` (behavior-changing work requiring red/green evidence checks)
+3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
-2. Build a verification command set:
-- prefer commands defined in implementation-plan artifacts (`phase_XX.md` and `README.md`)
-- if absent, infer project defaults conservatively and report what was run
+## Responsibilities
+
+1. Verify implemented behavior aligns with approved plan scope and requirements.
+2. Run and report verification-command evidence before making approval decisions.
+3. Audit profile-aware boundary contracts (`compact-workflow` or `modular-domain`) for numerics safety.
+4. Validate coverage quality and TDD evidence for behavior-changing updates.
+5. Return severity-ranked findings with concrete, minimally invasive fixes.
 
 ## Review Process
 
-1. Run verification commands first (tests, build/static checks, lint/type checks where defined).
-2. Compare implemented behavior against the plan scope.
-3. Audit boundary contracts against the selected architecture profile (`compact-workflow` or `modular-domain`):
+1. Build a verification command set:
+- prefer commands defined in implementation-plan artifacts (`phase_XX.md` and `README.md`)
+- if absent, infer project defaults conservatively and report what was run
+2. Run verification commands first (tests, build/static checks, lint/type checks where defined).
+3. Compare implemented behavior against the plan scope.
+4. Audit boundary contracts against the selected architecture profile (`compact-workflow` or `modular-domain`):
 - no parser/file-format logic inside numerics
 - boundary validation/conversion occurs before numerics dispatch
 - multi-input tabular sources are reconciled by explicit entity-key joins in adapters before array conversion
 - reconciliation behavior is explicit (join type, duplicate/missing-key policy, deterministic row order, dropped-row accounting)
 - numerics APIs remain array/PyTree-only
-4. Audit test quality and coverage evidence for changed behavior.
-5. Classify findings by severity and provide concrete fixes.
+5. Audit test quality and coverage evidence for changed behavior.
+6. Classify findings by severity and provide concrete fixes.
 
 ## Severity Rules
 

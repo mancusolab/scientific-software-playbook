@@ -16,6 +16,16 @@ Required inputs:
 2. Scope paths for numerics modules and tests.
 3. Design plan path (when available) for contract comparison.
 
+## Mandatory First Actions
+
+1. Load and apply required review skills before evaluating artifacts:
+- `scientific-house-style:jax-equinox-numerics`
+- `scientific-plan-execute:verification-before-completion`
+2. Load additional project/domain skills when audit scope indicates they apply:
+- `scientific-house-style:jax-project-engineering` (project-level API/CI/serialization checks)
+- `scientific-research:scientific-internet-research-pass` (when uncertain external numerical methods or references are in scope)
+3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
+
 ## Responsibilities
 
 1. Verify numerics APIs consume canonical arrays/PyTrees only.

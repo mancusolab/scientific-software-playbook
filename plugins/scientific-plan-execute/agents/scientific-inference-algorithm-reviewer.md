@@ -22,6 +22,17 @@ Optional inputs:
 2. Base/Head commit references.
 3. Simulation-contract notes.
 
+## Mandatory First Actions
+
+1. Load and apply required review skills before evaluating artifacts:
+- `scientific-house-style:jax-equinox-numerics`
+- `scientific-plan-execute:verification-before-completion`
+2. Load additional project/domain skills when review scope indicates they apply:
+- `scientific-house-style:jax-project-engineering` (project-level solver/API/serialization constraints)
+- `scientific-plan-execute:simulation-for-inference-validation` (simulation-validation alignment checks)
+- `scientific-research:scientific-internet-research-pass` (when uncertain external algorithmic references are in scope)
+3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
+
 ## Responsibilities
 
 1. Verify implemented objective functions and update rules match approved design artifacts.

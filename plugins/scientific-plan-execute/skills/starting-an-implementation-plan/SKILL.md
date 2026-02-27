@@ -268,21 +268,37 @@ Implementation plan complete!
 
 Ready to execute? This requires fresh context to work effectively.
 
-**IMPORTANT: Copy the command below BEFORE clearing context or starting a new session.**
+**IMPORTANT: Copy the command for your runtime below BEFORE clearing context or starting a new session.**
 
 (1) Copy this command now:
 
+Claude Code:
+```
 /execute-implementation-plan /Users/ed/project/.worktrees/oauth2-feature/docs/implementation-plans/2025-01-17-oauth2-feature/ /Users/ed/project/.worktrees/oauth2-feature/
+```
 
-(2) Start fresh context:
+Codex:
+```
+$executing-an-implementation-plan /Users/ed/project/.worktrees/oauth2-feature/docs/implementation-plans/2025-01-17-oauth2-feature/ /Users/ed/project/.worktrees/oauth2-feature/
+```
 
+(2) Start fresh context (recommended):
+
+Claude Code:
+```
 /clear  # if your runtime supports it
+```
 
-If `/clear` is unavailable, open a new session/conversation in the same repository.
+Codex:
+```
+/new  # if your runtime supports it
+```
+
+If neither `/clear` nor `/new` is available, open a new session/conversation in the same repository.
 
 (3) Paste and run the copied command in the fresh session.
 
-The execute-implementation-plan command will implement the plan task-by-task with code review between tasks.
+The `executing-an-implementation-plan` skill (or `/execute-implementation-plan` command wrapper) will implement the plan task-by-task with code review between tasks.
 ```
 
 **Use the real paths from Step 1, not placeholders.** The example above shows the format — substitute your actual verified paths.
@@ -301,7 +317,7 @@ Mark "Execution handoff" task as completed.
 | Mistake | Fix |
 |---------|-----|
 | Invoking execute-implementation-plan directly | Provide copy-paste instructions instead |
-| Not warning user to copy command before clearing context | Always warn: "Copy this BEFORE running /clear or starting a new session" |
+| Not warning user to copy command before clearing context | Always warn: "Copy this BEFORE running /clear, /new, or starting a new session" |
 | Using relative paths in handoff command | Run bash commands to get absolute paths, verify they exist |
 | Outputting placeholder paths like `[WORKING_ROOT]` | Output real paths from `git rev-parse --show-toplevel` and `ls -d` |
 | Not verifying plan directory exists | Always `ls -d` the full plan path before outputting command |
@@ -317,7 +333,7 @@ This skill sits between design and execution:
 
 ```
 Design Plan (in docs/design-plans/)
-  -> User runs /start-implementation-plan with design path
+  -> User runs `/start-implementation-plan` (Claude Code) or `$starting-an-implementation-plan` (Codex) with design path
 
 Starting Implementation Plan (this skill)
   -> Step 0: Create orchestration tasks

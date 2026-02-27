@@ -92,6 +92,38 @@ Use these snippets as implementation starters when they match the task.
 - Abstract module: `eqx.Module` with `abc.abstractmethod` or `eqx.AbstractVar`.
 - Final module: concrete `eqx.Module` with no further overrides or subclassing.
 
+## Abstract-vs-Final Module Pattern (Required)
+
+Use abstract-or-final module design by default:
+- define interfaces as abstract modules (`abc.abstractmethod`/`eqx.AbstractVar`)
+- implement behavior in concrete final modules (no further subclassing)
+- avoid subclassing concrete modules to change runtime behavior
+
+Load these assets immediately when module inheritance/composition is in scope:
+- snippet: `snippets/abc_module_pattern.py`
+- reference: `references/jit_pytree_controlflow.md` (abstract-or-final guidance)
+
+Trigger this section when any of these apply:
+- introducing a new `eqx.Module` interface
+- extending/reusing an existing module family
+- reviewing subclass-based customization in numerics code
+
+## `eqx.Module` vs `typing.NamedTuple` (Decision Rule)
+
+Use `eqx.Module` when:
+- the state is coupled to behavior/methods that should travel with that state
+- you need abstract/final module interfaces or composition patterns across model components
+- explicit module-level extension points/contracts are part of the design
+
+Use `typing.NamedTuple` when:
+- the object is a lightweight immutable container (parameters, result bundle, metadata, config snapshot)
+- fields are fixed and behavior-free
+- no module inheritance/composition contract is required
+- you want a simple PyTree-compatible carrier that can still flow through numerics paths
+
+Avoid representing the same conceptual entity as both `eqx.Module` and `NamedTuple`
+in the same layer unless a boundary contract explicitly requires conversion.
+
 ## Core defaults
 
 ### Rule: Keep transformation boundaries explicit
@@ -214,6 +246,9 @@ Load only the files relevant to your task.
 
 If the task is primarily about JIT boundaries, PyTree stability, or mapped control flow,
 load `references/jit_pytree_controlflow.md` first.
+
+If the task involves module interface design or inheritance/composition tradeoffs,
+load `snippets/abc_module_pattern.py` and `references/jit_pytree_controlflow.md` first.
 
 If the task is primarily about linear/nonlinear solver API design or solver result handling,
 load `references/lineax_optimistix_patterns.md` first.

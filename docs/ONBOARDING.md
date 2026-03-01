@@ -6,9 +6,6 @@ This playbook is currently tuned for Python/JAX implementations; additional impl
 Before running this flow on a fresh clone, complete setup in:
 `docs/INSTALLATION.md`
 
-For Codex reuse across repositories, use the global install
-steps from `docs/INSTALLATION.md` first.
-
 Plugin prerequisite:
 1. This onboarding flow requires `scientific-plan-execute`.
 2. This onboarding flow also requires `scientific-research` for research-gated steps.
@@ -16,15 +13,20 @@ Plugin prerequisite:
 4. If `scientific-house-style` is missing, workflow preflight checks will fail.
 5. Compatibility and breaking-change path policy is documented in `docs/COMPATIBILITY.md`.
 
-## Phase Workflow
+---
+
+## ![Codex CLI](https://img.shields.io/badge/Codex_CLI-000000?style=flat-square&logo=data:image/svg%2Bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTIyLjI4MiA5LjgyMWE2IDYgMCAwIDAtLjUxNi00LjkxYTYuMDUgNi4wNSAwIDAgMC02LjUxLTIuOUE2LjA2NSA2LjA2NSAwIDAgMCA0Ljk4MSA0LjE4YTYgNiAwIDAgMC0zLjk5OCAyLjlhNi4wNSA2LjA1IDAgMCAwIC43NDMgNy4wOTdhNS45OCA1Ljk4IDAgMCAwIC41MSA0LjkxMWE2LjA1IDYuMDUgMCAwIDAgNi41MTUgMi45QTYgNiAwIDAgMCAxMy4yNiAyNGE2LjA2IDYuMDYgMCAwIDAgNS43NzItNC4yMDZhNiA2IDAgMCAwIDMuOTk3LTIuOWE2LjA2IDYuMDYgMCAwIDAtLjc0Ny03LjA3M00xMy4yNiAyMi40M2E0LjQ4IDQuNDggMCAwIDEtMi44NzYtMS4wNGwuMTQxLS4wODFsNC43NzktMi43NThhLjguOCAwIDAgMCAuMzkyLS42ODF2LTYuNzM3bDIuMDIgMS4xNjhhLjA3LjA3IDAgMCAxIC4wMzguMDUydjUuNTgzYTQuNTA0IDQuNTA0IDAgMCAxLTQuNDk0IDQuNDk0TTMuNiAxOC4zMDRhNC40NyA0LjQ3IDAgMCAxLS41MzUtMy4wMTRsLjE0Mi4wODVsNC43ODMgMi43NTlhLjc3Ljc3IDAgMCAwIC43OCAwbDUuODQzLTMuMzY5djIuMzMyYS4wOC4wOCAwIDAgMS0uMDMzLjA2Mkw5Ljc0IDE5Ljk1YTQuNSA0LjUgMCAwIDEtNi4xNC0xLjY0Nk0yLjM0IDcuODk2YTQuNSA0LjUgMCAwIDEgMi4zNjYtMS45NzNWMTEuNmEuNzcuNzcgMCAwIDAgLjM4OC42NzdsNS44MTUgMy4zNTRsLTIuMDIgMS4xNjhhLjA4LjA4IDAgMCAxLS4wNzEgMGwtNC44My0yLjc4NkE0LjUwNCA0LjUwNCAwIDAgMSAyLjM0IDcuODcyem0xNi41OTcgMy44NTVsLTUuODMzLTMuMzg3TDE1LjExOSA3LjJhLjA4LjA4IDAgMCAxIC4wNzEgMGw0LjgzIDIuNzkxYTQuNDk0IDQuNDk0IDAgMCAxLS42NzYgOC4xMDV2LTUuNjc4YS43OS43OSAwIDAgMC0uNDA3LS42NjdtMi4wMS0zLjAyM2wtLjE0MS0uMDg1bC00Ljc3NC0yLjc4MmEuNzguNzggMCAwIDAtLjc4NSAwTDkuNDA5IDkuMjNWNi44OTdhLjA3LjA3IDAgMCAxIC4wMjgtLjA2MWw0LjgzLTIuNzg3YTQuNSA0LjUgMCAwIDEgNi42OCA0LjY2em0tMTIuNjQgNC4xMzVsLTIuMDItMS4xNjRhLjA4LjA4IDAgMCAxLS4wMzgtLjA1N1Y2LjA3NWE0LjUgNC41IDAgMCAxIDcuMzc1LTMuNDUzbC0uMTQyLjA4TDguNzA0IDUuNDZhLjguOCAwIDAgMC0uMzkzLjY4MXptMS4wOTctMi4zNjVsMi42MDItMS41bDIuNjA3IDEuNXYyLjk5OWwtMi41OTcgMS41bC0yLjYwNy0xLjVaIi8+PC9zdmc+) Codex
+
+For Codex reuse across repositories, use the global install + downstream bootstrap
+steps from `docs/INSTALLATION.md` first.
+
+### Phase Workflow
 
 1. Architecture kickoff
-- Claude Code path (when model provenance or existing-codebase parity still needs to be established): run `/start-scientific-kickoff` first, then `/start-design-plan <slug>`.
-- Codex path:
-  - Use `using-plan-and-execute` first to choose the correct entrypoint.
-  - Run `scientific-kickoff` first only when model provenance, model selection, or existing-codebase parity must be established.
-  - Otherwise start with `starting-a-design-plan` (see `AGENTS.md`).
-  - Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
+- Use `using-plan-and-execute` first to choose the correct entrypoint.
+- Run `scientific-kickoff` first only when model provenance, model selection, or existing-codebase parity must be established.
+- Otherwise start with `starting-a-design-plan` (see `AGENTS.md`).
+- Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
 - Run `scientific-kickoff` only when the project still needs one mode (`provided-model`, `suggested-model`, `existing-codebase-port`) selected before full architecture expansion.
 - Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`; design workflow should ingest this handoff when present.
 - Run `asking-clarifying-questions` to resolve contradictions and narrow scope.
@@ -35,8 +37,7 @@ Plugin prerequisite:
   - `existing-codebase-port`: user supplies a local directory or GitHub URL and defines a pinned source + behavior parity contract.
   - for `existing-codebase-port`, run `scientific-codebase-investigation-pass` and record file-level findings before approval.
 - If inference validation should include synthetic-data checks, define a synthetic-data validation contract:
-  - Claude Code: `/start-simulation-validation <plan-path>`
-  - Codex: invoke `simulation-for-inference-validation`
+  - invoke `simulation-for-inference-validation`
 - If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
 - Delegate `internet-researcher` for general/API internet research needs.
 - Delegate `scientific-literature-researcher` when literature support is needed.
@@ -50,18 +51,14 @@ Plugin prerequisite:
   - `solver-feasibility-matrix.md`
   - `Simulation And Inference-Consistency Validation` section in the design plan (when in scope)
 - Validate readiness before approval:
-- Claude Code: `/validate-design-plan <plan-path> --phase in-review`
-- Codex: invoke `validate-design-plan` with phase `in-review`
+  - invoke `validate-design-plan` with phase `in-review`
 - Move status to approved only when architecture and math checks are acceptable:
-- Claude Code: `/set-design-plan-status <plan-path> approved-for-implementation`
-- Codex: invoke `set-design-plan-status` with `approved-for-implementation`
+  - invoke `set-design-plan-status` with `approved-for-implementation`
 - If approved plans are revised later, move back to review:
-- Claude Code: `/set-design-plan-status <plan-path> in-review`
-- Codex: invoke `set-design-plan-status` with `in-review`
+  - invoke `set-design-plan-status` with `in-review`
 
 3. Build implementation orchestration artifacts
-- Claude Code: `/start-implementation-plan <design-plan-path>`
-- Codex: invoke `starting-an-implementation-plan`
+- invoke `starting-an-implementation-plan`
 - Outcome:
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
@@ -71,8 +68,7 @@ Plugin prerequisite:
 - Recommended: start a fresh session/context before execution.
 
 4. Execute implementation phases
-- Claude Code: `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
-- Codex: invoke `executing-an-implementation-plan` with the same paths
+- invoke `executing-an-implementation-plan` with the absolute path
 - Outcome: phase-by-phase implementation with TDD, reviewer/fix loops, and traceability coverage checks.
 - During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
 
@@ -89,42 +85,132 @@ Plugin prerequisite:
 - Run `verification-before-completion` before any "done" claim.
 - Verify fresh test/check command evidence before claiming completion.
 
-## Plan Utilities
+### Plan Utilities
 
 1. Create plan + artifact stubs:
-- Claude Code: `/new-design-plan <slug>`
-- Codex: invoke `new-design-plan` with a slug
+- invoke `new-design-plan` with a slug
 - Use `writing-design-plans` to expand/refine design sections after scaffolding.
 
 2. Clarify and explore before architecture lock-in:
-- Codex/Claude: invoke `asking-clarifying-questions` then `brainstorming`.
+- invoke `asking-clarifying-questions` then `brainstorming`.
 
 3. Change plan status:
-- Claude Code: `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
-- Codex: invoke `set-design-plan-status`
+- invoke `set-design-plan-status`
 
 4. Validate plan readiness:
-- Claude Code: `/validate-design-plan <plan-path> --phase in-review`
-- Codex: invoke `validate-design-plan` with phase `in-review`
+- invoke `validate-design-plan` with phase `in-review`
 
 5. Run external research pass when triggered:
-- Claude Code/Codex:
-  - `scientific-internet-research-pass` for external claims
-  - delegate `internet-researcher` for general/API web evidence
-  - delegate `scientific-literature-researcher` for paper-backed support
+- `scientific-internet-research-pass` for external claims
+- delegate `internet-researcher` for general/API web evidence
+- delegate `scientific-literature-researcher` for paper-backed support
 
 6. Define a synthetic-data validation contract when in scope:
-- Claude Code: `/start-simulation-validation <plan-path>`
-- Codex: invoke `simulation-for-inference-validation`
+- invoke `simulation-for-inference-validation`
 
 7. Start implementation planning:
-- Claude Code: `/start-implementation-plan <design-plan-path>`
-- Codex: invoke `starting-an-implementation-plan`
+- invoke `starting-an-implementation-plan`
 - Use `writing-implementation-plans` to flesh out phase/task detail and traceability.
 
 8. Execute implementation plan:
-- Claude Code: `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
-- Codex: invoke `executing-an-implementation-plan`
+- invoke `executing-an-implementation-plan`
+
+---
+
+## ![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?style=flat-square&logo=claude&logoColor=white) Claude Code
+
+### Phase Workflow
+
+1. Architecture kickoff
+- When model provenance or existing-codebase parity still needs to be established: run `/start-scientific-kickoff` first, then `/start-design-plan <slug>`.
+- Otherwise start directly with `/start-design-plan <slug>`.
+- Run `asking-clarifying-questions` to resolve contradictions and narrow scope.
+- Run `brainstorming` to compare alternatives and validate a direction.
+- When model provenance or model selection is still unresolved, choose one model path early:
+  - `provided-model`: user supplies model artifacts/update rules.
+  - `suggested-model`: planner proposes literature-backed model options and user selects.
+  - `existing-codebase-port`: user supplies a local directory or GitHub URL and defines a pinned source + behavior parity contract.
+  - for `existing-codebase-port`, run `scientific-codebase-investigation-pass` and record file-level findings before approval.
+- If inference validation should include synthetic-data checks, define a synthetic-data validation contract:
+  - `/start-simulation-validation <plan-path>`
+- If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
+- Delegate `internet-researcher` for general/API internet research needs.
+- Delegate `scientific-literature-researcher` when literature support is needed.
+- Outcome: design plan in `docs/design-plans/YYYY-MM-DD-<slug>.md`.
+- Typical status flow: `Draft` (initial scaffold) -> `In Review` (after first planning pass).
+
+2. Plan review and approval
+- Review the plan and companion artifacts:
+  - `model-symbol-table.md`
+  - `equation-to-code-map.md`
+  - `solver-feasibility-matrix.md`
+  - `Simulation And Inference-Consistency Validation` section in the design plan (when in scope)
+- Validate readiness before approval:
+  - `/validate-design-plan <plan-path> --phase in-review`
+- Move status to approved only when architecture and math checks are acceptable:
+  - `/set-design-plan-status <plan-path> approved-for-implementation`
+- If approved plans are revised later, move back to review:
+  - `/set-design-plan-status <plan-path> in-review`
+
+3. Build implementation orchestration artifacts
+- `/start-implementation-plan <design-plan-path>`
+- Outcome:
+  - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
+  - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
+  - `docs/implementation-plans/YYYY-MM-DD-<slug>/phase_XX.md`
+  - simulation-validation phase file based on the installed template (when synthetic-data validation scope is `yes`)
+  - absolute implementation plan path for execution handoff
+- Recommended: start a fresh session/context before execution.
+
+4. Execute implementation phases
+- `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+- Outcome: phase-by-phase implementation with TDD, reviewer/fix loops, and traceability coverage checks.
+- During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
+
+5. During phase execution, apply layer skills in order when relevant
+- `jax-equinox-numerics` (from `scientific-house-style`)
+- `test-driven-development` for behavior-changing work
+- `systematic-debugging` for failing tests or persistent blockers
+- `using-git-worktrees` when branch/worktree isolation is required
+
+6. Review and completion
+- Run `scientific-architecture-reviewer`.
+- Run `numerics-interface-auditor`.
+- Run `requesting-code-review` to close implementation findings before completion.
+- Run `verification-before-completion` before any "done" claim.
+- Verify fresh test/check command evidence before claiming completion.
+
+### Plan Utilities
+
+1. Create plan + artifact stubs:
+- `/new-design-plan <slug>`
+- Use `writing-design-plans` to expand/refine design sections after scaffolding.
+
+2. Clarify and explore before architecture lock-in:
+- invoke `asking-clarifying-questions` then `brainstorming`.
+
+3. Change plan status:
+- `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
+
+4. Validate plan readiness:
+- `/validate-design-plan <plan-path> --phase in-review`
+
+5. Run external research pass when triggered:
+- `scientific-internet-research-pass` for external claims
+- delegate `internet-researcher` for general/API web evidence
+- delegate `scientific-literature-researcher` for paper-backed support
+
+6. Define a synthetic-data validation contract when in scope:
+- `/start-simulation-validation <plan-path>`
+
+7. Start implementation planning:
+- `/start-implementation-plan <design-plan-path>`
+- Use `writing-implementation-plans` to flesh out phase/task detail and traceability.
+
+8. Execute implementation plan:
+- `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+
+---
 
 ## Non-Negotiable Gates
 

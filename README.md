@@ -1,4 +1,4 @@
-# Scientific Software Playbook (Claude Code + Codex)
+# Scientific Software Playbook (![Claude Code](https://img.shields.io/badge/Claude_Code-DA7756?logo=claude&logoColor=white) + ![Codex](https://img.shields.io/badge/Codex-412991?logo=openai&logoColor=white))
 
 Scientific Software Playbook is a plugin collection for scientific labs and research teams building software that performs inference for explicit scientific models.
 
@@ -86,7 +86,7 @@ Recommended entrypoint:
 ## Installation
 For full setup and troubleshooting, use `docs/INSTALLATION.md`.
 
-### Codex
+### ![Codex](https://img.shields.io/badge/Codex-412991?logo=openai&logoColor=white)
 
 ```bash
 git clone https://github.com/mancusolab/scientific-software-playbook.git
@@ -94,7 +94,7 @@ cd scientific-software-playbook
 bash scripts/install-codex-home.sh --force
 ```
 
-### Claude Code
+### ![Claude Code](https://img.shields.io/badge/Claude_Code-DA7756?logo=claude&logoColor=white)
 
 ```text
 /plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git

@@ -13,16 +13,25 @@ ssp_plugin_skills() {
   case "$plugin" in
     scientific-plan-execute)
       cat <<'EOF'
-bootstrap-scientific-software-playbook
+asking-clarifying-questions
+brainstorming
+using-plan-and-execute
+scientific-kickoff
+starting-a-design-plan
 new-design-plan
 validate-design-plan
 set-design-plan-status
-start-scientific-implementation-plan
-execute-scientific-implementation-plan
-scientific-software-architecture
+writing-design-plans
+starting-an-implementation-plan
+writing-implementation-plans
+executing-an-implementation-plan
 simulation-for-inference-validation
-validation-first-pipeline-api
-scientific-cli-thin-shell
+requesting-code-review
+verification-before-completion
+systematic-debugging
+test-driven-development
+using-git-worktrees
+finishing-a-development-branch
 EOF
       ;;
     scientific-research)
@@ -34,8 +43,7 @@ EOF
     scientific-house-style)
       cat <<'EOF'
 jax-equinox-numerics
-project-engineering
-coding-effectively
+jax-project-engineering
 howto-functional-vs-imperative
 property-based-testing
 writing-for-a-technical-audience

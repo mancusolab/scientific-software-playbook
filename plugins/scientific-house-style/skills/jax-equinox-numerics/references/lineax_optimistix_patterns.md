@@ -7,7 +7,7 @@ Detailed rules for linear and nonlinear solver APIs, structure hints, and failur
 ### Rule: Model linear systems with Lineax operators and `linear_solve`
 - Do: Represent systems as `AbstractLinearOperator` (`MatrixLinearOperator`, `FunctionLinearOperator`, `JacobianLinearOperator`) and call `lx.linear_solve`.
 - Don’t: Materialize inverses (`jnp.linalg.inv(A) @ b`) in hot paths.
-- Why: Preserves operator structure, improves numerical stability, and returns structured `Solution` + `RESULTS`.
+- Why: Preserves operator structure, improves numerical stability, and provides explicit failure semantics via `throw`/`result`.
 - Example:
 ```python
 import lineax as lx
@@ -39,7 +39,8 @@ op = lx.MatrixLinearOperator(matrix, lx.positive_semidefinite_tag)
 - Allowed break: None for production code; validate first in exploratory work.
 
 ### Rule: Use `throw`/`result` deliberately in linear solves
-- Do: Use `throw=False` in recoverable or batched flows and branch on `sol.result`; use `throw=True` when fail-fast is required.
+- Do: Use `throw=False` in recoverable or batched flows and branch on `sol.result`.
+- Do: Use `throw=True` for exception-first fail-fast workflows.
 - Don’t: Ignore non-success result codes.
 - Why: Keeps batch behavior and error handling predictable.
 - Example:
@@ -55,7 +56,7 @@ if sol.result != lx.RESULTS.successful:
 ### Rule: Use Optimistix entry points for nonlinear solves
 - Do: Express problems via `optx.root_find`, `optx.least_squares`, or `optx.minimise` with explicit solver objects.
 - Don’t: Hand-roll nonlinear solver loops unless you are implementing a new method.
-- Why: You get consistent `Solution` structure, adjoint integration, and failure reporting.
+- Why: You get mature adjoint integration and explicit failure signaling.
 - Example:
 ```python
 import optimistix as optx
@@ -78,7 +79,8 @@ sol = optx.root_find(fn, solver, y0, has_aux=True, tags=frozenset({lx.symmetric_
 - Allowed break: Simple scalar problems where structure hints are irrelevant.
 
 ### Rule: Handle nonlinear failures with `throw` + `sol.result`
-- Do: Use `throw=False` for recoverable failures and inspect `sol.result`; use `throw=True` for strict paths.
+- Do: Use `throw=False` for recoverable failures and inspect `sol.result`.
+- Do: Use `throw=True` for strict/exception-first paths.
 - Don’t: Assume convergence by default.
 - Why: Nonlinear methods can legitimately fail; explicit handling avoids silent degradation.
 - Example:

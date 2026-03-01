@@ -4,6 +4,9 @@ Use this for solver implementation and verification.
 
 ## Dtype and stability
 - [ ] Inputs are cast once to an inexact dtype at the boundary.
+- [ ] For multi-source tabular workflows, key-based reconciliation happens in tabular adapters before array conversion (no positional alignment assumptions).
+- [ ] Reconciliation policy is explicit and tested: join key(s), join type, duplicate-key handling, missing-key handling, and dropped-row accounting.
+- [ ] Row ordering after reconciliation is deterministic and tested before numerics dispatch.
 - [ ] External tabular inputs (for example Polars/Pandas frames) are converted to JAX/NumPy arrays at ingress (`to_jax()`, `np.asarray(...)` at assignment boundaries).
 - [ ] Tabular/frame reconstruction happens only at egress adapters, never inside core numerics.
 - [ ] Dtype policy (x32/x64) is explicit and documented.
@@ -18,7 +21,7 @@ Use this for solver implementation and verification.
 ## Custom AD
 - [ ] For mixed PyTrees/Modules, custom AD uses `eqx.filter_custom_jvp`/`eqx.filter_custom_vjp`.
 - [ ] JVP/VJP calls on PyTree inputs use `eqx.filter_jvp`/`eqx.filter_vjp`.
-- [ ] Tangent-path solves use `throw=True` when failures cannot be returned through a result channel.
+- [ ] Tangent-path solves use an explicit failure contract (`throw=True` or equivalent fail-fast behavior) when failures cannot be returned through a status channel.
 - [ ] Custom primitives include abstract_eval + JVP + transpose.
 - [ ] Nondifferentiable state/options/metadata are guarded (`eqxi.nondifferentiable` / `eqxi.nondifferentiable_backward`).
 

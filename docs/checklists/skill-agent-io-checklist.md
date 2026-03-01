@@ -7,7 +7,7 @@ Use this checklist when authoring or reviewing skills and agents in this project
 - [ ] Input ambiguity triggers are listed.
 - [ ] Missing-input behavior is defined (ask user, block, or apply assumption with note).
 - [ ] Source artifacts are enumerated when relevant (for example LaTeX/images/model files).
-- [ ] Early model-path branching is explicit (`provided-model` vs `suggested-model` when no model is supplied).
+- [ ] Early model-path branching is explicit (`provided-model` vs `suggested-model` vs `existing-codebase-port`).
 - [ ] Simulation scope trigger is explicit (when inference validation needs synthetic-data checks).
 
 ## Required Output Contract Checks
@@ -18,6 +18,8 @@ Use this checklist when authoring or reviewing skills and agents in this project
 - [ ] Acceptance criteria are traceable to tasks and tests when implementation planning is in scope.
 - [ ] External research claims are cited with source URL and access date when research triggers are present.
 - [ ] Suggested-model outputs include candidate options, scientific citations, and explicit user selection.
+- [ ] Existing-codebase-port outputs include source pin (`local-directory` or GitHub URL + commit/tag) and behavior/parity inventory.
+- [ ] Existing-codebase-port outputs include `scientific-codebase-investigation-pass` findings with file-level evidence.
 - [ ] Simulation outputs include explicit simulate contract and validation experiment definitions when in scope.
 
 ## Hard Stop Checks
@@ -26,8 +28,10 @@ Use this checklist when authoring or reviewing skills and agents in this project
 - [ ] Status transitions are constrained and validated.
 - [ ] Implementation execution is blocked when required traceability artifacts are incomplete.
 - [ ] Architecture/implementation readiness is blocked when research-triggered external claims are uncited.
-- [ ] Architecture readiness is blocked when model-path decision or suggested-model evidence is missing.
+- [ ] Architecture readiness is blocked when model-path decision or path-specific evidence is missing.
 - [ ] Architecture readiness is blocked when `provided-model` path is selected but model sources/update rules are missing.
+- [ ] Architecture readiness is blocked when `existing-codebase-port` path is selected but source pin/parity inventory is missing.
+- [ ] Architecture readiness is blocked when `existing-codebase-port` path is selected but codebase investigation findings are missing.
 - [ ] Architecture readiness is blocked when simulation is in scope but simulate contract/alignment checks are missing.
 
 ## Weighted Rigor Checks (100 points)

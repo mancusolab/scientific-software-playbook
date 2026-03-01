@@ -17,13 +17,12 @@ Audience and scope:
 
 ## Plugin Selection and Dependency Contract
 
-1. `scientific-plan-execute` is required for bootstrap and workflow orchestration.
+1. `scientific-plan-execute` is required for workflow orchestration.
 2. `scientific-research` is required for external-fact validation gates.
-3. `scientific-house-style` is optional and provides reusable numerics/project
-   engineering guidance.
+3. `scientific-house-style` is required for workflow execution and review gates.
 4. Default install (`--force` with no `--plugin`) installs all plugins.
-5. If only `scientific-house-style` is installed, workflow/bootstrap commands are not available.
-6. Installing `scientific-plan-execute` via Codex installer auto-adds `scientific-research`.
+5. If only `scientific-house-style` is installed, workflow commands are not available.
+6. Installing `scientific-plan-execute` via Codex installer auto-adds `scientific-research` and `scientific-house-style`.
 
 ## Prerequisites
 
@@ -40,7 +39,7 @@ Installation can be done from any directory:
 - `/plugin install scientific-plan-execute@scientific-software-playbook`
 3. Install research plugin:
 - `/plugin install scientific-research@scientific-software-playbook`
-4. Optional: install house-style plugin:
+4. Install house-style plugin:
 - `/plugin install scientific-house-style@scientific-software-playbook`
 5. Reload plugin:
 - `/plugin reload`
@@ -48,7 +47,8 @@ Installation can be done from any directory:
 ## Running Workflows (Claude Code)
 
 Open Claude Code in your scientific project directory, then start:
-- `/start-scientific-architecture <slug>`
+- New project/model-path selection: `/start-scientific-kickoff`
+- Existing project/iteration: `/new-design-plan <slug>`
 
 ## Codex Installation (Native)
 
@@ -68,70 +68,69 @@ bash scripts/install-codex-home.sh --plugin scientific-research --force
 bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 ```
 3. Open the downstream target project root in Codex.
-4. Invoke `bootstrap-scientific-software-playbook`.
+4. Invoke `using-plan-and-execute` to choose the correct entrypoint.
+5. For general design work, invoke `starting-a-design-plan`.
 
-What Codex install/bootstrap provides:
+What Codex install provides:
 1. Skills in `${CODEX_HOME:-$HOME/.codex}/skills/`
 2. Plugin bundles in `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/`
-3. Downstream project footprint after bootstrap:
-- `AGENTS.md` (only)
-4. Runtime behavior:
+3. Runtime behavior:
 - Plan-execute assets are resolved from the installed plugin bundle in `CODEX_HOME`.
 - Workflow outputs (design plans, implementation plans, reviews) are written into the downstream project under `docs/`.
 
-## Installed Skill Inventory (Exact)
+## Installed Skill Inventory
 
-`scientific-plan-execute` installs:
-1. `bootstrap-scientific-software-playbook`
-2. `new-design-plan`
-3. `validate-design-plan`
-4. `set-design-plan-status`
-5. `start-scientific-implementation-plan`
-6. `execute-scientific-implementation-plan`
-7. `scientific-software-architecture`
-8. `simulation-for-inference-validation`
-9. `validation-first-pipeline-api`
-10. `scientific-cli-thin-shell`
+Canonical inventory is maintained in:
+1. `AGENTS.md` (source-of-truth skill paths)
+2. `plugins/scientific-plan-execute/scripts/plugin-catalog.sh` (installer catalog)
 
-`scientific-research` installs:
-1. `scientific-internet-research-pass`
-2. `scientific-codebase-investigation-pass`
-
-`scientific-house-style` installs:
-1. `jax-equinox-numerics`
-2. `project-engineering`
-3. `coding-effectively`
-4. `functional-core-imperative-shell` (installed at `howto-functional-vs-imperative`)
-5. `property-based-testing`
-6. `writing-for-a-technical-audience`
-7. `writing-good-tests`
+Core scientific workflow skills:
+1. `asking-clarifying-questions`
+2. `brainstorming`
+3. `using-plan-and-execute`
+4. `scientific-kickoff`
+5. `starting-a-design-plan`
+6. `new-design-plan`
+7. `validate-design-plan`
+8. `set-design-plan-status`
+9. `starting-an-implementation-plan`
+10. `executing-an-implementation-plan`
 
 ## Usage Example (Downstream Project)
 
 Claude Code path:
-1. `/start-scientific-architecture <example-slug>`
-2. Choose model path early: `provided-model` or `suggested-model`.
-3. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
-4. `scientific-internet-research-pass` (external/scientific/API claims)
-5. `/validate-design-plan <plan-path> --phase in-review`
-6. `/set-design-plan-status <plan-path> approved-for-implementation`
-7. `/start-scientific-implementation-plan <plan-path> <example-slug>`
-8. Start a fresh session/context (recommended).
-9. `/execute-scientific-implementation-plan <absolute-implementation-plan-dir>`
+1. For fresh-project/model-path tracks, run `/start-scientific-kickoff` first.
+2. Continue with `/start-design-plan <example-slug>` and ingest `.scientific/kickoff.md` when present.
+3. Use `asking-clarifying-questions` and `brainstorming` to refine scope and alternatives.
+4. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
+   - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
+   - Pass kickoff output (`.scientific/kickoff.md`) into the design flow.
+5. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
+6. `scientific-internet-research-pass` (external/scientific/API claims)
+7. `/validate-design-plan <plan-path> --phase in-review`
+8. `/set-design-plan-status <plan-path> approved-for-implementation`
+9. `/start-implementation-plan <plan-path>`
+10. Start a fresh session/context (recommended).
+11. `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
 
 Codex path:
-1. Invoke `scientific-software-architecture`.
-2. Choose model path early: `provided-model` or `suggested-model`.
-3. Invoke `simulation-for-inference-validation` when simulation-based inference checks are in scope.
-4. Invoke `new-design-plan` with slug `<example-slug>` when plan scaffolding is needed.
-5. Invoke `scientific-internet-research-pass` when external claims need citations.
+1. Invoke `using-plan-and-execute`.
+2. For fresh-project/model-path tracks, invoke `scientific-kickoff` first.
+3. Invoke `starting-a-design-plan` and ingest `.scientific/kickoff.md` when present.
+4. Invoke `asking-clarifying-questions` and `brainstorming` during architecture kickoff.
+5. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
+   - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
+   - Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`.
+6. Invoke `simulation-for-inference-validation` when simulation-based inference checks are in scope.
+7. Invoke `new-design-plan` with slug `<example-slug>` when plan scaffolding is needed.
+8. Invoke `scientific-internet-research-pass` when external claims need citations.
    - Delegate `internet-researcher` for general/API internet claims.
    - Delegate `scientific-literature-researcher` for paper-backed method/model support.
-6. Invoke `validate-design-plan` with phase `in-review`.
-7. Invoke `set-design-plan-status` with `approved-for-implementation`.
-8. Invoke `start-scientific-implementation-plan`.
-9. Start a fresh session/context (recommended).
-10. Invoke `execute-scientific-implementation-plan` with the absolute implementation plan directory path.
+9. Invoke `validate-design-plan` with phase `in-review`.
+10. Invoke `set-design-plan-status` with `approved-for-implementation`.
+11. Invoke `starting-an-implementation-plan`.
+12. Start a fresh session/context (recommended).
+13. Invoke `executing-an-implementation-plan` with absolute implementation plan and working-directory paths.
 
 ## Compatibility Policy
 
@@ -147,8 +146,6 @@ Codex:
 ```bash
 bash scripts/install-codex-home.sh --force
 ```
-3. Re-run `bootstrap-scientific-software-playbook` in any downstream project that should receive updates.
-   - In minimal mode this refreshes `AGENTS.md` only.
 
 Claude Code:
 1. Re-add marketplace if needed:

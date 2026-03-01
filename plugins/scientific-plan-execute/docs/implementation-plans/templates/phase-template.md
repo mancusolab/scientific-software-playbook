@@ -12,6 +12,21 @@
 - Prior phases:
   - __DEPENDENCY__
 
+## Review Profile
+- Profile: `minimal` | `api-cli` | `numerics` | `inference` | `full`
+- Why this profile:
+
+## Architecture Profile
+- Profile: `compact-workflow` | `modular-domain`
+- Why this profile:
+
+## Multi-Input Reconciliation (When Applicable)
+- Entity key(s):
+- Join type and rationale:
+- Duplicate/missing-key policy:
+- Row-order determinism policy:
+- Reconciliation verification command(s):
+
 ## Tasks
 
 <!-- START_TASK_1 -->
@@ -52,12 +67,29 @@
 ```
 
 ## Review Gate
-1. Run `scientific-architecture-reviewer` with this phase scope.
-2. If numerics code is touched, run `numerics-interface-auditor`.
-3. Resolve blocking findings before phase status is `completed`.
+1. Always run `scientific-code-reviewer` with this phase scope.
+2. Apply reviewers from profile baseline:
+   - `minimal`: code review only
+   - `api-cli`: add `scientific-cli-api-reviewer`
+   - `numerics`: add `numerics-interface-auditor`
+   - `inference`: add `numerics-interface-auditor` and `scientific-inference-algorithm-reviewer`
+   - `full`: run all specialized reviewers
+3. Escalate reviewers when touched surfaces require them, even if profile is lower:
+   - boundary-contract change -> `scientific-architecture-reviewer`
+   - numerics change -> `numerics-interface-auditor`
+   - CLI/API change -> `scientific-cli-api-reviewer`
+   - objective/update-rule/deterministic-solver/inference-engine change -> `scientific-inference-algorithm-reviewer`
+4. Compute final specialized reviewer list deterministically in fixed order:
+   - `scientific-architecture-reviewer`
+   - `numerics-interface-auditor`
+   - `scientific-cli-api-reviewer`
+   - `scientific-inference-algorithm-reviewer`
+5. Resolve blocking findings before phase status is `completed`.
+6. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
 
 ## Completion Checklist
 - [ ] All task-level failing tests observed before implementation.
 - [ ] All phase verification commands pass.
+- [ ] Multi-input reconciliation behavior is explicit and verified (when applicable).
 - [ ] Review findings resolved or explicitly accepted as non-blocking risk.
 - [ ] AC and test traceability updated in implementation plan README.

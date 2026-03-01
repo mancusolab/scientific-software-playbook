@@ -6,7 +6,7 @@ Date: February 23, 2026
 
 This release finalizes migration hardening for the two-plugin architecture:
 1. `scientific-plan-execute` (workflow orchestration)
-2. `scientific-house-style` (numerics/project-engineering guidance)
+2. `scientific-house-style` (numerics/jax-project-engineering guidance)
 
 The install/bootstrap path is verified across upgrade and clean-install scenarios,
 and downstream bootstrap remains AGENTS-only.

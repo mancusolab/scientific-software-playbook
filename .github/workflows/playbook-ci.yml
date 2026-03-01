@@ -32,12 +32,11 @@ jobs:
           set -euo pipefail
           bash plugins/scientific-plan-execute/scripts/check-repo-contracts.sh
 
-      - name: Codex install and bootstrap smoke test
+      - name: Codex install smoke test
         run: |
           set -euo pipefail
 
           codex_home="$(mktemp -d)"
-          downstream_root="$(mktemp -d)"
 
           bash scripts/install-codex-home.sh --codex-home "$codex_home" --force
 
@@ -49,24 +48,18 @@ jobs:
           test -d "$plan_plugin"
           test -d "$research_plugin"
           test -d "$house_plugin"
-
-          bootstrap_script="$plan_plugin/scripts/bootstrap-scientific-software-playbook.sh"
-          test -x "$bootstrap_script"
-
-          downstream_project="$downstream_root/scientific-project"
-          CODEX_HOME="$codex_home" bash "$bootstrap_script" "$downstream_project" --force
-
-          test -f "$downstream_project/AGENTS.md"
-          test -z "$(find "$downstream_project" -mindepth 1 -maxdepth 1 ! -name AGENTS.md -print)"
+          test -f "$codex_home/skills/using-plan-and-execute/SKILL.md"
+          test -f "$codex_home/skills/starting-a-design-plan/SKILL.md"
+          test -f "$codex_home/skills/scientific-kickoff/SKILL.md"
+          test -f "$codex_home/skills/new-design-plan/SKILL.md"
+          test -f "$codex_home/skills/scientific-internet-research-pass/SKILL.md"
+          test -f "$codex_home/skills/jax-project-engineering/SKILL.md"
 
           # Legacy root bundle compatibility paths must remain absent.
           test ! -e "$bundle/agents"
           test ! -e "$bundle/commands"
           test ! -e "$bundle/hooks"
           test ! -e "$bundle/scripts"
-
-          grep -Fq "$plan_plugin" "$downstream_project/AGENTS.md"
-          grep -Fq "$codex_home/skills/" "$downstream_project/AGENTS.md"
 
       - name: Selective install smoke tests
         run: |
@@ -76,10 +69,14 @@ jobs:
           bash scripts/install-codex-home.sh --codex-home "$codex_home_plan" --force --plugin scientific-plan-execute
           test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-plan-execute"
           test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-research"
-          test ! -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-house-style"
-          test -f "$codex_home_plan/skills/scientific-software-architecture/SKILL.md"
+          test -d "$codex_home_plan/scientific-software-playbook/plugins/scientific-house-style"
+          test -f "$codex_home_plan/skills/using-plan-and-execute/SKILL.md"
+          test -f "$codex_home_plan/skills/starting-a-design-plan/SKILL.md"
+          test -f "$codex_home_plan/skills/scientific-kickoff/SKILL.md"
+          test -f "$codex_home_plan/skills/new-design-plan/SKILL.md"
           test -f "$codex_home_plan/skills/scientific-internet-research-pass/SKILL.md"
-          test ! -d "$codex_home_plan/skills/jax-equinox-numerics"
+          test -f "$codex_home_plan/skills/jax-equinox-numerics/SKILL.md"
+          test -f "$codex_home_plan/skills/jax-project-engineering/SKILL.md"
 
           codex_home_research="$(mktemp -d)"
           bash scripts/install-codex-home.sh --codex-home "$codex_home_research" --force --plugin scientific-research
@@ -88,11 +85,14 @@ jobs:
           test ! -d "$codex_home_research/scientific-software-playbook/plugins/scientific-house-style"
           test -f "$codex_home_research/skills/scientific-internet-research-pass/SKILL.md"
           test -f "$codex_home_research/skills/scientific-codebase-investigation-pass/SKILL.md"
-          test ! -d "$codex_home_research/skills/scientific-software-architecture"
+          test ! -d "$codex_home_research/skills/starting-a-design-plan"
+          test ! -d "$codex_home_research/skills/scientific-kickoff"
+          test ! -d "$codex_home_research/skills/jax-project-engineering"
 
           codex_home_house="$(mktemp -d)"
           bash scripts/install-codex-home.sh --codex-home "$codex_home_house" --force --plugin scientific-house-style
           test -d "$codex_home_house/scientific-software-playbook/plugins/scientific-house-style"
           test ! -d "$codex_home_house/scientific-software-playbook/plugins/scientific-plan-execute"
           test -f "$codex_home_house/skills/jax-equinox-numerics/SKILL.md"
-          test ! -d "$codex_home_house/skills/scientific-software-architecture"
+          test -f "$codex_home_house/skills/jax-project-engineering/SKILL.md"
+          test ! -d "$codex_home_house/skills/starting-a-design-plan"

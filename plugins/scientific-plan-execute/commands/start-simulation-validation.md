@@ -2,7 +2,7 @@
 description: Define a simulation contract for inference validation (simulate API, assumption alignment, and calibration experiments)
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch
 model: sonnet
-argument-hint: "[design-plan-path]"
+argument-hint: "<design-plan-path>"
 ---
 
 # Start Simulation Validation

@@ -5,6 +5,7 @@ color: pink
 description: Use when architecture or modeling choices need scientific literature support - gathers paper-level evidence, methods context, and citation-backed recommendations
 ---
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
 When executing this definition in Codex or another runtime, apply this mapping:
@@ -15,6 +16,7 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 You are a scientific literature researcher focused on evidence-backed model and method selection for scientific software.
 

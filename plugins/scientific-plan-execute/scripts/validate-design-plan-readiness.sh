@@ -45,8 +45,11 @@ required_sections=(
   "## Definition of Done"
   "## Goals and Non-Goals"
   "## Model Acquisition Path"
+  "## Required Workflow States"
   "## Model Specification Sources"
   "## Model Option Analysis (Required When \`suggested-model\`)"
+  "## Existing Codebase Port Contract (Required When \`existing-codebase-port\`)"
+  "## Codebase Investigation Findings (Required When \`existing-codebase-port\`)"
   "## External Research Findings (When Triggered)"
   "## Mathematical Sanity Checks"
   "## Solver Strategy Decision"
@@ -81,14 +84,21 @@ if rg -n -e '^[[:space:]]*-[[:space:]]*Path:[[:space:]]*`provided-model`' "$plan
 fi
 if rg -n -e '^[[:space:]]*-[[:space:]]*Path:[[:space:]]*`suggested-model`' "$plan_path" > /dev/null; then
   if [[ -n "$model_path" ]]; then
-    echo "error: model acquisition path is ambiguous (both provided-model and suggested-model detected)" >&2
+    echo "error: model acquisition path is ambiguous (multiple paths detected)" >&2
     exit 1
   fi
   model_path="suggested-model"
 fi
+if rg -n -e '^[[:space:]]*-[[:space:]]*Path:[[:space:]]*`existing-codebase-port`' "$plan_path" > /dev/null; then
+  if [[ -n "$model_path" ]]; then
+    echo "error: model acquisition path is ambiguous (multiple paths detected)" >&2
+    exit 1
+  fi
+  model_path="existing-codebase-port"
+fi
 
 if [[ -z "$model_path" ]]; then
-  echo "error: model acquisition path must be explicit: \`provided-model\` or \`suggested-model\`" >&2
+  echo "error: model acquisition path must be explicit: \`provided-model\`, \`suggested-model\`, or \`existing-codebase-port\`" >&2
   exit 1
 fi
 
@@ -106,6 +116,68 @@ fi
 
 if [[ -z "$simulation_scope" ]]; then
   echo "error: simulation scope must be explicit in Simulation And Inference-Consistency Validation section (yes or no)" >&2
+  exit 1
+fi
+
+workflow_model_state=""
+if rg -n -e '^[[:space:]]*-[[:space:]]*model_path_decided:[[:space:]]*yes[[:space:]]*$' "$plan_path" > /dev/null; then
+  workflow_model_state="yes"
+fi
+if rg -n -e '^[[:space:]]*-[[:space:]]*model_path_decided:[[:space:]]*no[[:space:]]*$' "$plan_path" > /dev/null; then
+  if [[ -n "$workflow_model_state" ]]; then
+    echo "error: required workflow state model_path_decided is ambiguous (multiple values detected)" >&2
+    exit 1
+  fi
+  workflow_model_state="no"
+fi
+if [[ -z "$workflow_model_state" ]]; then
+  echo "error: required workflow state model_path_decided must be explicit (yes or no)" >&2
+  exit 1
+fi
+
+workflow_port_state=""
+if rg -n -e '^[[:space:]]*-[[:space:]]*codebase_investigation_complete_if_port:[[:space:]]*yes[[:space:]]*$' "$plan_path" > /dev/null; then
+  workflow_port_state="yes"
+fi
+if rg -n -e '^[[:space:]]*-[[:space:]]*codebase_investigation_complete_if_port:[[:space:]]*no[[:space:]]*$' "$plan_path" > /dev/null; then
+  if [[ -n "$workflow_port_state" ]]; then
+    echo "error: required workflow state codebase_investigation_complete_if_port is ambiguous (multiple values detected)" >&2
+    exit 1
+  fi
+  workflow_port_state="no"
+fi
+if rg -n -e '^[[:space:]]*-[[:space:]]*codebase_investigation_complete_if_port:[[:space:]]*n/a[[:space:]]*$' "$plan_path" > /dev/null; then
+  if [[ -n "$workflow_port_state" ]]; then
+    echo "error: required workflow state codebase_investigation_complete_if_port is ambiguous (multiple values detected)" >&2
+    exit 1
+  fi
+  workflow_port_state="n/a"
+fi
+if [[ -z "$workflow_port_state" ]]; then
+  echo "error: required workflow state codebase_investigation_complete_if_port must be explicit (yes, no, or n/a)" >&2
+  exit 1
+fi
+
+workflow_simulation_state=""
+if rg -n -e '^[[:space:]]*-[[:space:]]*simulation_contract_complete_if_in_scope:[[:space:]]*yes[[:space:]]*$' "$plan_path" > /dev/null; then
+  workflow_simulation_state="yes"
+fi
+if rg -n -e '^[[:space:]]*-[[:space:]]*simulation_contract_complete_if_in_scope:[[:space:]]*no[[:space:]]*$' "$plan_path" > /dev/null; then
+  if [[ -n "$workflow_simulation_state" ]]; then
+    echo "error: required workflow state simulation_contract_complete_if_in_scope is ambiguous (multiple values detected)" >&2
+    exit 1
+  fi
+  workflow_simulation_state="no"
+fi
+if rg -n -e '^[[:space:]]*-[[:space:]]*simulation_contract_complete_if_in_scope:[[:space:]]*n/a[[:space:]]*$' "$plan_path" > /dev/null; then
+  if [[ -n "$workflow_simulation_state" ]]; then
+    echo "error: required workflow state simulation_contract_complete_if_in_scope is ambiguous (multiple values detected)" >&2
+    exit 1
+  fi
+  workflow_simulation_state="n/a"
+fi
+if [[ -z "$workflow_simulation_state" ]]; then
+  echo "error: required workflow state simulation_contract_complete_if_in_scope must be explicit (yes, no, or n/a)" >&2
   exit 1
 fi
 
@@ -145,11 +217,20 @@ placeholder_checks=(
   "Goal placeholder|^[[:space:]]*- Goal 1[[:space:]]*$"
   "Non-goal placeholder|^[[:space:]]*- Non-goal 1[[:space:]]*$"
   "Acceptance criteria placeholder|^[[:space:]]*1\\. AC1[[:space:]]*$"
-  "Model acquisition path placeholder|^[[:space:]]*-[[:space:]]*Path:[[:space:]]*\`provided-model\` \\| \`suggested-model\`[[:space:]]*$"
+  "Model acquisition path placeholder|^[[:space:]]*-[[:space:]]*Path:[[:space:]]*\`provided-model\` \\| \`suggested-model\` \\| \`existing-codebase-port\`[[:space:]]*$"
+  "Workflow model path state placeholder|^[[:space:]]*-[[:space:]]*model_path_decided:[[:space:]]*yes\\|no[[:space:]]*$"
+  "Workflow port investigation state placeholder|^[[:space:]]*-[[:space:]]*codebase_investigation_complete_if_port:[[:space:]]*yes\\|no\\|n/a[[:space:]]*$"
+  "Workflow simulation contract state placeholder|^[[:space:]]*-[[:space:]]*simulation_contract_complete_if_in_scope:[[:space:]]*yes\\|no\\|n/a[[:space:]]*$"
   "Model selection confirmation placeholder|^[[:space:]]*-[[:space:]]*User selection confirmation:[[:space:]]*$"
+  "Port source selection placeholder|^[[:space:]]*-[[:space:]]*Source selection confirmation:[[:space:]]*$"
+  "Port investigation mode placeholder|^[[:space:]]*-[[:space:]]*Investigation mode:[[:space:]]*\`local-directory\` \\| \`github-url\`[[:space:]]*$"
+  "Port investigation completion placeholder|^[[:space:]]*-[[:space:]]*Investigation completion:[[:space:]]*yes\\|no[[:space:]]*$"
   "Simulation scope placeholder|^[[:space:]]*-[[:space:]]*In scope:[[:space:]]*yes\\|no[[:space:]]*$"
   "Model source placeholder row|^[[:space:]]*\\| SRC-1 \\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*$"
   "Model option placeholder row|^[[:space:]]*\\| MOD-1 \\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\| selected/rejected \\|[[:space:]]*$"
+  "Port source placeholder row|^[[:space:]]*\\| PORT-SRC-1 \\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*$"
+  "Port behavior placeholder row|^[[:space:]]*\\| PORT-BHV-1 \\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*$"
+  "Port investigation placeholder row|^[[:space:]]*\\| PORT-INV-1 \\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\| confirmed \\|[[:space:]]*$"
   "Risk placeholder row|^[[:space:]]*\\| R1 \\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*\\|[[:space:]]*$"
   "Math summary placeholder|^[[:space:]]*- Summary:[[:space:]]*$"
   "Math blocking issues placeholder|^[[:space:]]*- Blocking issues:[[:space:]]*$"
@@ -169,6 +250,23 @@ for check in "${placeholder_checks[@]}"; do
 done
 
 if [[ "$phase" == "approval" && "$model_path" == "suggested-model" ]]; then
+  if [[ "$workflow_model_state" != "yes" ]]; then
+    echo "error: required workflow state model_path_decided must be yes for approval" >&2
+    exit 1
+  fi
+  if [[ "$workflow_port_state" != "n/a" ]]; then
+    echo "error: required workflow state codebase_investigation_complete_if_port must be n/a when model path is not existing-codebase-port" >&2
+    exit 1
+  fi
+  if [[ "$simulation_scope" == "yes" && "$workflow_simulation_state" != "yes" ]]; then
+    echo "error: required workflow state simulation_contract_complete_if_in_scope must be yes when simulation scope is yes" >&2
+    exit 1
+  fi
+  if [[ "$simulation_scope" == "no" && "$workflow_simulation_state" != "n/a" ]]; then
+    echo "error: required workflow state simulation_contract_complete_if_in_scope must be n/a when simulation scope is no" >&2
+    exit 1
+  fi
+
   suggested_rows="$(awk -F'|' '/^[[:space:]]*\|[[:space:]]*MOD-[^|]*\|/ {print}' "$plan_path")"
   if [[ -z "$suggested_rows" ]]; then
     echo "error: suggested-model path requires populated model candidate rows (MOD-*) in Model Option Analysis" >&2
@@ -193,6 +291,23 @@ if [[ "$phase" == "approval" && "$model_path" == "suggested-model" ]]; then
 fi
 
 if [[ "$phase" == "approval" && "$model_path" == "provided-model" ]]; then
+  if [[ "$workflow_model_state" != "yes" ]]; then
+    echo "error: required workflow state model_path_decided must be yes for approval" >&2
+    exit 1
+  fi
+  if [[ "$workflow_port_state" != "n/a" ]]; then
+    echo "error: required workflow state codebase_investigation_complete_if_port must be n/a when model path is not existing-codebase-port" >&2
+    exit 1
+  fi
+  if [[ "$simulation_scope" == "yes" && "$workflow_simulation_state" != "yes" ]]; then
+    echo "error: required workflow state simulation_contract_complete_if_in_scope must be yes when simulation scope is yes" >&2
+    exit 1
+  fi
+  if [[ "$simulation_scope" == "no" && "$workflow_simulation_state" != "n/a" ]]; then
+    echo "error: required workflow state simulation_contract_complete_if_in_scope must be n/a when simulation scope is no" >&2
+    exit 1
+  fi
+
   source_rows="$(awk -F'|' '/^[[:space:]]*\|[[:space:]]*SRC-[^|]*\|/ {print}' "$plan_path")"
   if [[ -z "$source_rows" ]]; then
     echo "error: provided-model path requires at least one populated model source row (SRC-*) in Model Specification Sources" >&2
@@ -212,6 +327,131 @@ if [[ "$phase" == "approval" && "$model_path" == "provided-model" ]]; then
 
   if [[ "$has_populated_source" -ne 1 ]]; then
     echo "error: provided-model path requires at least one model source row with non-empty path/link and type" >&2
+    exit 1
+  fi
+fi
+
+if [[ "$phase" == "approval" && "$model_path" == "existing-codebase-port" ]]; then
+  if [[ "$workflow_model_state" != "yes" ]]; then
+    echo "error: required workflow state model_path_decided must be yes for approval" >&2
+    exit 1
+  fi
+  if [[ "$workflow_port_state" != "yes" ]]; then
+    echo "error: required workflow state codebase_investigation_complete_if_port must be yes when model path is existing-codebase-port" >&2
+    exit 1
+  fi
+  if [[ "$simulation_scope" == "yes" && "$workflow_simulation_state" != "yes" ]]; then
+    echo "error: required workflow state simulation_contract_complete_if_in_scope must be yes when simulation scope is yes" >&2
+    exit 1
+  fi
+  if [[ "$simulation_scope" == "no" && "$workflow_simulation_state" != "n/a" ]]; then
+    echo "error: required workflow state simulation_contract_complete_if_in_scope must be n/a when simulation scope is no" >&2
+    exit 1
+  fi
+
+  port_source_rows="$(awk -F'|' '/^[[:space:]]*\|[[:space:]]*PORT-SRC-[^|]*\|/ {print}' "$plan_path")"
+  if [[ -z "$port_source_rows" ]]; then
+    echo "error: existing-codebase-port path requires at least one source pin row (PORT-SRC-*) in Existing Codebase Port Contract" >&2
+    exit 1
+  fi
+
+  has_populated_port_source=0
+  while IFS='|' read -r _ col_source_id col_source_type col_source_path col_source_pin _; do
+    source_id="$(echo "$col_source_id" | xargs)"
+    source_type="$(echo "$col_source_type" | xargs)"
+    source_path="$(echo "$col_source_path" | xargs)"
+    source_pin="$(echo "$col_source_pin" | xargs)"
+
+    if [[ "$source_id" != PORT-SRC-* || -z "$source_type" || -z "$source_path" || -z "$source_pin" ]]; then
+      continue
+    fi
+
+    if [[ "$source_type" != "local-directory" && "$source_type" != "github-url" ]]; then
+      continue
+    fi
+
+    if [[ "$source_type" == "local-directory" && "$source_path" != /* ]]; then
+      continue
+    fi
+
+    if [[ "$source_type" == "github-url" ]]; then
+      if [[ ! "$source_path" =~ ^https?://github\.com/ ]] && [[ ! "$source_path" =~ ^git@github\.com: ]]; then
+        continue
+      fi
+    fi
+
+    has_populated_port_source=1
+    break
+  done <<< "$port_source_rows"
+
+  if [[ "$has_populated_port_source" -ne 1 ]]; then
+    echo "error: existing-codebase-port path requires one source pin row with source type (\`local-directory\` or \`github-url\`), valid source locator, and commit/tag" >&2
+    exit 1
+  fi
+
+  port_behavior_rows="$(awk -F'|' '/^[[:space:]]*\|[[:space:]]*PORT-BHV-[^|]*\|/ {print}' "$plan_path")"
+  if [[ -z "$port_behavior_rows" ]]; then
+    echo "error: existing-codebase-port path requires at least one behavior inventory row (PORT-BHV-*) in Existing Codebase Port Contract" >&2
+    exit 1
+  fi
+
+  has_populated_port_behavior=0
+  while IFS='|' read -r _ col_behavior_id col_surface col_current col_target col_evidence _; do
+    behavior_id="$(echo "$col_behavior_id" | xargs)"
+    surface="$(echo "$col_surface" | xargs)"
+    current_behavior="$(echo "$col_current" | xargs)"
+    target_behavior="$(echo "$col_target" | xargs)"
+    evidence_plan="$(echo "$col_evidence" | xargs)"
+
+    if [[ "$behavior_id" == PORT-BHV-* && -n "$surface" && -n "$current_behavior" && -n "$target_behavior" && -n "$evidence_plan" ]]; then
+      has_populated_port_behavior=1
+      break
+    fi
+  done <<< "$port_behavior_rows"
+
+  if [[ "$has_populated_port_behavior" -ne 1 ]]; then
+    echo "error: existing-codebase-port path requires one populated behavior inventory row with surface, current behavior, target behavior, and evidence plan" >&2
+    exit 1
+  fi
+
+  if ! rg -n -e '^[[:space:]]*-[[:space:]]*Investigation completion:[[:space:]]*yes[[:space:]]*$' "$plan_path" > /dev/null; then
+    echo "error: existing-codebase-port path requires codebase investigation completion set to yes" >&2
+    exit 1
+  fi
+
+  if ! rg -Fq -- '- Investigator: `scientific-codebase-investigation-pass`' "$plan_path"; then
+    echo "error: existing-codebase-port path requires investigator to be \`scientific-codebase-investigation-pass\`" >&2
+    exit 1
+  fi
+
+  port_investigation_rows="$(awk -F'|' '/^[[:space:]]*\|[[:space:]]*PORT-INV-[^|]*\|/ {print}' "$plan_path")"
+  if [[ -z "$port_investigation_rows" ]]; then
+    echo "error: existing-codebase-port path requires at least one investigation findings row (PORT-INV-*) in Codebase Investigation Findings" >&2
+    exit 1
+  fi
+
+  has_populated_port_investigation=0
+  while IFS='|' read -r _ col_finding_id col_scope col_summary col_evidence col_status _; do
+    finding_id="$(echo "$col_finding_id" | xargs)"
+    source_scope="$(echo "$col_scope" | xargs)"
+    summary="$(echo "$col_summary" | xargs)"
+    evidence="$(echo "$col_evidence" | xargs)"
+    status="$(echo "$col_status" | xargs)"
+
+    if [[ "$finding_id" != PORT-INV-* || -z "$source_scope" || -z "$summary" || -z "$evidence" ]]; then
+      continue
+    fi
+
+    if [[ "$status" != "confirmed" && "$status" != "discrepancy" && "$status" != "addition" && "$status" != "missing" ]]; then
+      continue
+    fi
+
+    has_populated_port_investigation=1
+    break
+  done <<< "$port_investigation_rows"
+
+  if [[ "$has_populated_port_investigation" -ne 1 ]]; then
+    echo "error: existing-codebase-port path requires one populated investigation row with scope, summary, evidence, and valid status" >&2
     exit 1
   fi
 fi

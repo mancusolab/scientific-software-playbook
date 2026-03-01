@@ -3,7 +3,7 @@
 ## Summary
 This design splits the current single plugin into two first-class plugins within this repository:
 1. `scientific-plan-execute` for workflow orchestration (architecture -> plan -> execute -> validate).
-2. `scientific-house-style` for reusable engineering policy and reference skills (`jax-equinox-numerics`, `project-engineering`, related checklists/snippets).
+2. `scientific-house-style` for reusable engineering policy and reference skills (`jax-equinox-numerics`, `jax-project-engineering`, related checklists/snippets).
 
 The goal is to remove ambiguity about global scope, keep downstream repositories minimal (`AGENTS.md` only), and preserve a simple install path while making plugin boundaries explicit and maintainable.
 
@@ -18,7 +18,7 @@ The goal is to remove ambiguity about global scope, keep downstream repositories
 ## Problem Statement
 Current state mixes two concerns in one plugin contract:
 1. Workflow orchestration assets (`agents/`, `commands/`, planning/validation/execution skills).
-2. House-style engineering guidance skills with independent lifecycle (`jax-equinox-numerics`, `project-engineering`).
+2. House-style engineering guidance skills with independent lifecycle (`jax-equinox-numerics`, `jax-project-engineering`).
 
 This creates scope ambiguity:
 1. Some skills exist in `skills/` but are not part of the installed and documented workflow set.
@@ -59,13 +59,11 @@ scientific-software-playbook/
         new-design-plan/
         validate-design-plan/
         set-design-plan-status/
-        start-scientific-implementation-plan/
-        execute-scientific-implementation-plan/
+        starting-an-implementation-plan/
+        executing-an-implementation-plan/
         scientific-internet-research-pass/
-        scientific-software-architecture/
+        starting-a-design-plan/
         simulation-for-inference-validation/
-        validation-first-pipeline-api/
-        scientific-cli-thin-shell/
       docs/
         design-plans/templates/
         implementation-plans/templates/
@@ -75,7 +73,7 @@ scientific-software-playbook/
       .claude-plugin/plugin.json
       skills/
         jax-equinox-numerics/
-        project-engineering/
+        jax-project-engineering/
       docs/
         skill-index.md
   scripts/
@@ -130,7 +128,7 @@ scientific-software-playbook/
 
 **Components:**
 1. Create `plugins/scientific-plan-execute/` and move workflow assets.
-2. Create `plugins/scientific-house-style/` and move `jax-equinox-numerics`, `project-engineering`.
+2. Create `plugins/scientific-house-style/` and move `jax-equinox-numerics`, `jax-project-engineering`.
 3. Add plugin manifests in each plugin root.
 4. Keep temporary compatibility shims at legacy root paths where required.
 

@@ -1,6 +1,6 @@
 # Scientific Research Plugin Skill Index
 
-This plugin mirrors the ed3d research-agent layout with playbook-aligned skill names.
+This plugin provides research-agent layout with playbook-aligned skill names.
 
 ## Skills
 

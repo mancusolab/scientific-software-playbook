@@ -17,11 +17,19 @@ Draft
 
 ## Execution Constraints
 - Required workflow: task-level TDD (`failing test -> implementation -> passing test`)
-- Boundary invariants:
-  - ingress parses external formats
-  - pipeline accepts canonical objects only
-  - numerics accepts arrays/PyTrees only
-  - egress performs output conversion
+- Architecture profile: `compact-workflow` | `modular-domain`
+- Profile selection rule:
+  - default to `compact-workflow` for small-scope projects or single-workflow CLIs
+  - choose `modular-domain` when multiple scientific domains/workflows evolve independently
+- Boundary invariants by profile:
+  - `compact-workflow`:
+    - one module may handle CLI parsing, boundary validation, file I/O, numerics dispatch, and output writing
+    - validation and raw-container conversion must still happen before numerics dispatch
+    - numerics entrypoints remain array/PyTree-only
+  - `modular-domain`:
+    - organize modules by scientific concern (for example: distribution, infer, io), with shallow package depth
+    - keep parsing/format conversion and CLI argument concerns out of numerics kernels
+    - keep numerics entrypoints array/PyTree-only
 
 ## External Dependency Research (When Triggered)
 | Claim ID | Related Phase/Task | Claim | Source URL | Access Date | Confidence | Impact on Plan |
@@ -39,12 +47,12 @@ Draft
 | SIMVAL-1 | | | | | blocked |
 
 ## Phase Index
-| Phase | File | Goal | Done Gate |
-| --- | --- | --- | --- |
-| 1 | `phase_01.md` | | |
+| Phase | File | Goal | Review Profile | Done Gate |
+| --- | --- | --- | --- | --- |
+| 1 | `phase_01.md` | | `minimal` | |
 
-## Simulation Phase Requirement (When In Scope)
-- If design plan simulation scope is `yes`, include at least one dedicated simulation-validation phase file:
+## Simulation-Validation Phase Requirement (When In Scope)
+- If synthetic-data validation scope is `yes` in the design plan, include at least one dedicated simulation-validation phase file:
   - Example: `phase_0X_simulation_validation.md` or a scoped `phase_0X.md` following `phase-simulation-validation-template.md`.
 - That phase must cover:
   - `simulate` interface implementation
@@ -57,9 +65,16 @@ Draft
 ```
 
 ## Review Checkpoints
-1. Run `scientific-architecture-reviewer` after each phase.
-2. Run `numerics-interface-auditor` for numerics-touching phases.
-3. Resolve all blocking findings before continuing.
+1. Run `scientific-code-reviewer` after each phase.
+2. Select phase-level baseline reviewers from the phase review profile:
+- `minimal`, `api-cli`, `numerics`, `inference`, `full`.
+3. Escalate reviewers from touched surfaces even if phase profile is lower:
+- boundary contracts -> `scientific-architecture-reviewer`
+- numerics changes -> `numerics-interface-auditor`
+- CLI/API changes -> `scientific-cli-api-reviewer`
+- inference-engine or deterministic-solver changes -> `scientific-inference-algorithm-reviewer`
+4. Evaluate boundary findings against the selected architecture profile, not an implicit deep-layering assumption.
+5. Resolve all blocking findings before continuing.
 
 ## Execution Log
 | Date | Phase | Status | Evidence |

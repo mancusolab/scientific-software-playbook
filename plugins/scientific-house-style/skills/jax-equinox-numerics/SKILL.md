@@ -7,6 +7,7 @@ metadata:
 
 # JAX + Equinox Best Practices
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
 When executing this definition in Codex or another runtime, apply this mapping:
@@ -17,6 +18,7 @@ When executing this definition in Codex or another runtime, apply this mapping:
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 Guidance for software engineering practices around numerical/JAX codebases using
 JAX + Equinox + Lineax + Optimistix.
@@ -24,11 +26,27 @@ JAX + Equinox + Lineax + Optimistix.
 This file is the entrypoint. Keep it lightweight and load focused references for
 implementation details.
 
+## Scope boundary (authoritative split)
+
+This skill is authoritative for numerics runtime semantics:
+- JIT boundaries and static/dynamic partitioning
+- PyTree and dtype stability in traced execution
+- solver/result/failure semantics for numerics surfaces
+- traced-kernel error signaling (`result` channels and/or `eqx.error_if`)
+- AD/batching/transform correctness checks
+
+This skill is not the source of truth for project-level engineering policy. For:
+- API lifecycle/versioning/deprecation policy
+- CLI UX/exit-code/stdout-stderr contract
+- documentation and docstring style standards
+- type-checking and CI/release gates
+- packaging and distribution policy
+use `../jax-project-engineering/SKILL.md`.
+
 ## Path Contract (Unambiguous)
 
 1. All relative paths in this file resolve from this skill directory (the directory containing this `SKILL.md`).
-2. Codex install location example: `${CODEX_HOME:-$HOME/.codex}/skills/jax-equinox-numerics/`.
-3. Claude Code plugin location example: `${CLAUDE_PLUGIN_ROOT}/skills/jax-equinox-numerics/`.
+2. Companion checklist and snippet paths are installation-local paths relative to this directory.
 
 ## Companion checklists
 
@@ -74,6 +92,38 @@ Use these snippets as implementation starters when they match the task.
 - Abstract module: `eqx.Module` with `abc.abstractmethod` or `eqx.AbstractVar`.
 - Final module: concrete `eqx.Module` with no further overrides or subclassing.
 
+## Abstract-vs-Final Module Pattern (Required)
+
+Use abstract-or-final module design by default:
+- define interfaces as abstract modules (`abc.abstractmethod`/`eqx.AbstractVar`)
+- implement behavior in concrete final modules (no further subclassing)
+- avoid subclassing concrete modules to change runtime behavior
+
+Load these assets immediately when module inheritance/composition is in scope:
+- snippet: `snippets/abc_module_pattern.py`
+- reference: `references/jit_pytree_controlflow.md` (abstract-or-final guidance)
+
+Trigger this section when any of these apply:
+- introducing a new `eqx.Module` interface
+- extending/reusing an existing module family
+- reviewing subclass-based customization in numerics code
+
+## `eqx.Module` vs `typing.NamedTuple` (Decision Rule)
+
+Use `eqx.Module` when:
+- the state is coupled to behavior/methods that should travel with that state
+- you need abstract/final module interfaces or composition patterns across model components
+- explicit module-level extension points/contracts are part of the design
+
+Use `typing.NamedTuple` when:
+- the object is a lightweight immutable container (parameters, result bundle, metadata, config snapshot)
+- fields are fixed and behavior-free
+- no module inheritance/composition contract is required
+- you want a simple PyTree-compatible carrier that can still flow through numerics paths
+
+Avoid representing the same conceptual entity as both `eqx.Module` and `NamedTuple`
+in the same layer unless a boundary contract explicitly requires conversion.
+
 ## Core defaults
 
 ### Rule: Keep transformation boundaries explicit
@@ -88,7 +138,10 @@ Use these snippets as implementation starters when they match the task.
 
 ### Rule: Convert tabular/dataframe inputs at boundaries
 - Do: Convert Polars/Pandas/table-like inputs to JAX/NumPy arrays immediately at ingress (`to_jax()` and `jnp.asarray(...)` where values are assigned into arrays).
+- Do: For workflows with multiple tabular sources (for example phenotype, sample metadata for genotype, covariates), reconcile rows in tabular adapters first using explicit entity keys before array conversion.
+- Do: Document reconciliation policy at ingress: join keys, join type, duplicate-key handling, missing-key handling, deterministic row-order freeze, and dropped-row accounting.
 - Do: Convert back to tabular formats only at egress adapters.
+- Don't: Assume positional row alignment across independently loaded inputs.
 - Don’t: Pass dataframe objects into `jit`/`vmap`/`scan` or core solver internals.
 - Why: Tabular containers are host-side objects that destabilize tracing, dtype policy, and reproducibility.
 
@@ -102,6 +155,7 @@ Use these snippets as implementation starters when they match the task.
 ### Rule: Define ingress adapter contracts and tests
 - Do: Specify format name, canonical output type, copy mode, and validation checks for each adapter.
 - Do: Validate required fields, dtype normalization, shape/index alignment, and domain invariants before adapter output.
+- Do: When reconciling multiple tabular inputs, include key-level validation tests (duplicate/missing keys, overlap expectations, deterministic row ordering, and reconciliation counts).
 - Do: Use TDD for adapters: failing tests first for boundary rejection, conversion correctness, and copy-mode behavior.
 - Don’t: Mark an adapter complete if copy behavior is undefined or untested.
 - Why: Ingress defects are hard to diagnose once propagated into numerics.
@@ -111,22 +165,41 @@ Use these snippets as implementation starters when they match the task.
 - Don’t: Use hidden global RNG state.
 - Why: Determinism across `jit`/`vmap`/`scan` depends on explicit key flow.
 
-### Rule: Prefer Lineax/Optimistix primitives for solver APIs
-- Do: Build linear/nonlinear solves using Lineax/Optimistix entry points first.
-- Don’t: Reimplement generic solver loops unless introducing a new algorithm.
-- Why: Reuses mature APIs for results, failure signaling, and transform compatibility.
+### Rule: Choose the right numerical engine family for the task
+- Do: distinguish among linear solves, deterministic nonlinear/optimization routines, and sampling-based inference before selecting libraries or API shapes.
+- Do: treat variational inference and other objective-minimizing approximations as deterministic optimization work, not as sampling.
+- Don't: use generic "solver" language when the implementation contract is actually posterior sampling.
+- Why: linear algebra, optimization, and sampling have different state models, diagnostics, and output contracts.
 
-### Rule: Handle failures through structured result channels
-- Do: Default to structured result/status channels and branch on `result` at clear boundary points.
-- Do: Keep failure handling explicit in return values instead of threading exception toggles through every API.
-- Do: Treat `throw=True`/`throw=False` as advanced, opt-in behavior for specialized use cases only.
-- Don’t: Assume convergence or silently ignore non-success statuses.
-- Don’t: Add `throw` options unless a concrete requirement demands hard-fail behavior.
-- Why: Solver failures are normal control flow; result channels keep most implementations simpler and easier to maintain.
+### Rule: Prefer Lineax for linear solves
+- Do: use Lineax first for linear systems, operator-based regression subproblems, and linear steps inside larger algorithms.
+- Don't: hand-roll generic linear solve code unless the algorithm is genuinely novel.
+- Why: Lineax gives operator-centric APIs, explicit result handling, and structure-aware solver choices.
+
+### Rule: Prefer Optimistix or custom methods for deterministic optimization/nonlinear solves
+- Do: use Optimistix entry points first for root finding, least squares, minimization, and other deterministic update loops.
+- Do: place variational inference and similar objective-driven approximations in this bucket unless there is a clear reason not to.
+- Don’t: reimplement generic nonlinear solver loops unless introducing a new algorithm.
+- Why: deterministic optimization needs mature failure signaling, adjoint support, and explicit termination behavior.
+
+### Rule: Prefer BlackJAX for sampling-based inference workflows
+- Do: treat MCMC/HMC/NUTS-style workflows as sampling engines with posterior-draw outputs and sampler diagnostics.
+- Do: use BlackJAX first when the primary contract is posterior sampling rather than point estimation.
+- Do: make chain count, warmup/adaptation, sampling length, PRNG splitting, and diagnostics part of the public contract.
+- Don’t: describe sampling workflows as mere "solver" calls or collapse them into optimization terminology.
+- Why: samplers have different correctness signals: diagnostics, adaptation behavior, and posterior sample contracts rather than convergence to a single optimum.
+
+### Rule: Pick one failure contract per numerics surface
+- Do: use structured result/status channels when callers must recover/branch on solver outcomes.
+- Do: use exception-first semantics when fail-fast behavior is desired for the workflow.
+- Do: keep the chosen contract explicit, documented, and tested.
+- Don’t: assume convergence or silently ignore solver failures.
+- Don’t: mix multiple failure channels by default unless an integration requirement demands it.
+- Why: explicit single-channel contracts reduce accidental complexity.
 
 ### Rule: Raise early at boundaries; keep traced kernels exception-free
 - Do: Perform structural/range/input validation before entering the JIT boundary and raise actionable Python exceptions there.
-- Do: Inside traced numerics, use `result` channels and `eqx.error_if` for runtime checks.
+- Do: Inside traced numerics, use JAX-compatible checks (`result` channels and/or `eqx.error_if`) for runtime checks.
 - Don’t: Raise Python exceptions from JIT-compiled loops or solver steps.
 - Why: Boundary validation should fail fast, while traced execution requires JAX-compatible control flow.
 
@@ -135,9 +208,15 @@ Use these snippets as implementation starters when they match the task.
 - Don’t: Treat successful forward values as sufficient verification.
 - Why: Most regressions in numerics show up first in gradients and batching semantics.
 
+### Rule: Treat sampler state and sampler outputs as first-class contracts
+- Do: specify sampler inputs/outputs explicitly: initial state, warmup/adaptation state, posterior draws, diagnostics, and reproducibility metadata.
+- Do: document what constitutes a warning versus a hard failure (for example, divergences, invalid log density, or adaptation breakdown).
+- Don’t: return unlabeled arrays of samples without chain/draw/parameter semantics and diagnostic context.
+- Why: inference users need interpretable posterior artifacts, not just raw tensors.
+
 ## Pressure-test scenarios (for `testing-skills-with-subagents`)
 
-Use these prompts to harden boundary-conversion and exception-policy compliance:
+Use these prompts to harden boundary-conversion and failure-policy compliance:
 
 1. Dataframe ingress pressure
 ```markdown
@@ -163,7 +242,7 @@ the jitted loop because it is the fastest patch.
 
 Options:
 A) Raise Python exceptions from the traced loop.
-B) Validate earlier at boundaries and use `result`/`eqx.error_if` inside traced numerics.
+B) Validate earlier at boundaries and use JAX-compatible signaling (`result` and/or `eqx.error_if`) inside traced numerics.
 C) Ignore and hope downstream checks catch it.
 
 Choose A, B, or C.
@@ -181,6 +260,10 @@ Load only the files relevant to your task.
   Covers operator-centric linear solves, `AutoLinearSolver(well_posed=...)`, trusted tags,
   and nonlinear solve APIs (`root_find`, `least_squares`, `minimise`) with failure handling.
 
+- `references/blackjax_sampling_patterns.md`
+  Covers chain-axis structure, warmup/adaptation contracts, PRNG splitting, diagnostics,
+  and posterior-sample output conventions for sampling-based inference.
+
 - `references/ad_checkpointing_callbacks.md`
   Covers Equinox AD wrappers, tangent-path failure rules, checkpointing, callback guidance,
   custom primitive helpers, and AD-focused test/diagnostic patterns.
@@ -193,8 +276,14 @@ Load only the files relevant to your task.
 If the task is primarily about JIT boundaries, PyTree stability, or mapped control flow,
 load `references/jit_pytree_controlflow.md` first.
 
+If the task involves module interface design or inheritance/composition tradeoffs,
+load `snippets/abc_module_pattern.py` and `references/jit_pytree_controlflow.md` first.
+
 If the task is primarily about linear/nonlinear solver API design or solver result handling,
 load `references/lineax_optimistix_patterns.md` first.
+
+If the task is primarily about sampling-based inference, chain management, warmup/adaptation,
+or posterior-sample contracts, load `references/blackjax_sampling_patterns.md` first.
 
 If the task is primarily about custom derivatives, checkpointing, callbacks, or primitive
 registration, load `references/ad_checkpointing_callbacks.md` first.
@@ -209,5 +298,5 @@ to reduce instruction weight and improve retrieval quality.
 
 ## See also: project engineering
 
-For API stability, documentation style, type checking, CLI patterns, CI gates, and
-serialization guidance, see `../project-engineering/SKILL.md`.
+For project-level policy (API lifecycle, CLI contracts, docs standards, type/CI gates,
+and serialization packaging), see `../jax-project-engineering/SKILL.md`.

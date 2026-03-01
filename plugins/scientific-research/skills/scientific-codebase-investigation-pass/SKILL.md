@@ -6,22 +6,22 @@ user-invocable: false
 
 # Scientific Codebase Investigation Pass
 
+<!-- SYNC:BEGIN runtime-compatibility -->
 ## Runtime Compatibility
 
-When executing this skill in Codex or another runtime, apply this mapping:
+When executing this definition in Codex or another runtime, apply this mapping:
 
 - `TaskCreate`, `TaskUpdate`, `TodoWrite` -> `update_plan`
 - `Task` delegate calls (for example `<invoke name="Task">`) -> perform the requested work directly in the current session when delegation is unavailable
-- `Skill` tool calls -> load the named skill with your runtime's skill-loading mechanism
+- `Skill` tool calls -> load the named skill with your runtime skill-loading mechanism
 - Tool names like `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob` -> use equivalent native tools in your runtime
 
 Apply this translation before following the remaining steps.
+<!-- SYNC:END runtime-compatibility -->
 
 ## Path Contract (Unambiguous)
 
-1. This skill has no installation-local file dependencies and is valid in either runtime:
-- Codex installation example: `${CODEX_HOME:-$HOME/.codex}/skills/scientific-codebase-investigation-pass/SKILL.md`
-- Claude Code plugin installation example: `${CLAUDE_PLUGIN_ROOT}/skills/scientific-codebase-investigation-pass/SKILL.md`
+1. This skill has no installation-local file dependencies and is valid in either runtime.
 2. All discovered code paths are project-local paths in the currently investigated workspace.
 
 ## Overview

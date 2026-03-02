@@ -96,13 +96,34 @@ bash scripts/install-codex-home.sh --force
 
 ### Claude Code
 
-```text
-/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git
-/plugin install scientific-plan-execute@scientific-software-playbook
-/plugin install scientific-research@scientific-software-playbook
-/plugin install scientific-house-style@scientific-software-playbook
-/plugin reload
-```
+Because this is a private repository, Claude Code needs a GitHub token to fetch the plugin.
+
+1. **Create a GitHub Personal Access Token**
+   - Go to **GitHub → Settings → Developer settings → Personal access tokens**
+   - Choose **Tokens (classic)** with `repo` scope, or **Fine-grained tokens** with repository read access
+
+2. **Set the environment variable**
+
+   For the current session:
+   ```bash
+   export GITHUB_TOKEN=ghp_your_token_here
+   ```
+
+   For persistence, add the export to your shell profile (`~/.zshrc` or `~/.bashrc`):
+   ```bash
+   echo 'export GITHUB_TOKEN=ghp_your_token_here' >> ~/.zshrc
+   source ~/.zshrc
+   ```
+
+3. **Install the plugins**
+
+   ```text
+   /plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git
+   /plugin install scientific-plan-execute@scientific-software-playbook
+   /plugin install scientific-research@scientific-software-playbook
+   /plugin install scientific-house-style@scientific-software-playbook
+   /plugin reload
+   ```
 
 
 ## Where to go next

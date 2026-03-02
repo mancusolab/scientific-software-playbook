@@ -355,29 +355,22 @@ Should the port include PLINK BED file reading, or assume pre-computed LD scores
 
 You select **Include BED parsing** — full port means users can compute LD scores from genotypes, not just consume pre-computed ones. This matches the reference LDSC capability.
 
-**Versions / Dependencies:**
+**Versions:**
 
 ```
-For tabular data (sumstats, LD scores, annotations), which library?
+What is the target Python version and JAX compatibility?
 
-❯ 1. Polars (Recommended)
-     Faster, no global index, cleaner column operations
-  2. Pandas
-     Matches reference implementation, familiar API
+❯ 1. Python 3.10+, latest JAX
+     Modern typing, latest JAX features, narrower compatibility
+  2. Python 3.9+, JAX 0.4+
+     Broader compatibility, some typing limitations
 ```
 
-You select **Polars** — modern, faster, converts cleanly to JAX arrays at the numerics boundary.
+You select **Python 3.10+, latest JAX** — modern typing features (like `X | None` syntax) and latest JAX capabilities are worth the narrower compatibility window. Most scientific users are on recent Python versions.
 
-```
-For linear algebra solvers, which approach?
-
-❯ 1. Lineax (Recommended)
-     Tagged operators, configurable solvers (Cholesky, QR, SVD), JAX-native
-  2. jnp.linalg.lstsq
-     Direct JAX, simpler but less flexibility
-```
-
-You select **Lineax** — we want tagged operators so the solver can exploit matrix properties (symmetric, positive semidefinite) and configurable solver options without rewriting.
+Additional dependency decisions resolved during clarification:
+- **Tabular data library:** Polars — faster, no global index, cleaner column operations. Convert to JAX arrays at the numerics boundary.
+- **Linear algebra solvers:** Lineax — tagged operators so the solver can exploit matrix properties (symmetric, positive semidefinite), configurable solver options (Cholesky, QR, SVD) without rewriting.
 
 Additional clarifications resolved:
 - "Should we implement AD-based SE as an alternative to block-jackknife?" → **No. Keep jackknife only.** Parity with reference is the priority.

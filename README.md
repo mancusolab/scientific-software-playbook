@@ -129,8 +129,9 @@ Because this is a private repository, Claude Code needs a GitHub token to fetch 
 ## Where to go next
 
 1. Day-1 workflow guide: `docs/ONBOARDING.md`
-2. Installation and troubleshooting: `docs/INSTALLATION.md`
-3. Internal contracts and hard stops: `AGENTS.md`
+2. Tutorial (LDSC JAX port walkthrough): `docs/Tutorial-an-example-walkthrough.md`
+3. Installation and troubleshooting: `docs/INSTALLATION.md`
+4. Internal contracts and hard stops: `AGENTS.md`
 
 ## License and attribution
 

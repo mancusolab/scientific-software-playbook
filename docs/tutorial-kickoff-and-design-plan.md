@@ -3,7 +3,8 @@
 This tutorial walks through the playbook's kickoff and design-plan workflow using a statistical genetics example: porting LD Score Regression (LDSC) from NumPy to JAX.
 
 By the end you will understand:
-- What kickoff does and when to run it
+- How `using-plan-and-execute` routes you to the correct workflow entry point
+- What kickoff does and when to run it (vs. when to skip it)
 - The three model-acquisition paths (with genetics examples for each)
 - How `existing-codebase-port` works in detail
 - How kickoff hands off to design planning
@@ -12,6 +13,52 @@ By the end you will understand:
 ## Prerequisites
 
 The playbook plugins must be installed. See `docs/INSTALLATION.md`.
+
+---
+
+## 0. The Entry Point: `using-plan-and-execute`
+
+Before diving into kickoff, understand how you actually start the workflow.
+
+**The first step is always `using-plan-and-execute`.** This is a router skill that decides which workflow entry point fits your situation. You don't jump directly into kickoff or design planning — the router examines your request and directs you appropriately.
+
+### How the router decides
+
+| Your situation | Router directs you to |
+|----------------|----------------------|
+| Fresh project, model path not yet decided | `scientific-kickoff` → then `starting-a-design-plan` |
+| User requests model suggestions with citations | `scientific-kickoff` (suggested-model mode) |
+| Porting an existing codebase | `scientific-kickoff` (existing-codebase-port mode) |
+| Existing project with established model/contract | `starting-a-design-plan` directly (skip kickoff) |
+| Approved design ready for implementation | `starting-an-implementation-plan` |
+| Implementation plan already exists | `executing-an-implementation-plan` |
+
+### The flow
+
+```
+using-plan-and-execute (START HERE)
+    │
+    ├─→ scientific-kickoff (when model path needs deciding)
+    │       ↓
+    ├─→ starting-a-design-plan (architecture design)
+    │       ↓
+    └─→ starting-an-implementation-plan (build it)
+```
+
+### When kickoff is required vs. optional
+
+**Kickoff is required** when any of these apply:
+- Model path is not yet selected
+- User requests model-family suggestions with citations
+- User requests existing-codebase porting
+- Parity expectations against an existing implementation must be defined
+
+**Kickoff is skipped** when:
+- Model and software contract are already established
+- Working on a scoped feature in an existing project
+- The router determines model provenance is already clear
+
+For this tutorial, we're porting LDSC — an existing codebase — so the router will direct us to kickoff with `existing-codebase-port` mode.
 
 ---
 
@@ -100,16 +147,29 @@ Each piece prevents a specific failure mode:
 
 Here is what each step looks like in practice.
 
-### Step 1: Start kickoff
+### Step 1: Start with the router
 
 Claude Code:
 ```
-/start-scientific-kickoff
+/using-plan-and-execute
 ```
 
-The system asks you to pick a mode. You select `existing-codebase-port`.
+You describe your goal:
 
-### Step 2: Provide source pin
+> "We have the Bulik-Sullivan LDSC implementation in NumPy. Port the full workflow — munging, LD score computation, h2, and rg estimation — to JAX/Equinox with numerical parity."
+
+The router recognizes this as an existing-codebase port scenario. It determines that:
+- Model path is not yet formally decided
+- Parity expectations against an existing implementation must be defined
+- Codebase investigation is required before design can proceed
+
+The router directs you to `scientific-kickoff` with `existing-codebase-port` mode.
+
+### Step 2: Kickoff begins
+
+The kickoff skill loads and confirms the mode: `existing-codebase-port`.
+
+### Step 3: Provide source pin
 
 The system asks for the source implementation location. You provide:
 
@@ -117,7 +177,7 @@ The system asks for the source implementation location. You provide:
 - **URL:** `https://github.com/bulik/ldsc`
 - **Commit/tag:** `aa33296` (or whatever the latest stable commit is)
 
-### Step 3: Define behavior/parity targets
+### Step 4: Define behavior/parity targets
 
 The system asks what behavior must be preserved. You specify:
 
@@ -131,14 +191,14 @@ The system asks what behavior must be preserved. You specify:
 | LD score computation | `numerics` | Match reference LD scores from PLINK input | Fixture-based comparison |
 | CLI exit codes | `cli` | 0 on success, non-zero on input error | End-to-end CLI tests |
 
-### Step 4: Define exclusions
+### Step 5: Define exclusions
 
 You list what's out of scope:
 - Partitioned heritability — separate feature, future work
 - Plotting utilities
 - Python 2 compatibility code
 
-### Step 5: Codebase investigation runs
+### Step 6: Codebase investigation runs
 
 The system launches `scientific-codebase-investigation-pass` against the pinned source. It produces findings like:
 
@@ -152,7 +212,7 @@ The system launches `scientific-codebase-investigation-pass` against the pinned 
 | PORT-INV-6 | `test/` | Test fixtures include small simulated datasets and expected outputs | `test/test_regressions.py` |
 | PORT-INV-7 | `requirements.txt` | NumPy-only numerics (no SciPy optimization) | `requirements.txt:1` |
 
-### Step 6: Simulation scope question
+### Step 7: Simulation scope question
 
 The system asks whether simulation-based inference validation is in scope. You say **yes** — you want to verify that the JAX LDSC implementation recovers known heritability from simulated summary statistics.
 
@@ -171,7 +231,7 @@ simulate_sumstats(h2, n_snps, n_samples, ld_scores, intercept=1.0, seed=0)
 | SIM-2 | Calibration | Mean chi2 of z-scores ≈ 1 under null (h2=0) |
 | SIM-3 | Intercept recovery | Estimated intercept within `rtol=0.05` of true intercept |
 
-### Step 7: Kickoff output written
+### Step 8: Kickoff output written
 
 The system writes `.scientific/kickoff.md`:
 
@@ -210,7 +270,7 @@ computation from genotypes, NumPy-only numerics.
 simulate_sumstats defined. 3 validation experiments (SIM-1, SIM-2, SIM-3).
 ```
 
-### Step 8: Handoff
+### Step 9: Handoff
 
 Kickoff prints:
 
@@ -543,7 +603,8 @@ These are covered in separate documentation. The key point: everything downstrea
 
 | Step | Claude Code command | What it does |
 |------|-------------------|-------------|
-| Start kickoff | `/start-scientific-kickoff` | Select model path, capture readiness state |
+| Entry point | `/using-plan-and-execute` | Router that decides which workflow to use based on your situation |
+| Start kickoff | `/start-scientific-kickoff` | Select model path, capture readiness state (when router directs you here) |
 | Start design | `/start-design-plan <slug>` | Orchestrate design from kickoff through documentation |
 | Validate (review) | `/validate-design-plan <path> --phase in-review` | Check plan completeness |
 | Validate (approval) | `/validate-design-plan <path> --phase approval` | Enforce hard-stop readiness gates |

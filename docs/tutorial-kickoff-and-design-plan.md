@@ -442,6 +442,8 @@ Which architectural approach do you prefer?
 
 You select **Approach A: Module-Parallel** — clean FCIS architecture with a 1:1 module mapping to the original code. This makes parity verification straightforward: each module in the JAX port corresponds to a module in the reference implementation. The functional core contains pure JAX numerics, while the imperative shell handles Polars I/O and CLI.
 
+After brainstorming, the system proposes a design structure and asks for confirmation before proceeding to plan writing. This is your chance to review the proposed module layout, layer boundaries, and key design decisions. If the structure looks good, confirm to proceed; otherwise, provide feedback to refine the design.
+
 **Phase 5: Design documentation.** The `writing-design-plans` skill writes the design plan to `docs/design-plans/2026-02-27-ldsc-jax-port.md`. The key sections it fills:
 
 **Model Acquisition Path** — Pre-populated from kickoff:

@@ -425,15 +425,22 @@ Definition of Done:
 
 You confirm these criteria.
 
-**Phase 4: Brainstorming.** The `brainstorming` skill explores design alternatives:
+**Phase 4: Brainstorming.** The `brainstorming` skill explores design alternatives through structured questions:
 
-*Approach A: Direct translation.* Translate `Hsq`/`Gencov` classes line-by-line into `eqx.Module` equivalents. Preserves structure, easy to verify parity, but carries Pandas dependency and imperative patterns that don't JIT well.
+```
+☐ Architecture
 
-*Approach B: Restructured with Polars + Lineax.* Factor into explicit layers — Polars-based ingress (parse sumstats, read PLINK), pipeline (validate, align), JIT-compiled Lineax numerics (WLS with tagged operators), JSON egress with result codes. More upfront design but clean JIT boundaries and modern dependencies.
+Which architectural approach do you prefer?
 
-*Approach C: Hybrid.* Keep mathematical core close to original but swap NumPy for JAX arrays. Minimal restructuring. Risk: harder to JIT-compile mixed Pandas/JAX code.
+❯ 1. Approach A: Module-Parallel (Recommended)
+     Clean FCIS with 1:1 module mapping to original code
+  2. Approach B: Algorithm-Centric
+     Fewer files, consolidated numerics module
+  3. Approach C: Equinox-Hybrid
+     eqx.Module for regression models, pure functions for algorithms
+```
 
-You discuss tradeoffs and select **Approach B** — Polars at ingress, Lineax for linear algebra, explicit layer boundaries, separate CLI subcommands.
+You select **Approach A: Module-Parallel** — clean FCIS architecture with a 1:1 module mapping to the original code. This makes parity verification straightforward: each module in the JAX port corresponds to a module in the reference implementation. The functional core contains pure JAX numerics, while the imperative shell handles Polars I/O and CLI.
 
 **Phase 5: Design documentation.** The `writing-design-plans` skill writes the design plan to `docs/design-plans/2026-02-27-ldsc-jax-port.md`. The key sections it fills:
 

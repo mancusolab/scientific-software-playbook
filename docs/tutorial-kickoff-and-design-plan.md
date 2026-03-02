@@ -289,26 +289,23 @@ simulate_sumstats defined. 3 validation experiments (SIM-1, SIM-2, SIM-3).
 
 ### Step 9: Handoff
 
-Kickoff prints:
+Kickoff completes and saves its output to `.scientific/kickoff.md`.
 
-> Kickoff complete! Handoff saved to `.scientific/kickoff.md`.
->
-> Copy this command before clearing context:
-> ```
-> /start-design-plan ldsc-jax-port
-> ```
->
-> Then start a fresh session and paste it.
+To continue, start a fresh session and run the router again:
 
-You copy the command, clear context (or open a new session), and paste it.
+```
+/using-plan-and-execute
+```
+
+The router detects `.scientific/kickoff.md` exists with `model_path_decided: yes`. Since kickoff is complete, the router automatically directs you to `starting-a-design-plan` — no need to invoke it manually.
 
 ---
 
 ## 5. From Kickoff to Design Plan
 
-### What happens when you run `/start-design-plan ldsc-jax-port`
+### What happens when you run `/using-plan-and-execute` after kickoff
 
-The design workflow starts in a fresh context. The first thing it does is check for `.scientific/kickoff.md`. Finding it, the workflow ingests the kickoff output and carries forward:
+The router checks for `.scientific/kickoff.md`. Finding it with all readiness states set, it automatically starts the design workflow. The design workflow ingests the kickoff output and carries forward:
 - Mode: `existing-codebase-port`
 - All readiness states
 - Source pin, parity targets, exclusions, investigation findings
@@ -620,9 +617,9 @@ These are covered in separate documentation. The key point: everything downstrea
 
 | Step | Claude Code command | What it does |
 |------|-------------------|-------------|
-| Entry point | `/using-plan-and-execute` | Router that decides which workflow to use based on your situation |
+| Entry point | `/using-plan-and-execute` | Router that decides which workflow to use based on your situation; also detects existing kickoff and auto-starts design |
 | Start kickoff | `/start-scientific-kickoff` | Select model path, capture readiness state (when router directs you here) |
-| Start design | `/start-design-plan <slug>` | Orchestrate design from kickoff through documentation |
+| Start design | `/start-design-plan <slug>` | Orchestrate design from kickoff through documentation (usually invoked automatically by router) |
 | Validate (review) | `/validate-design-plan <path> --phase in-review` | Check plan completeness |
 | Validate (approval) | `/validate-design-plan <path> --phase approval` | Enforce hard-stop readiness gates |
 | Set status | `/set-design-plan-status <path> approved-for-implementation` | Approve plan for implementation |

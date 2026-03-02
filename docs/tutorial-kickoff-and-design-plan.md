@@ -179,7 +179,22 @@ The system asks for the source implementation location. You provide:
 
 ### Step 4: Define behavior/parity targets
 
-The system asks what behavior must be preserved. You specify:
+The system first asks about your overall numerical parity tolerance:
+
+```
+What numerical parity tolerance do you require for the port?
+
+❯ 1. Strict (rtol=1e-5, atol=1e-8)
+     Results must match within floating-point precision for scientific reproducibility
+  2. Moderate (rtol=1e-3, atol=1e-6)
+     Results should be very close but minor numerical differences are acceptable
+  3. Functional equivalence
+     Same scientific conclusions; minor numerical drift from JAX optimizations is acceptable
+```
+
+You select **Strict** — this is a codebase port where the reference implementation is ground truth, so primary estimates should match closely. You can specify looser tolerances for specific outputs (like standard errors) in the detailed behavior table.
+
+The system then asks what specific behaviors must be preserved. You specify:
 
 | Behavior | Surface | Target | Evidence plan |
 |----------|---------|--------|--------------|
@@ -190,6 +205,8 @@ The system asks what behavior must be preserved. You specify:
 | Summary stat munging | `io` | Same column recognition and QC filters | Compare munged output files |
 | LD score computation | `numerics` | Match reference LD scores from PLINK input | Fixture-based comparison |
 | CLI exit codes | `cli` | 0 on success, non-zero on input error | End-to-end CLI tests |
+
+Note that block-jackknife SE uses a looser tolerance (`rtol=1e-3`) than the strict default because jackknife involves more numerical operations where small differences can accumulate.
 
 ### Step 5: Define exclusions
 

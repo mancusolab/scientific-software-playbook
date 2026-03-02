@@ -319,14 +319,68 @@ This means the design conversation already knows the model path. It won't re-ask
 
 > "Full JAX/Equinox port of LDSC: summary stat munging, LD score computation from PLINK genotypes, univariate h2 estimation, and cross-trait rg estimation. Keep the same block-jackknife SE method as the reference. Use Polars for tabular data handling at the ingress boundary. CLI with separate subcommands for each workflow."
 
-**Phase 2: Clarification.** The `asking-clarifying-questions` skill resolves ambiguities one at a time:
+**Phase 2: Clarification.** The `asking-clarifying-questions` skill resolves ambiguities through structured questions grouped by category. You'll see a tabbed interface:
 
-- "The reference LDSC uses NumPy for linear algebra. Should we use `jnp.linalg.lstsq` directly, or a solver library like Lineax?" → **Lineax.** We want tagged operators so the solver can exploit matrix properties (symmetric, positive semidefinite) and we get configurable solver options (Cholesky, QR, SVD) without rewriting.
-- "For tabular data (sumstats, LD scores, annotations), should we use Pandas (like reference) or Polars?" → **Polars.** Faster, no global index, cleaner column operations. Convert to JAX arrays only at the numerics boundary.
-- "The reference block-jackknife SE is well-tested in the genetics community. Should we also implement AD-based SE as an alternative?" → **No. Keep jackknife only.** Parity with reference is the priority, and the genetics community trusts jackknife SE. AD-based SE is a future exploration, not v1 scope.
-- "Cross-trait rg requires two sets of summary stats. Should the API handle arbitrary numbers of traits, or exactly two?" → **Pairwise (two traits).** Match reference behavior. The CLI takes a comma-separated list and runs all pairs.
-- "Should the CLI be a single command with flags, or separate subcommands?" → **Separate subcommands**: `munge`, `h2`, `rg`, `h2-cts`, `l2`. Each has its own argument set. Output JSON to stdout with structured result codes.
-- "Cell-type-specific h2 (`h2-cts`) wasn't in the kickoff parity targets. Should we include it?" → **Yes, include it.** It's a natural extension of h2 and users expect it from any LDSC tool.
+```
+←  ☐ CLI design  ☐ LD Score input  ☐ Versions  ✔ Submit  →
+```
+
+The system walks through each category, presenting multiple-choice questions. Here are the key questions for LDSC:
+
+**CLI design:**
+
+```
+Should the CLI be a single command with flags, or separate subcommands?
+
+❯ 1. Separate subcommands (Recommended)
+     munge, h2, rg, h2-cts, l2 — each with its own argument set
+  2. Single command with flags
+     One entry point with --mode flag to select operation
+```
+
+You select **Separate subcommands** — cleaner UX, each subcommand has focused arguments, matches modern CLI conventions.
+
+**LD Score input:**
+
+```
+Should the port include PLINK BED file reading, or assume pre-computed LD scores?
+
+❯ 1. Include BED parsing (full port)
+     Port the genotype→LD Score computation from BED/BIM/FAM files
+  2. Pre-computed LD scores only
+     Accept .l2.ldscore files; skip genotype processing (simplifies scope)
+```
+
+You select **Include BED parsing** — full port means users can compute LD scores from genotypes, not just consume pre-computed ones. This matches the reference LDSC capability.
+
+**Versions / Dependencies:**
+
+```
+For tabular data (sumstats, LD scores, annotations), which library?
+
+❯ 1. Polars (Recommended)
+     Faster, no global index, cleaner column operations
+  2. Pandas
+     Matches reference implementation, familiar API
+```
+
+You select **Polars** — modern, faster, converts cleanly to JAX arrays at the numerics boundary.
+
+```
+For linear algebra solvers, which approach?
+
+❯ 1. Lineax (Recommended)
+     Tagged operators, configurable solvers (Cholesky, QR, SVD), JAX-native
+  2. jnp.linalg.lstsq
+     Direct JAX, simpler but less flexibility
+```
+
+You select **Lineax** — we want tagged operators so the solver can exploit matrix properties (symmetric, positive semidefinite) and configurable solver options without rewriting.
+
+Additional clarifications resolved:
+- "Should we implement AD-based SE as an alternative to block-jackknife?" → **No. Keep jackknife only.** Parity with reference is the priority.
+- "Cross-trait rg: handle arbitrary numbers of traits, or exactly two?" → **Pairwise (two traits).** Match reference behavior.
+- "Include cell-type-specific h2 (`h2-cts`)?" → **Yes.** Users expect it from any LDSC tool.
 
 **Phase 3: Definition of Done.** The system synthesizes what "done" means:
 

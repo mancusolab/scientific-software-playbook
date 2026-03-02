@@ -392,16 +392,36 @@ Additional clarifications resolved:
 - "Cross-trait rg: handle arbitrary numbers of traits, or exactly two?" → **Pairwise (two traits).** Match reference behavior.
 - "Include cell-type-specific h2 (`h2-cts`)?" → **Yes.** Users expect it from any LDSC tool.
 
-**Phase 3: Definition of Done.** The system synthesizes what "done" means:
+**Phase 3: Definition of Done.** The system synthesizes what "done" means based on your clarification answers:
 
-1. `jax_ldsc munge` canonicalizes GWAS summary statistics with the same column recognition (~50 name variants) and QC filters (INFO, MAF, chi-squared max) as reference LDSC.
-2. `jax_ldsc l2` computes LD scores from PLINK genotypes matching reference output.
-3. `jax_ldsc h2` returns h2, intercept, and block-jackknife SE matching reference LDSC within specified tolerances on fixture data.
-4. `jax_ldsc rg` returns pairwise genetic correlation matching reference within tolerances.
-5. `jax_ldsc h2-cts` estimates cell-type-specific heritability.
-6. Simulation recovery test passes: estimated h2 within 2 SE of true h2 across replicates.
-7. All numerics code is JIT-compilable via `@eqx.filter_jit`.
-8. CLI outputs JSON to stdout with result codes (`successful`, `invalid_input`, `numerical_failure`, `io_error`). Exit code 0 on success, non-zero on failure.
+```
+Definition of Done:
+
+1. A Python package ldsc-jax implementing:
+   - Summary statistics munging (munge subcommand)
+   - LD Score computation from Plink BED files (ldscore subcommand)
+   - Heritability estimation (h2 subcommand)
+   - Genetic correlation estimation (rg subcommand)
+
+2. Strict numerical parity with the original bulik/ldsc implementation:
+   - All outputs match within rtol=1e-5, atol=1e-8
+   - Parity test suite comparing JAX vs NumPy outputs on reference data
+
+3. FCIS architecture with:
+   - Pure JAX functional core for all numerics (LD scores, regression, jackknife)
+   - Polars-based ingress for tabular data (sumstats, LD score files)
+   - Thin CLI shell with subcommands
+
+4. Simulation-based validation with:
+   - simulate_h2 and simulate_rg APIs per kickoff contract
+   - Parameter recovery tests (h², intercept, rg)
+   - NumPy parity tests on identical random seeds
+
+5. Testing infrastructure:
+   - pytest + hypothesis for property-based tests
+   - Parity tests against reference NumPy implementation
+   - Simulation recovery tests
+```
 
 You confirm these criteria.
 

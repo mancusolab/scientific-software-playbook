@@ -251,7 +251,16 @@ Enforces hard stops for `existing-codebase-port`:
 
 ---
 
-## 4. The Final Output: `jax-ldsc`
+## 4. What Happens Next
+
+After approval:
+
+1. **Implementation planning** (`/start-implementation-plan`) — Creates task files for each phase
+2. **Execution** (`/execute-implementation-plan`) — Phase-by-phase implementation with TDD
+
+---
+
+## 5. The Final Output: `jax-ldsc`
 
 The result is [`jax-ldsc`](https://github.com/CamelliaRui/jax-ldsc) — a JAX-based port of LD Score Regression.
 
@@ -288,15 +297,6 @@ jax-ldsc/
 | Modern CLI with subcommands | Clarification | `ldsc-jax h2`, `ldsc-jax rg` |
 | Include BED parsing | Clarification | Full port with genotype→LD score |
 | Python 3.10+, latest JAX | Clarification | Modern typing worth narrower compatibility |
-
----
-
-## 5. What Happens Next
-
-After approval:
-
-1. **Implementation planning** (`/start-implementation-plan`) — Creates task files for each phase
-2. **Execution** (`/execute-implementation-plan`) — Phase-by-phase implementation with TDD
 
 ---
 

@@ -593,101 +593,65 @@ This updates the plan's status header and transition log. The plan is now ready 
 
 ## 7. The Final Output: `jax-ldsc`
 
-The result of this workflow is [`jax-ldsc`](https://github.com/CamelliaRui/jax-ldsc) — a JAX/Equinox/Lineax + Polars port of LD Score Regression. Looking at the finished repository reveals how design decisions from kickoff and planning materialized into code.
+The result of this workflow is [`jax-ldsc`](https://github.com/CamelliaRui/jax-ldsc) — a JAX-based port of LD Score Regression. Looking at the finished repository reveals how design decisions from kickoff and planning materialized into code.
+
+### Repository structure
+
+```
+jax-ldsc/
+├── .scientific/           # Kickoff and workflow state
+├── docs/                   # Design plans and documentation
+├── ldsc_jax/               # Main package
+│   ├── __init__.py
+│   ├── py.typed            # PEP 561 type hints marker
+│   ├── cli/                # CLI subcommands
+│   ├── core/               # Pure JAX numerics (functional core)
+│   │   ├── irwls.py        # Iteratively reweighted least squares
+│   │   ├── jackknife.py    # Block jackknife for standard errors
+│   │   ├── ldscore.py      # LD score computation
+│   │   ├── regression.py   # Core regression routines
+│   │   ├── stats.py        # Statistical utilities
+│   │   ├── types.py        # Type definitions
+│   │   └── weights.py      # Regression weighting schemes
+│   ├── ingress/            # Data loading (imperative shell)
+│   ├── munge/              # Summary statistics canonicalization
+│   └── sim/                # Simulation for validation
+├── tests/                  # Test suite
+└── pyproject.toml          # Project configuration
+```
 
 ### How the design mapped to implementation
 
-**Layer contracts became modules:**
+**FCIS architecture realized:**
 
-| Design layer | Implementation | What it does |
-|-------------|---------------|-------------|
-| Ingress | `jax_ldsc/io/parsing.py` | Reads `.sumstats.gz`, LD scores, annotations, and SNP counts via Polars |
-| Ingress | `jax_ldsc/munge.py` | Canonicalizes raw GWAS summary statistics — validates columns, filters on INFO/MAF, handles strand-ambiguous variants |
-| Pipeline | `jax_ldsc/ldscore.py` | Computes LD scores from PLINK genotype files within genomic windows |
-| Numerics | `jax_ldsc/regression/wls.py` | Core weighted least squares solver — JIT-compiled via `@eqx.filter_jit`, uses Lineax with tagged operators |
-| Numerics | `jax_ldsc/regression/h2.py` | Heritability estimation with iteratively reweighted least squares (IRWLS, 2 iterations) |
-| Numerics | `jax_ldsc/regression/rg.py` | Pairwise genetic correlation estimation |
-| Egress | `jax_ldsc/results.py` | Standardized result output with status codes |
-| Egress | `jax_ldsc/cli.py` | Full CLI with JSON stdout, exit code contracts |
+| Layer | Module | What it does |
+|-------|--------|--------------|
+| Functional Core | `ldsc_jax/core/regression.py` | Pure JAX regression routines, JIT-compilable |
+| Functional Core | `ldsc_jax/core/irwls.py` | Iteratively reweighted least squares (2 iterations) |
+| Functional Core | `ldsc_jax/core/jackknife.py` | Block jackknife for standard error estimation |
+| Functional Core | `ldsc_jax/core/ldscore.py` | LD score computation from genotypes |
+| Functional Core | `ldsc_jax/core/weights.py` | Regression weighting schemes |
+| Imperative Shell | `ldsc_jax/ingress/` | Polars-based data loading |
+| Imperative Shell | `ldsc_jax/munge/` | Summary statistics canonicalization |
+| Imperative Shell | `ldsc_jax/cli/` | CLI subcommands |
+| Validation | `ldsc_jax/sim/` | Simulation APIs for parameter recovery tests |
 
-**The solver feasibility matrix led to Lineax.** The design would have evaluated solver options: Cholesky, QR, SVD, LU. The implementation uses Lineax's tagged operator system — the design matrix is annotated with properties (symmetric, positive semidefinite) that guide solver selection automatically. Cholesky is the default, with optional ridge regularization for numerical stability.
+### How human decisions shaped the code
 
-**Parity targets became tests.** The behavior inventory from kickoff — h2 estimates, intercept, standard errors, genetic correlation — maps directly to the test suite:
+Each major design decision traces back to a specific human answer during kickoff or design:
 
-| Design parity target | Test module | Validation method |
-|---------------------|-------------|------------------|
-| h2 estimate matches reference | `test_regression_h2.py` | Fixture-based comparison with reference outputs |
-| Regression recovers known signal | `test_regression_h2.py` | Synthetic coefficients recovered within `rtol=2e-4` |
-| chi2 and z-score paths agree | `test_regression_h2.py` | Mathematical equivalence check |
-| Genetic correlation | `test_regression_rg.py` | Fixture-based comparison |
-| CLI behavior | `test_cli_h2.py`, `test_cli_rg.py`, `test_cli_munge.py`, `test_cli_l2.py` | End-to-end CLI tests |
-
-66 tests cover the full surface — regression numerics, data munging, PLINK file reading, IO parsing, and all five CLI subcommands.
-
-### How human decisions during design shaped the final code
-
-Each major design decision in the finished `jax_ldsc` traces back to a specific human answer during kickoff or design:
-
-| Decision in `jax_ldsc` | Phase where human decided | The question and answer |
-|------------------------|--------------------------|------------------------|
-| Block-jackknife SE (not AD) | Clarification (Phase 2) | "Should we implement AD-based SE as an alternative?" → "No — keep jackknife only. Parity with reference is the priority." |
-| Munge + LD score computation included | Kickoff (Step 3-4) | Human listed them as parity targets during kickoff, not as exclusions. Scope was intentionally broad from the start. |
-| Polars at ingress boundary | Clarification (Phase 2) | "For tabular data, Pandas or Polars?" → "Polars. Faster, no global index, cleaner column operations." |
-| Lineax with tagged operators | Clarification (Phase 2) | "Use `jnp.linalg.lstsq` directly, or Lineax?" → "Lineax — we want tagged operators and configurable solvers." |
-| 5 CLI subcommands with JSON output | Clarification (Phase 2) | "Single command with flags, or separate subcommands?" → "Separate: munge, h2, rg, h2-cts, l2. JSON to stdout." |
-| Cell-type-specific h2 (`h2-cts`) | Clarification (Phase 2) | "h2-cts wasn't in kickoff parity targets. Include it?" → "Yes, users expect it from any LDSC tool." |
-| Restructured layers (not direct translation) | Brainstorming (Phase 4) | System proposed three approaches. Human picked Approach B: Polars ingress, Lineax numerics, explicit layer boundaries. |
-
-None of these decisions were automatic. Each one required the human to answer a specific question. Without the clarification and brainstorming phases, the implementation would have defaulted to a closer line-by-line translation of the original — Pandas instead of Polars, `numpy.linalg.lstsq` instead of Lineax, possibly AD-based SE that the genetics community wouldn't trust for parity validation.
-
-### What the codebase investigation would have found
-
-Running `scientific-codebase-investigation-pass` against the [original LDSC](https://github.com/bulik/ldsc) would have surfaced findings that directly informed the port:
-
-| Finding | Design impact |
-|---------|-------------|
-| Core regression in `Hsq` class with IRWLS (2 iterations) | Ported as `regression/h2.py` with same 2-iteration IRWLS |
-| Block jackknife for SE in `_jknife` method | Preserved as `_jackknife_se()` with identical variance formula |
-| `Gencov` extends `Hsq` for cross-trait correlation | Ported as separate `regression/rg.py` module |
-| NumPy-only numerics (no SciPy optimization) | Replaced with JAX + Lineax — closed-form WLS, no iterative optimizer needed |
-| Flexible column name matching in `munge_sumstats` | Ported as `munge.py` with ~50 column name variants |
-| PLINK binary format reading | Delegated to `pandas-plink` library |
-
-### Repository structure at a glance
-
-```
-jax_ldsc/
-├── src/jax_ldsc/
-│   ├── cli.py              # 5 CLI subcommands (munge, h2, rg, h2-cts, l2)
-│   ├── munge.py            # Summary statistics canonicalization
-│   ├── ldscore.py          # LD score computation from PLINK genotypes
-│   ├── results.py          # Structured result output with status codes
-│   ├── io/
-│   │   └── parsing.py      # Polars-based data loading
-│   └── regression/
-│       ├── wls.py           # JIT-compiled WLS solver via Lineax
-│       ├── h2.py            # Heritability estimation + jackknife SE
-│       └── rg.py            # Genetic correlation estimation
-├── tests/                   # 66 tests across 12 modules
-├── reference/ldsc/          # GPLv3 reference material (not imported)
-└── docs/                    # Planning documentation
-```
-
-### Key dependencies
-
-| Package | Role |
-|---------|------|
-| `jax` + `jaxlib` | Core numerical computing, JIT compilation |
-| `equinox` | Module system, `@eqx.filter_jit` for JIT boundaries |
-| `lineax` | Linear algebra solvers with tagged operators |
-| `jaxtyping` | Array type annotations |
-| `polars` | Tabular data operations at ingress/pipeline boundary |
-| `pandas-plink` | PLINK binary genotype file reading |
-| `numpy` | Array compatibility layer |
+| Decision in `jax-ldsc` | Phase | The question and answer |
+|------------------------|-------|------------------------|
+| Block-jackknife SE (not AD) | Clarification | "AD-based SE as alternative?" → "No — keep jackknife only for parity." |
+| FCIS with 1:1 module mapping | Brainstorming | Selected Module-Parallel approach for straightforward parity verification |
+| Polars at ingress boundary | Clarification | "Pandas or Polars?" → "Polars — faster, cleaner column operations." |
+| Modern CLI with subcommands | Clarification | Selected `ldsc-jax h2`, `ldsc-jax rg` over mirroring original flags |
+| Include BED parsing | Clarification | Selected full port with genotype→LD score computation |
+| Python 3.10+, latest JAX | Clarification | Modern typing and latest JAX features worth narrower compatibility |
 
 ### The takeaway
 
-The finished `jax_ldsc` repository demonstrates what the kickoff → design → implementation workflow produces: a structured, tested, layer-separated port where every design decision traces back to a specific human answer during kickoff or design. The interactive phases (clarification, brainstorming, definition of done) are where the real architecture happens — they turn a generic "port this to JAX" request into specific, defensible choices (Polars over Pandas, Lineax over raw lstsq, jackknife over AD, five subcommands over one) before anyone writes code.
+The finished repository demonstrates what the kickoff → design → implementation workflow produces: a structured, layer-separated port where every design decision traces back to a specific human answer. The interactive phases (clarification, brainstorming, definition of done) turn a generic "port this to JAX" request into specific, defensible choices before anyone writes code.
 
 ---
 

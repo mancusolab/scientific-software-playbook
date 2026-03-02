@@ -322,7 +322,7 @@ This means the design conversation already knows the model path. It won't re-ask
 **Phase 2: Clarification.** The `asking-clarifying-questions` skill resolves ambiguities through structured questions grouped by category. You'll see a tabbed interface:
 
 ```
-←  ☐ CLI design  ☐ LD Score input  ☐ Versions  ✔ Submit  →
+←  ☐ CLI design  ☐ LD Score input  ☐ Versions  ☐ Architecture  ✔ Submit  →
 ```
 
 The system walks through each category, presenting multiple-choice questions. Here are the key questions for LDSC:
@@ -367,6 +367,21 @@ What is the target Python version and JAX compatibility?
 ```
 
 You select **Python 3.10+, latest JAX** — modern typing features (like `X | None` syntax) and latest JAX capabilities are worth the narrower compatibility window. Most scientific users are on recent Python versions.
+
+**Architecture:**
+
+```
+How should the JAX port be organized architecturally?
+
+❯ 1. FCIS: Functional Core, Imperative Shell
+     Pure JAX numerics in core module; Polars ingress and CLI in separate shell layers
+  2. Equinox modules throughout
+     Use eqx.Module classes for all stateful components (regression models, jackknife, etc.)
+  3. Hybrid: eqx.Module for models, pure functions for algorithms
+     Models as Equinox modules; jackknife/IRWLS as pure JAX functions
+```
+
+You select **FCIS: Functional Core, Imperative Shell** — clean separation between pure JAX numerics (JIT-compilable, testable, no side effects) and the imperative shell (Polars I/O, CLI argument parsing, file handling). This matches the playbook's layer contracts and makes the numerics code easy to verify against the reference implementation.
 
 Additional dependency decisions resolved during clarification:
 - **Tabular data library:** Polars — faster, no global index, cleaner column operations. Convert to JAX arrays at the numerics boundary.

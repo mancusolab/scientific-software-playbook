@@ -1,4 +1,4 @@
-# Tutorial: Rebuild LDSC with JAX
+# Tutorial: Rebuild LDSC with JAX ![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?style=flat-square&logo=claude&logoColor=white)
 
 This tutorial walks through porting LD Score Regression (LDSC) from NumPy to JAX using the playbook's kickoff and design workflow. By the end, you'll have seen how the workflow guides decisions from "port this codebase" to a complete design plan ready for implementation.
 

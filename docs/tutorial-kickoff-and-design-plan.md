@@ -330,15 +330,17 @@ The system walks through each category, presenting multiple-choice questions. He
 **CLI design:**
 
 ```
-Should the CLI be a single command with flags, or separate subcommands?
+How should the CLI interface be structured?
 
-❯ 1. Separate subcommands (Recommended)
-     munge, h2, rg, h2-cts, l2 — each with its own argument set
-  2. Single command with flags
-     One entry point with --mode flag to select operation
+❯ 1. Mirror original LDSC CLI exactly
+     Same flags and subcommands (ldsc.py --h2, --rg, --l2) for drop-in replacement
+  2. Modern CLI with subcommands
+     ldsc-jax munge, ldsc-jax h2, ldsc-jax rg - cleaner but different from original
+  3. Library-first, minimal CLI
+     Focus on Python API; CLI is thin wrapper for basic workflows only
 ```
 
-You select **Separate subcommands** — cleaner UX, each subcommand has focused arguments, matches modern CLI conventions.
+You select **Modern CLI with subcommands** — cleaner UX with `ldsc-jax h2`, `ldsc-jax rg`, etc. While not a drop-in replacement for the original CLI flags, the modern subcommand structure is more intuitive and matches current CLI conventions. Users calling from scripts will need minor adjustments, but the improved ergonomics are worth it.
 
 **LD Score input:**
 

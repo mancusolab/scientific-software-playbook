@@ -539,58 +539,9 @@ ldsc-jax-port.AC6.3: chi2 and z-score regression paths produce identical results
 - `equation-to-code-map.md` — Maps the LDSC regression equation E[chi2_j] = N * h2 * l_j / M + a to `weighted_least_squares` in `regression/wls.py`
 - `solver-feasibility-matrix.md` — WLS has closed-form normal equations. Lineax with Cholesky is the preferred solver. Ridge regularization available for rank-deficient designs. QR/SVD/LU as configurable alternatives.
 
-**Phase 6: Planning handoff.** The system finalizes the design document. It may note that some glossary terms were omitted as obvious:
+**Phase 6: Planning handoff.** The system finalizes the design document and commits it to git for version control. It writes the design plan to `docs/design-plans/` along with the kickoff file in `.scientific/`.
 
-```
-Glossary includes 23 terms. Omitted as likely obvious: Python, NumPy, pytest, pip, CLI, API,
-DataFrame, float32/64, SE, p-value, regression, normalization, simulation, parse/parsing, import,
-subcommand, module, package, greenfield, parity test, fixture, docstring, mypy, type annotation,
-jax.lax.scan, JIT.
-```
-
-The system then initializes git (if needed) and commits the design document:
-
-```
-Bash(git init 2>/dev/null || true && git status)
-⎿  Initialized empty Git repository in /Users/.../scientific_proj/.git/
-   On branch main
-
-Bash(git add docs/design-plans/2026-03-01-ldsc-jax-port.md .scientific/kickoff.md && git commit -m "docs: add LDSC JAX port design plan")
-⎿  [main (root-commit) 8191a51] docs: add LDSC JAX port design plan
-    2 files changed, 613 insertions(+)
-    create mode 100644 .scientific/kickoff.md
-    create mode 100644 docs/design-plans/2026-03-01-ldsc-jax-port.md
-```
-
-Finally, the system provides handoff instructions:
-
-```
-Design complete! Design document committed to docs/design-plans/2026-03-01-ldsc-jax-port.md.
-
-Ready to create the implementation plan? This requires fresh context to work effectively.
-
-IMPORTANT: Copy the command for your runtime below BEFORE clearing context or starting a new session.
-
-(1) Copy this command now:
-
-Claude Code:
-/start-implementation-plan @docs/design-plans/2026-03-01-ldsc-jax-port.md
-
-Codex:
-$starting-an-implementation-plan docs/design-plans/2026-03-01-ldsc-jax-port.md
-
-(2) Start fresh context (recommended):
-
-Claude Code: /clear
-Codex: /new
-
-If neither /clear nor /new is available, open a new session/conversation in the same repository.
-
-(3) Paste and run the copied command in the fresh session.
-
-The starting-an-implementation-plan skill will create detailed tasks for each of the 8 phases,
-set up a branch, and prepare for execution.
-```
+The system then provides handoff instructions with commands for your runtime (Claude Code or Codex). Copy the command before clearing context, start a fresh session, and paste the command to begin implementation planning.
 
 ---
 

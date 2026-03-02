@@ -591,9 +591,9 @@ This updates the plan's status header and transition log. The plan is now ready 
 
 ---
 
-## 7. The Final Output: `jax_ldsc`
+## 7. The Final Output: `jax-ldsc`
 
-The result of this workflow is [`jax_ldsc`](https://github.com/mancusolab/jax_ldsc) — a JAX/Equinox/Lineax + Polars port of LD Score Regression. Looking at the finished repository reveals how design decisions from kickoff and planning materialized into code.
+The result of this workflow is [`jax-ldsc`](https://github.com/CamelliaRui/jax-ldsc) — a JAX/Equinox/Lineax + Polars port of LD Score Regression. Looking at the finished repository reveals how design decisions from kickoff and planning materialized into code.
 
 ### How the design mapped to implementation
 

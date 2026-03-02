@@ -115,7 +115,7 @@ Because this is a private repository, Claude Code needs a GitHub token to fetch 
    source ~/.zshrc
    ```
 
-3. **Install the plugins**
+3. **Install the plugins in Claude Code**
 
    ```text
    /plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git

@@ -534,10 +534,10 @@ ldsc-jax-port.AC6.2: CLI exits 0 on valid input, non-zero on failure.
 ldsc-jax-port.AC6.3: chi2 and z-score regression paths produce identical results.
 ```
 
-**Companion artifacts** are created in `docs/design-plans/artifacts/2026-02-27-ldsc-jax-port/`:
+**Companion artifacts** are created in `docs/design-plans/artifacts/2026-03-01-ldsc-jax-port/`:
 - `model-symbol-table.md` — Symbols: chi2 (GWAS chi-squared statistics), N (sample size), l_j (LD score for SNP j), h2 (heritability), a (intercept), w_j (regression weight)
-- `equation-to-code-map.md` — Maps the LDSC regression equation E[chi2_j] = N * h2 * l_j / M + a to `weighted_least_squares` in `regression/wls.py`
-- `solver-feasibility-matrix.md` — WLS has closed-form normal equations. Lineax with Cholesky is the preferred solver. Ridge regularization available for rank-deficient designs. QR/SVD/LU as configurable alternatives.
+- `equation-to-code-map.md` — Maps the LDSC regression equation E[chi2_j] = N * h2 * l_j / M + a to `ldsc_jax/core/regression.py`
+- `solver-feasibility-matrix.md` — WLS has closed-form normal equations. IRWLS with 2 iterations is the approach used by the reference implementation.
 
 **Phase 6: Planning handoff.** The system finalizes the design document and commits it to git for version control. It writes the design plan to `docs/design-plans/` along with the kickoff file in `.scientific/`.
 

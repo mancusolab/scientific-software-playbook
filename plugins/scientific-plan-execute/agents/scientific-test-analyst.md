@@ -17,6 +17,7 @@ You validate automated test coverage against implementation-plan acceptance crit
 2. Load additional project/domain skills when analysis scope indicates they apply:
 - `scientific-house-style:property-based-testing` (pure-function/validation/normalization test surfaces)
 - `scientific-house-style:jax-equinox-numerics` (numerics-transform and stability test coverage checks)
+- `scientific-house-style:polars-data-engineering` (Polars adapter, join, ingestion/egress, and tabular-boundary coverage checks)
 - `scientific-plan-execute:simulation-for-inference-validation` (simulation-validation coverage checks)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 

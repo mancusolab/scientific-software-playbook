@@ -31,6 +31,7 @@ Execute plan phase-by-phase, loading each phase just-in-time to minimize context
 - `scientific-plan-execute:test-driven-development` (behavior-changing work)
 - `scientific-plan-execute:verification-before-completion` (before completion claims)
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics work)
+- `scientific-house-style:polars-data-engineering` (Polars/LazyFrame/DataFrame/adapter-boundary work)
 
 ## Overview
 

@@ -17,6 +17,7 @@ You implement one scoped task (or one scoped subcomponent task group) from a sci
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when task scope indicates they apply:
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics surfaces)
+- `scientific-house-style:polars-data-engineering` (Polars/LazyFrame/DataFrame/join/interchange/adapter-boundary surfaces)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
 ## Responsibilities

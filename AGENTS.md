@@ -63,6 +63,7 @@ Dependency contract:
 ### Skills (`scientific-house-style`)
 - `jax-equinox-numerics`: `plugins/scientific-house-style/skills/jax-equinox-numerics/SKILL.md`
 - `jax-project-engineering`: `plugins/scientific-house-style/skills/jax-project-engineering/SKILL.md`
+- `polars-data-engineering`: `plugins/scientific-house-style/skills/polars-data-engineering/SKILL.md`
 - `functional-core-imperative-shell`: `plugins/scientific-house-style/skills/howto-functional-vs-imperative/SKILL.md`
 - `property-based-testing`: `plugins/scientific-house-style/skills/property-based-testing/SKILL.md`
 - `writing-for-a-technical-audience`: `plugins/scientific-house-style/skills/writing-for-a-technical-audience/SKILL.md`
@@ -174,6 +175,7 @@ Run a downstream project:
 11. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
 12. During phase execution, apply layer skills in order when relevant:
    - `jax-equinox-numerics` (from `scientific-house-style`)
+   - `polars-data-engineering` (from `scientific-house-style`) for Polars/LazyFrame/DataFrame/adapter-boundary work
    - `test-driven-development` for behavior-changing work
    - `systematic-debugging` for failing tests or persistent blockers
    - `using-git-worktrees` when branch/worktree isolation is required

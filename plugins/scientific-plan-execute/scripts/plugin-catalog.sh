@@ -44,6 +44,7 @@ EOF
       cat <<'EOF'
 jax-equinox-numerics
 jax-project-engineering
+polars-data-engineering
 howto-functional-vs-imperative
 property-based-testing
 writing-for-a-technical-audience

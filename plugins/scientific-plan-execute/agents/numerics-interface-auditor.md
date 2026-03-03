@@ -23,6 +23,7 @@ Required inputs:
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when audit scope indicates they apply:
 - `scientific-house-style:jax-project-engineering` (project-level API/CI/serialization checks)
+- `scientific-house-style:polars-data-engineering` (Polars/tabular adapter and array-conversion boundaries feeding numerics)
 - `scientific-research:scientific-internet-research-pass` (when uncertain external numerical methods or references are in scope)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 

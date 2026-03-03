@@ -1,92 +1,116 @@
-# Scientific Software Playbook (Claude Code + Codex)
+# Scientific Software Playbook
 
-Scientific Software Playbook is a plugin collection for scientific labs and research teams building software that performs inference for explicit scientific models.
+Scientific Software Playbook adds a structured workflow to Codex and Claude Code for scientific teams building software from explicit models or existing implementations. It helps teams choose the right model path, validate design decisions before coding, and ship implementation work with review and verification evidence.
 
-The goal is simple: make scientific software development more reliable by adding structure where it matters most.
-- decide model path and assumptions early
-- validate design before implementation
-- execute in phases with explicit test and review evidence
+It is designed for scientific software that performs inference from a defined model or matches an existing scientific implementation. It is optimized for Python and JAX workflows.
 
-It is optimized for turning a scientific model or existing scientific implementation into robust software with explicit design decisions, staged implementation, and evidence-backed review.
-It is not a general workflow for exploratory analysis, one-off notebooks, or every kind of scientific computing task.
-It is also heavily tuned for Python/JAX implementations; additional implementation languages are currently out of scope,
-but will be carefully included after additional testing and validation.
+## Why this exists
 
-## What you get
+Scientific software projects often break down before the code does. Teams start implementing before the model path is clear. Ports drift from the reference implementation. Validation assumptions stay implicit. Work gets marked complete without fresh evidence.
 
-This repository ships three plugins that work together:
+This repository is designed to prevent those failures by making the critical decisions explicit:
+- what model or source implementation the project is based on
+- what design has been approved
+- what implementation tasks follow from that design
+- what tests, reviews, and verification steps support completion
 
-1. `scientific-plan-execute`, Orchestrates kickoff, design planning, readiness validation, approval, implementation planning, and execution.
+## What this helps scientific teams do
 
-2. `scientific-research`, Adds research workflows for internet, literature, and codebase evidence.
+Use this repository to:
 
-3. `scientific-house-style`, Adds reusable engineering guidance for JAX/Equinox numerics and project-quality practices.
+- turn model equations into tested scientific software
+- choose a model family before implementation starts
+- port an existing NumPy or SciPy implementation to JAX with parity targets
+- add design, testing, review, and verification gates to an existing inference workflow
 
-In practice, this helps scientific teams reduce avoidable rework: fewer ambiguous requirements, fewer hidden model assumptions, and clearer completion evidence.
+## Who this is for
 
-- Architecture-first planning with explicit approval before implementation.
-- Built-in clarification and brainstorming stages before architecture lock-in.
-- Reusable skills, commands, and agents for phased execution.
-- Specialized reviewer delegates for architecture, numerics, CLI/API contracts, and inference algorithm behavior.
-- Templates for design plans, implementation plans, and review artifacts.
-- A separate house-style plugin for JAX/Equinox numerics for differentiable computing and project engineering guidance.
+### Good fit
 
-## Workflow at a glance
+- scientific teams building inference software from explicit models
+- research teams turning prototypes into maintainable software
+- teams porting scientific implementations to JAX
+- projects where model assumptions and validation strategy must be documented
 
-```text
-Rough idea
-    │
-    ▼
-Design planning  ───────────────► Design document (committed to git)
-    │
-    ▼
-Implementation planning  ───────► Implementation plan (phase files)
-    │
-    ▼
-Phase execution loop  ──────────► Working code (reviewed & committed)
-```
+### Not a good fit
 
-## Kickoff: when model provenance or parity still needs to be decided
+- exploratory notebooks
+- one-off analyses
+- general-purpose software projects
+- workflows without a model or implementation contract
 
-### What kickoff does
+## How the workflow works
 
-`/start-scientific-kickoff` (Claude Code) and `$scientific-kickoff` (Codex) select exactly one scientific delivery path before design planning continues.
+The workflow has four stages:
 
-Use kickoff when you still need to decide where the model comes from or what existing implementation you are matching.
-If the model and software contract are already established and you are working on a scoped feature, start with design planning instead.
+1. `kickoff`
+   Decide where the model comes from, or what existing implementation you are matching.
 
-Kickoff forces a single mode:
-1. `provided-model`: you already have model equations/artifacts and (optionally) update rules.
-2. `suggested-model`: the system proposes model-family options with citations, and you explicitly select one.
-3. `existing-codebase-port`: you provide an existing source implementation and define behavior/parity targets.
+2. `design plan`
+   Define the architecture before coding starts.
 
-Kickoff writes `.scientific/kickoff.md` with required readiness state (`model_path_decided`, codebase-investigation state for ports, and synthetic-data-validation-contract state when synthetic-data validation is in scope). Handover instructions for the next phase are provided by kickoff itself.
+3. `implementation plan`
+   Break approved work into phases.
 
-### Example 1: choosing a model path before implementation
+4. `execution`
+   Implement with tests, review, and verification.
 
-> "We need a Bayesian model for longitudinal biomarker data. I have partial equations, but I’m not sure whether we should reuse an existing model family."
+## Choose your entrypoint
 
-Recommended kickoff option:
-- `provided-model`
+### `provided-model`
 
-### Example 2: porting an existing scientific codebase
+Use this when your team already has equations, model structure, or update rules.
 
-> "We already have a NumPy prototype. We want a JAX implementation with parity checks before switching over."
+### `suggested-model`
 
-Recommended kickoff option:
-- `existing-codebase-port`
+Use this when your team knows the scientific problem but has not yet chosen a model family.
 
-### Example 3: existing project feature iteration
+### `existing-codebase-port`
 
-> "Add simulation-based calibration checks to the current inference workflow and keep existing CLI behavior stable."
+Use this when your team already has a reference implementation and wants to port it or match its behavior.
+
+### Skip kickoff and start with design planning when:
+
+- the model and software contract are already established
+- the work is a scoped feature or iteration on an existing project
+
+## Example use cases
+
+### Implement an existing model
+
+> "We already have the model equations for our assay and want a tested JAX implementation."
 
 Recommended entrypoint:
-- Start with design planning directly; kickoff is not required
+- `provided-model`
 
-## Installation
-For full setup and troubleshooting, use `docs/INSTALLATION.md`.
+### Choose a model family before building
+
+> "We need a Bayesian model for longitudinal biomarker data, but we have not chosen a model family yet."
+
+Recommended entrypoint:
+- `suggested-model`
+
+### Port an existing implementation
+
+> "We have a NumPy prototype and want a JAX port with parity checks before switching over."
+
+Recommended entrypoint:
+- `existing-codebase-port`
+
+### Add a scoped feature to an existing workflow
+
+> "Add simulation-based calibration checks to the current inference workflow and keep CLI behavior stable."
+
+Recommended entrypoint:
+- start with design planning directly
+
+## Quick start
+
+For full setup and troubleshooting, see `docs/INSTALLATION.md`.
 
 ### Codex
+
+Install:
 
 ```bash
 git clone https://github.com/mancusolab/scientific-software-playbook.git
@@ -94,7 +118,15 @@ cd scientific-software-playbook
 bash scripts/install-codex-home.sh --force
 ```
 
+Then open your scientific software project in Codex and start with:
+
+```text
+$using-plan-and-execute
+```
+
 ### Claude Code
+
+Install:
 
 ```text
 /plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git
@@ -104,17 +136,45 @@ bash scripts/install-codex-home.sh --force
 /plugin reload
 ```
 
+Then open your scientific software project and start with:
+
+```text
+/use-skill using-plan-and-execute
+```
+
+## What gets installed
+
+This repository ships three plugins:
+
+- `scientific-plan-execute`
+  The main workflow plugin. Most scientific teams start here.
+- `scientific-research`
+  Adds internet, literature, and codebase investigation workflows.
+- `scientific-house-style`
+  Adds engineering guidance for JAX/Equinox numerics, Polars data-engineering boundaries, and project quality.
+
+## What the workflow produces
+
+A typical run produces artifacts such as:
+
+- `.scientific/kickoff.md`
+- design plan documents
+- implementation phase plans
+- review findings and follow-up fixes
+- fresh verification evidence before completion
 
 ## Where to go next
 
-1. Day-1 workflow guide: `docs/ONBOARDING.md`
-2. Installation and troubleshooting: `docs/INSTALLATION.md`
-3. Internal contracts and hard stops: `AGENTS.md`
+- Day-1 workflow guide: `docs/ONBOARDING.md`
+- Installation and troubleshooting: `docs/INSTALLATION.md`
+
+## For contributors and maintainers
+
+Contributor-facing workflow contracts and internal implementation guidance live in `AGENTS.md`.
 
 ## License and attribution
 
-This repository is heavily inspired by [ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) and builds directly on
-that ecosystem's workflow patterns.
+This repository is heavily inspired by [ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) and builds directly on that ecosystem's workflow patterns.
 
 1. Repository and plugin content license: `LICENSE`
 2. Upstream lineage license: `LICENSE.superpowers`

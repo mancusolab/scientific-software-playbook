@@ -12,7 +12,7 @@ steps from `docs/INSTALLATION.md` first.
 Plugin prerequisite:
 1. This onboarding flow requires `scientific-plan-execute`.
 2. This onboarding flow also requires `scientific-research` for research-gated steps.
-3. This onboarding flow requires `scientific-house-style` for numerics/jax-project-engineering guidance gates.
+3. This onboarding flow requires `scientific-house-style` for numerics, Polars/tabular-boundary, and project-engineering guidance gates.
 4. If `scientific-house-style` is missing, workflow preflight checks will fail.
 5. Compatibility and breaking-change path policy is documented in `docs/COMPATIBILITY.md`.
 
@@ -78,6 +78,7 @@ Plugin prerequisite:
 
 5. During phase execution, apply layer skills in order when relevant
 - `jax-equinox-numerics` (from `scientific-house-style`)
+- `polars-data-engineering` (from `scientific-house-style`) for Polars/LazyFrame/DataFrame/adapter-boundary work
 - `test-driven-development` for behavior-changing work
 - `systematic-debugging` for failing tests or persistent blockers
 - `using-git-worktrees` when branch/worktree isolation is required

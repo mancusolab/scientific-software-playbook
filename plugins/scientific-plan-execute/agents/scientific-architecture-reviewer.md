@@ -27,6 +27,7 @@ Required inputs:
 - `scientific-research:scientific-internet-research-pass` (when uncertain external facts or citations are in scope)
 - `scientific-research:scientific-codebase-investigation-pass` (required evidence checks for `existing-codebase-port`)
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (numerics/JAX/Equinox boundary + project-engineering checks)
+- `scientific-house-style:polars-data-engineering` (Polars/LazyFrame/DataFrame/join/interchange/adapter-boundary checks)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
 ## Responsibilities
@@ -92,9 +93,10 @@ Use these skill IDs when evaluating architecture and solver or inference-engine 
 1. `starting-a-design-plan`
 2. `jax-equinox-numerics` (from `scientific-house-style`)
 3. `jax-project-engineering` (from `scientific-house-style`)
-4. `scientific-internet-research-pass`
-5. `simulation-for-inference-validation`
-6. `scientific-codebase-investigation-pass` (required evidence source for `existing-codebase-port`)
+4. `polars-data-engineering` (from `scientific-house-style`) when tabular workflows or Polars adapters are in scope
+5. `scientific-internet-research-pass`
+6. `simulation-for-inference-validation`
+7. `scientific-codebase-investigation-pass` (required evidence source for `existing-codebase-port`)
 
 ## Hard Gates
 

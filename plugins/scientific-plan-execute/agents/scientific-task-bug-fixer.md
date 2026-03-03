@@ -17,6 +17,7 @@ You resolve implementation findings from reviewers and verification runs.
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when fix scope indicates they apply:
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (JAX/Equinox/numerics fixes)
+- `scientific-house-style:polars-data-engineering` (Polars/LazyFrame/DataFrame/join/interchange/adapter-boundary fixes)
 - `scientific-plan-execute:systematic-debugging` (unclear root cause or repeated test failure)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 

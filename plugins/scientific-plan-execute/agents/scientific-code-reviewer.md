@@ -28,6 +28,7 @@ Optional inputs:
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when review scope indicates they apply:
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (numerics/JAX/Equinox and project-engineering scope)
+- `scientific-house-style:polars-data-engineering` (Polars/LazyFrame/DataFrame/join/interchange/adapter-boundary scope)
 - `scientific-plan-execute:test-driven-development` (behavior-changing work requiring red/green evidence checks)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 

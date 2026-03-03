@@ -177,3 +177,20 @@ lf.sink_csv(
 )
 ```
 - Allowed break: Small outputs where materialization is already required for validation or reuse.
+
+## Common mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| `read_*().lazy()` for file-backed lazy workflows | Start with the matching `scan_*` reader |
+| Calling `collect()` in helper layers | Materialize once near validation or export |
+| Joining without `validate=` when cardinality matters | Declare `validate="1:1"`, `1:m`, or `m:1` explicitly |
+| Relying on default row order after joins | Set `maintain_order=` or sort before freezing row order |
+| Converting multiple tables separately and aligning by position later | Join on explicit keys before array export |
+| Passing `DataFrame` or `LazyFrame` into numerics code | Convert in adapters and pass arrays or typed records downstream |
+| Using `jnp.asarray(df.to_jax(), dtype=...)` for one export dtype | Use `df.to_jax(dtype=...)` at the boundary |
+| Using pandas as the default interchange format | Stay in Polars or use Arrow when the consumer supports it |
+| Bouncing between pandas and Polars repeatedly | Use `from_pandas(...)` and `to_pandas(...)` only at explicit boundaries |
+| Assuming Arrow or pandas bridges are always zero-copy | Document copy expectations and dtype/null semantics explicitly |
+| Writing compressed CSV with a plain `.csv` suffix | Align the filename extension with the chosen compression mode |
+| Collecting a large lazy result just to write it immediately | Use sink APIs such as `sink_csv(...)` when the workflow allows it |

@@ -20,6 +20,7 @@ Audience and scope:
 1. `scientific-plan-execute` is required for workflow orchestration.
 2. `scientific-research` is required for external-fact validation gates.
 3. `scientific-house-style` is required for workflow execution and review gates.
+   - It includes numerics, module/package-design, and project-engineering house-style guidance used by plan-execute agents.
 4. Default install (`--force` with no `--plugin`) installs all plugins.
 5. If only `scientific-house-style` is installed, workflow commands are not available.
 6. Installing `scientific-plan-execute` via Codex installer auto-adds `scientific-research` and `scientific-house-style`.

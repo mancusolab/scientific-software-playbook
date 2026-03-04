@@ -73,6 +73,7 @@ steps from `docs/INSTALLATION.md` first.
 - During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
 
 5. During phase execution, apply layer skills in order when relevant
+- `python-module-design` (from `scientific-house-style`) when introducing or reviewing Python module/file boundaries
 - `jax-equinox-numerics` (from `scientific-house-style`)
 - `polars-data-engineering` (from `scientific-house-style`) for Polars/LazyFrame/DataFrame/adapter-boundary work
 - `test-driven-development` for behavior-changing work
@@ -169,6 +170,7 @@ steps from `docs/INSTALLATION.md` first.
 - During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
 
 5. During phase execution, apply layer skills in order when relevant
+- `python-module-design` (from `scientific-house-style`) when introducing or reviewing Python module/file boundaries
 - `jax-equinox-numerics` (from `scientific-house-style`)
 - `test-driven-development` for behavior-changing work
 - `systematic-debugging` for failing tests or persistent blockers

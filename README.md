@@ -20,7 +20,7 @@ This repository ships three plugins that work together:
 
 2. `scientific-research`, Adds research workflows for internet, literature, and codebase evidence.
 
-3. `scientific-house-style`, Adds reusable engineering guidance for JAX/Equinox numerics and project-quality practices.
+3. `scientific-house-style`, Adds reusable engineering guidance for JAX/Equinox numerics, Python module/package design, and project-quality practices.
 
 In practice, this helps scientific teams reduce avoidable rework: fewer ambiguous requirements, fewer hidden model assumptions, and clearer completion evidence.
 

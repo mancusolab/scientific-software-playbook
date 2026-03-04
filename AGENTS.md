@@ -29,6 +29,7 @@ Dependency contract:
 - `jax-equinox-numerics`
 - `jax-project-engineering`
 - `functional-core-imperative-shell`
+- `python-module-design`
 6. Mandatory scientific correctness constraints remain in `scientific-plan-execute`:
    - `simulation-for-inference-validation`
 7. `scientific-house-style` should carry reusable implementation-style guidance, while `scientific-plan-execute` enforces orchestration and hard-stop gates.
@@ -66,6 +67,7 @@ Dependency contract:
 - `polars-data-engineering`: `plugins/scientific-house-style/skills/polars-data-engineering/SKILL.md`
 - `functional-core-imperative-shell`: `plugins/scientific-house-style/skills/howto-functional-vs-imperative/SKILL.md`
 - `property-based-testing`: `plugins/scientific-house-style/skills/property-based-testing/SKILL.md`
+- `python-module-design`: `plugins/scientific-house-style/skills/python-module-design/SKILL.md`
 - `writing-for-a-technical-audience`: `plugins/scientific-house-style/skills/writing-for-a-technical-audience/SKILL.md`
 - `writing-good-tests`: `plugins/scientific-house-style/skills/writing-good-tests/SKILL.md`
 

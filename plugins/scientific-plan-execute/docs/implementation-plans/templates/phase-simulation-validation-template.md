@@ -110,12 +110,11 @@
 2. Apply profile baseline:
    - `inference`: add `numerics-interface-auditor` and `scientific-inference-algorithm-reviewer`
    - `full`: add `scientific-architecture-reviewer`, `numerics-interface-auditor`, and `scientific-inference-algorithm-reviewer`
-3. Escalate reviewers when touched surfaces require them:
-   - boundary-contract change -> `scientific-architecture-reviewer`
-   - CLI/API change -> `scientific-cli-api-reviewer`
-4. Run `scientific-test-analyst` checks for simulation traceability coverage.
-5. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
-6. Resolve blocking findings before phase status is `completed`.
+3. Add specialist reviewers from the baseline code-review `Specialist Escalations` section (`needed: ✅` only).
+4. Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
+5. Run `scientific-test-analyst` checks for simulation traceability coverage.
+6. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
+7. Resolve blocking findings before phase status is `completed`.
 
 ## Completion Checklist
 - [ ] `simulate` contract is implemented and deterministic seed behavior is verified.

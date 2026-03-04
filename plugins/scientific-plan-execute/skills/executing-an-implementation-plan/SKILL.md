@@ -81,37 +81,22 @@ Reviewer selection must be deterministic. Use this exact process in this exact o
 
 1. Inputs:
 - `profile`: value from `## Review Profile` in `phase_XX.md` (`minimal|api-cli|numerics|inference|full`).
-- `phase_text`: full phase file text.
-- `changed_files`: `git diff --name-only BASE_SHA..HEAD_SHA` for the current review scope.
+- `specialist_escalations`: explicit yes/no flags from the baseline `scientific-code-reviewer` output (`Specialist Escalations` section).
+- `changed_files`: optional safety fallback from `git diff --name-only BASE_SHA..HEAD_SHA` for this review scope.
 
-2. Surface flags (set true if any condition matches):
-- `cli_api_surface`:
-  - phase text contains one of: `cli`, `api`, `endpoint`, `route`, `command`, `schema`.
-  - OR any changed path matches: `cli|command|api|http|route|openapi|schema`.
-- `numerics_surface`:
-  - phase text contains one of: `numerics`, `jax`, `equinox`, `solver`, `kernel`, `lineax`, `optimistix`.
-  - OR any changed path matches: `numerics|solver|kernel|jax|equinox|lineax|optimistix`.
-- `inference_surface`:
-  - phase text contains one of: `inference`, `posterior`, `likelihood`, `objective`, `simulate`, `sbc`, `ppc`, `calibration`.
-  - OR any changed path matches: `inference|posterior|likelihood|objective|simulate|sbc|ppc|calibration`.
-- `architecture_surface`:
-  - phase text contains one of: `boundary contract`, `architecture`, `interface`, `compact-workflow`, `modular-domain`.
-  - OR any changed path matches: `docs/design-plans|docs/implementation-plans|AGENTS.md|CLAUDE.md`.
-
-3. Baseline reviewers from `profile`:
+2. Baseline reviewers from `profile`:
 - `minimal`: none
 - `api-cli`: `scientific-cli-api-reviewer`
 - `numerics`: `numerics-interface-auditor`
 - `inference`: `numerics-interface-auditor`, `scientific-inference-algorithm-reviewer`
 - `full`: `scientific-architecture-reviewer`, `numerics-interface-auditor`, `scientific-cli-api-reviewer`, `scientific-inference-algorithm-reviewer`
 
-4. Escalation reviewers from surface flags:
-- if `architecture_surface`: add `scientific-architecture-reviewer`
-- if `numerics_surface`: add `numerics-interface-auditor`
-- if `cli_api_surface`: add `scientific-cli-api-reviewer`
-- if `inference_surface`: add `scientific-inference-algorithm-reviewer`
+3. Escalation reviewers:
+- Add any reviewer marked `needed: ✅` in baseline `scientific-code-reviewer` `Specialist Escalations`.
+- Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, or `CLAUDE.md`), add `scientific-architecture-reviewer`.
+- Do **not** add reviewers from keyword scanning or ad hoc guesses.
 
-5. Final reviewer set:
+4. Final reviewer set:
 - Always include `scientific-code-reviewer`.
 - Add baseline + escalation reviewers.
 - Deduplicate.
@@ -414,6 +399,8 @@ Mark "Phase Nc: Code review" as complete.
 
 After baseline `requesting-code-review` reaches zero issues, compute reviewers using `Deterministic Reviewer Routing` above and run every reviewer in the computed fixed-order list (excluding `scientific-code-reviewer`, already covered by baseline).
 
+Use the `Specialist Escalations` section from the successful baseline code-review output as the primary escalation input for this phase.
+
 If any specialized reviewer returns findings:
 1. Route fixes through `scientific-task-bug-fixer`.
 2. Re-run only reviewers that previously returned findings.
@@ -456,10 +443,11 @@ Use the `requesting-code-review` skill for final code review:
 Continue the review loop until zero issues remain.
 
 Then run deterministic final specialized reviewers on the full diff/range:
-1. Build union surface flags across all phases (`cli_api_surface`, `numerics_surface`, `inference_surface`, `architecture_surface`).
-2. Use `profile=full` for final review baseline.
-3. Compute final reviewer set from `Deterministic Reviewer Routing`.
-4. Run reviewers in fixed order and loop fixes per reviewer until all return zero issues.
+1. Build union baseline from phase profiles (treat overall final profile as `full`).
+2. Build union of `Specialist Escalations` that were marked `needed: ✅` across phase-level baseline code reviews.
+3. Apply architecture safety fallback from full-range changed files (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`).
+4. Compute final reviewer set from `Deterministic Reviewer Routing`.
+5. Run reviewers in fixed order and loop fixes per reviewer until all return zero issues.
 
 #### 5b. Test Analysis
 

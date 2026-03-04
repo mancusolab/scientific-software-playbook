@@ -74,18 +74,15 @@
    - `numerics`: add `numerics-interface-auditor`
    - `inference`: add `numerics-interface-auditor` and `scientific-inference-algorithm-reviewer`
    - `full`: run all specialized reviewers
-3. Escalate reviewers when touched surfaces require them, even if profile is lower:
-   - boundary-contract change -> `scientific-architecture-reviewer`
-   - numerics change -> `numerics-interface-auditor`
-   - CLI/API change -> `scientific-cli-api-reviewer`
-   - objective/update-rule/deterministic-solver/inference-engine change -> `scientific-inference-algorithm-reviewer`
-4. Compute final specialized reviewer list deterministically in fixed order:
+3. Add specialist reviewers from the baseline code-review `Specialist Escalations` section (`needed: ✅` only).
+4. Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
+5. Compute final specialized reviewer list deterministically in fixed order:
    - `scientific-architecture-reviewer`
    - `numerics-interface-auditor`
    - `scientific-cli-api-reviewer`
    - `scientific-inference-algorithm-reviewer`
-5. Resolve blocking findings before phase status is `completed`.
-6. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
+6. Resolve blocking findings before phase status is `completed`.
+7. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
 
 ## Completion Checklist
 - [ ] All task-level failing tests observed before implementation.

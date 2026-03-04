@@ -27,6 +27,18 @@ Required inputs:
 - `scientific-research:scientific-internet-research-pass` (when uncertain external numerical methods or references are in scope)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
+## Ownership Boundary
+
+Owns:
+1. Numerics interface contracts (array/PyTree-only, transform safety).
+2. Numerical-stability and precision-risk findings.
+3. Numerics-specific verification and test evidence.
+
+Does not own final judgment for:
+1. Design-plan/model-path readiness (`scientific-architecture-reviewer`).
+2. CLI/API contract compatibility (`scientific-cli-api-reviewer`).
+3. Inference-algorithm scientific fidelity (`scientific-inference-algorithm-reviewer`).
+
 ## Responsibilities
 
 1. Verify numerics APIs consume canonical arrays/PyTrees only.
@@ -47,9 +59,7 @@ Required inputs:
 4. Inspect kernels and solver steps for numerical-risk patterns and dtype-policy mismatches.
 5. Check tests for JIT, VMAP, AD, and numerics-stability behaviors.
 6. Check red-green evidence and final verification command output.
-7. Produce the report using `docs/reviews/review-template.md`.
-8. Fill weighted gates and score summary (`>= 90` required for approval recommendation).
-9. Save report to `docs/reviews/YYYY-MM-DD-<slug>-numerics-review.md`.
+7. Report findings with severity, evidence, and remediation.
 
 ## Numerical Stability Checks (Required)
 
@@ -82,8 +92,7 @@ Use these skill IDs when auditing numerics interfaces:
 1. Missing failing test first for numerics behavior changes is at least `high` severity.
 2. Missing fresh verification evidence for a claimed fix is at least `high` severity.
 3. Traced Python exceptions for runtime-state failures are at least `high` severity.
-4. Weighted review score below 90 is at least `medium` severity unless explicitly accepted as risk.
-5. A confirmed high-impact numerical-stability risk without mitigation or test coverage is at least `high` severity.
+4. A confirmed high-impact numerical-stability risk without mitigation or test coverage is at least `high` severity.
 
 ## Findings Format
 
@@ -101,7 +110,34 @@ For each finding include:
 
 ## Review Output Contract
 
-1. Template: `docs/reviews/review-template.md`
-2. Output path: `docs/reviews/YYYY-MM-DD-<slug>-numerics-review.md`
-3. Include hard-stop table, weighted gate table, score summary, findings table, decision, and follow-ups.
-4. Include a dedicated "Numerical Stability Findings" subsection whenever any stability risk is found.
+Return this structure:
+
+```markdown
+# Numerics Interface Review: <scope>
+
+## Status
+**APPROVED** or **CHANGES REQUIRED**
+
+## Issue Summary
+Critical: <n> | High: <n> | Medium: <n> | Low: <n>
+
+## Verification Evidence
+- `<command>` -> `<result>`
+
+## Numerics Contract Check
+- Array/PyTree-only API boundaries: ✅ / ❌
+- Transform-safety expectations (JIT/VMAP/AD) covered: ✅ / ❌
+- Failure semantics explicit: ✅ / ❌
+- Boundary validation before numerics execution: ✅ / ❌
+- Numerical-stability risks mitigated/tested: ✅ / ❌
+
+## Findings
+- [severity] `<title>`
+  - Location: `<path:line>`
+  - Issue type: `interface` | `transform-safety` | `numerical-stability`
+  - Why it matters: `<impact>`
+  - Fix: `<concrete action>`
+
+## Decision
+`APPROVED FOR NEXT PHASE` or `BLOCKED - FIX REQUIRED`
+```

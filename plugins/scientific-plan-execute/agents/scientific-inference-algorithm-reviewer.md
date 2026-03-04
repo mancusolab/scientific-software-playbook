@@ -33,6 +33,18 @@ Optional inputs:
 - `scientific-research:scientific-internet-research-pass` (when uncertain external algorithmic references are in scope)
 3. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
+## Ownership Boundary
+
+Owns:
+1. Objective/update-rule and inference-engine fidelity to approved design.
+2. Inference-specific failure semantics and diagnostics expectations.
+3. Inference-validation coverage (including recovery/SBC/PPC when in scope).
+
+Does not own final judgment for:
+1. Design-plan/model-path readiness (`scientific-architecture-reviewer`).
+2. Generic CLI/API compatibility (`scientific-cli-api-reviewer`).
+3. Deep numerics stability outside inference-fidelity concerns (`numerics-interface-auditor`).
+
 ## Responsibilities
 
 1. Verify implemented objective functions and update rules match approved design artifacts.

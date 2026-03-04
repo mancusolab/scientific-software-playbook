@@ -60,12 +60,9 @@ Draft
 1. Run `scientific-code-reviewer` after each phase.
 2. Select phase-level baseline reviewers from the phase review profile:
 - `minimal`, `api-cli`, `numerics`, `inference`, `full`.
-3. Escalate reviewers from touched surfaces even if phase profile is lower:
-- boundary contracts -> `scientific-architecture-reviewer`
-- numerics changes -> `numerics-interface-auditor`
-- CLI/API changes -> `scientific-cli-api-reviewer`
-- inference-engine or deterministic-solver changes -> `scientific-inference-algorithm-reviewer`
-4. Resolve all blocking findings before continuing.
+3. Add specialist reviewers from baseline code-review `Specialist Escalations` (`needed: ✅` only).
+4. Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
+5. Resolve all blocking findings before continuing.
 
 ## Execution Log
 | Date | Phase | Status | Evidence |

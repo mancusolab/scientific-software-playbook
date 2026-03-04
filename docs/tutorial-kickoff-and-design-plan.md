@@ -102,17 +102,9 @@ Here is what each step looks like in practice.
 
 ### Step 1: Start kickoff
 
-Default start:
-```
-/start-plan-and-execute
-```
-
 For this focused kickoff walkthrough, jump straight to kickoff:
 
-Claude Code:
-```
-/start-scientific-kickoff
-```
+`/start-scientific-kickoff` (Claude Code) or `$scientific-kickoff` (Codex)
 
 The system asks you to pick a mode. You select `existing-codebase-port`.
 

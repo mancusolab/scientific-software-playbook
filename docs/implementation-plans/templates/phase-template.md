@@ -16,6 +16,17 @@
 - Profile: `minimal` | `api-cli` | `numerics` | `inference` | `full`
 - Why this profile:
 
+## Architecture Profile
+- Profile: `compact-workflow` | `modular-domain`
+- Why this profile:
+
+## Multi-Input Reconciliation (When Applicable)
+- Entity key(s):
+- Join type and rationale:
+- Duplicate/missing-key policy:
+- Row-order determinism policy:
+- Reconciliation verification command(s):
+
 ## Tasks
 
 <!-- START_TASK_1 -->
@@ -65,10 +76,17 @@
    - `full`: run all specialized reviewers
 3. Add specialist reviewers from the baseline code-review `Specialist Escalations` section (`needed: ✅` only).
 4. Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
-5. Resolve blocking findings before phase status is `completed`.
+5. Compute final specialized reviewer list deterministically in fixed order:
+   - `scientific-architecture-reviewer`
+   - `numerics-interface-auditor`
+   - `scientific-cli-api-reviewer`
+   - `scientific-inference-algorithm-reviewer`
+6. Resolve blocking findings before phase status is `completed`.
+7. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
 
 ## Completion Checklist
 - [ ] All task-level failing tests observed before implementation.
 - [ ] All phase verification commands pass.
+- [ ] Multi-input reconciliation behavior is explicit and verified (when applicable).
 - [ ] Review findings resolved or explicitly accepted as non-blocking risk.
 - [ ] AC and test traceability updated in implementation plan README.

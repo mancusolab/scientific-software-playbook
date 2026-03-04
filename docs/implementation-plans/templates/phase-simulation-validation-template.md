@@ -25,12 +25,16 @@
 - Profile: `inference` | `full`
 - Why this profile:
 
+## Architecture Profile
+- Profile: `compact-workflow` | `modular-domain`
+- Why this profile:
+
 ## Tasks
 
 <!-- START_TASK_1 -->
 ### Task 1: Implement `simulate` Interface
 - Inputs:
-  - parameter/config inputs from design simulation contract
+  - parameter/config inputs from the design synthetic-data validation contract
   - seed/PRNG input
 - Deliverables:
   - callable `simulate` entrypoint
@@ -109,7 +113,8 @@
 3. Add specialist reviewers from the baseline code-review `Specialist Escalations` section (`needed: ✅` only).
 4. Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
 5. Run `scientific-test-analyst` checks for simulation traceability coverage.
-6. Resolve blocking findings before phase status is `completed`.
+6. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
+7. Resolve blocking findings before phase status is `completed`.
 
 ## Completion Checklist
 - [ ] `simulate` contract is implemented and deterministic seed behavior is verified.

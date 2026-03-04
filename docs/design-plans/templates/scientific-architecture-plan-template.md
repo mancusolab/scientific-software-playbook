@@ -125,9 +125,20 @@ Detailed artifact:
 ## Data Conversion and Copy Strategy
 For each source format, record copy mode (`zero-copy`, `mmap`, `single-copy fallback`) and rationale.
 
+## Multi-Input Reconciliation Contract (Required When Multiple Tabular Sources Feed Numerics)
+- Sources:
+- Entity key(s) (for example subject/sample ID):
+- Join type and rationale:
+- Duplicate-key policy:
+- Missing-key policy:
+- Row-order freeze policy:
+- Reconciliation accounting (matched/dropped/retained counts):
+- Conversion boundary (where reconciled tabular data becomes arrays/PyTrees):
+
 ## Validation Strategy
 - Boundary checks:
 - Shape/range/domain checks:
+- Multi-input alignment checks (key uniqueness, overlap expectations, deterministic row ordering):
 - Failure semantics:
 
 ## Testing and Verification Strategy

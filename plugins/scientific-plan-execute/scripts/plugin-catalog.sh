@@ -70,8 +70,6 @@ hooks
 scripts
 docs/design-plans/templates
 docs/implementation-plans/templates
-docs/reviews/review-template.md
-docs/checklists/skill-agent-io-checklist.md
 EOF
       ;;
     scientific-research)

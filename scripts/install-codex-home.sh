@@ -252,7 +252,7 @@ done
 echo
 if [[ " ${selected_plugins[*]} " == *" scientific-plan-execute "* ]]; then
   echo "Next step (per downstream project):"
-  echo "  Open target project root in Codex and invoke: starting-a-design-plan"
+  echo "  Open target project root in Codex and invoke: using-plan-and-execute"
 else
   echo "Plan-execute plugin not selected."
   echo "Install with --plugin scientific-plan-execute to enable workflow commands."

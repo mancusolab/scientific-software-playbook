@@ -47,6 +47,7 @@ jax-project-engineering
 polars-data-engineering
 howto-functional-vs-imperative
 property-based-testing
+python-module-design
 writing-for-a-technical-audience
 writing-good-tests
 EOF

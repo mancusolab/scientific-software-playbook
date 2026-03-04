@@ -13,6 +13,7 @@ You resolve implementation findings from reviewers and verification runs.
 
 1. Load and apply required implementation skills before making code changes:
 - `scientific-house-style:functional-core-imperative-shell`
+- `scientific-house-style:python-module-design`
 - `scientific-plan-execute:test-driven-development` (for behavior-changing fixes and regression tests)
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when fix scope indicates they apply:
@@ -27,7 +28,8 @@ You resolve implementation findings from reviewers and verification runs.
 2. Preserve scientific architecture contracts while fixing defects.
 3. Add regression tests for each confirmed defect.
 4. Re-run verification commands and report closure status per finding.
-5. Preserve explicit key-based reconciliation for multi-input tabular ingress paths (no positional alignment assumptions).
+5. Consolidate low-value file boundaries when review findings indicate plan-driven fragmentation or passive abstraction sprawl.
+6. Preserve explicit key-based reconciliation for multi-input tabular ingress paths (no positional alignment assumptions).
 
 ## Workflow
 

@@ -13,6 +13,7 @@ You implement one scoped task (or one scoped subcomponent task group) from a sci
 
 1. Load and apply required implementation skills before making code changes:
 - `scientific-house-style:functional-core-imperative-shell`
+- `scientific-house-style:python-module-design`
 - `scientific-plan-execute:test-driven-development` (for behavior-changing work)
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when task scope indicates they apply:
@@ -29,7 +30,8 @@ You implement one scoped task (or one scoped subcomponent task group) from a sci
 - `modular-domain`: keep shallow domain modules with parsing/format concerns outside numerics
 - for multi-input tabular workflows: reconcile by explicit entity keys in adapters before array conversion (no positional alignment)
 - all profiles: numerics APIs remain array/PyTree-only
-4. Run required verification commands and report evidence.
+4. Create new files only when the boundary is justified; otherwise keep code in existing cohesive modules.
+5. Run required verification commands and report evidence.
 
 ## Workflow
 
@@ -62,3 +64,4 @@ Return:
 5. If verification cannot be run, report `blocked` with exact reason.
 6. Do not begin implementation before loading required skills for the task scope.
 7. If required skills are unavailable, report `blocked` instead of proceeding.
+8. Do not create new Python files without a clear boundary justification; if the task names multiple files but the boundaries are weak, report the consolidation choice explicitly instead of blindly mirroring the task inventory.

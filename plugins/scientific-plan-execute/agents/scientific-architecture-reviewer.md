@@ -22,6 +22,7 @@ Required inputs:
 1. Load and apply required architecture-review skills before evaluating artifacts:
 - `scientific-plan-execute:starting-a-design-plan`
 - `scientific-plan-execute:validate-design-plan`
+- `scientific-house-style:python-module-design`
 2. Load additional project/domain skills when review scope indicates they apply:
 - `scientific-plan-execute:simulation-for-inference-validation` (simulation/inference-alignment checks)
 - `scientific-research:scientific-internet-research-pass` (when uncertain external facts or citations are in scope)
@@ -49,10 +50,13 @@ Required inputs:
 15. Detect duplication paths where container and array representations coexist downstream.
 16. Verify multi-source tabular ingress contracts specify key-based reconciliation before numerics conversion.
 17. Verify architecture-profile contracts are followed (`compact-workflow` or `modular-domain`).
-18. Confirm numerics code stays array/PyTree-only and transformation-safe.
-19. Verify TDD evidence exists for boundary and contract changes.
-20. Verify completion claims are backed by fresh test/verification command output.
-21. Report findings with severity and concrete fixes.
+18. Verify module/package boundaries are cohesive and not over-fragmented by plan-driven file decomposition.
+19. Detect passive schema/type/exception sprawl when those artifacts are local to one workflow and do not form a stable cross-module contract.
+20. Distinguish real architectural seams from file-per-concept decomposition.
+21. Confirm numerics code stays array/PyTree-only and transformation-safe.
+22. Verify TDD evidence exists for boundary and contract changes.
+23. Verify completion claims are backed by fresh test/verification command output.
+24. Report findings with severity and concrete fixes.
 
 ## Workflow
 
@@ -76,16 +80,21 @@ Required inputs:
 - Parsing/format logic inside numerics kernels.
 - Validation deferred into numerics internals.
 - Re-conversion between host containers and arrays across hot numerics paths.
-16. For multi-source tabular ingress, verify reconciliation policy is explicit: entity key(s), join type, duplicate/missing-key handling, deterministic row-order policy, and dropped-row accounting.
-17. Check for red-green evidence:
+16. Audit Python package/module structure:
+- identify files created primarily because the plan named them, rather than because a stable boundary exists
+- check whether adjacent modules could be merged without losing a meaningful boundary
+- flag passive container modules that are used by only one nearby module
+- flag utility or exception modules with negligible contract value
+17. For multi-source tabular ingress, verify reconciliation policy is explicit: entity key(s), join type, duplicate/missing-key handling, deterministic row-order policy, and dropped-row accounting.
+18. Check for red-green evidence:
 - failing test added first for new behavior or bug fix.
 - passing verification command output after changes.
-18. Run readiness validator when plan exists:
+19. Run readiness validator when plan exists:
 - `/validate-design-plan <plan-path> --phase in-review` (or `validate-design-plan` in Codex) for `pre-implementation`.
 - `/validate-design-plan <plan-path> --phase approval` (or `validate-design-plan` in Codex) for `implementation-gate`.
-19. Produce the report using `docs/reviews/review-template.md`.
-20. Fill weighted gates and score summary (`>= 90` required for approval recommendation).
-21. Save report to `docs/reviews/YYYY-MM-DD-<slug>-architecture-review.md`.
+20. Produce the report using `docs/reviews/review-template.md`.
+21. Fill weighted gates and score summary (`>= 90` required for approval recommendation).
+22. Save report to `docs/reviews/YYYY-MM-DD-<slug>-architecture-review.md`.
 
 ## Core Skill Inputs
 
@@ -119,6 +128,8 @@ Use these skill IDs when evaluating architecture and solver or inference-engine 
 17. If multi-source tabular reconciliation relies on row position instead of explicit keys, raise `critical`.
 18. If research triggers are present and uncited external claims remain, raise at least `high` severity.
 19. If required review skills for the active scope cannot be loaded, return `blocked` and do not continue with partial review.
+20. If architecture review finds plan-driven module fragmentation that obscures real boundaries or produces many low-value passive modules, raise at least `medium` severity.
+21. If the selected architecture profile is being interpreted as file-per-boundary decomposition rather than conceptual boundary discipline, raise at least `medium` severity.
 
 ## Findings Format
 
@@ -131,6 +142,7 @@ For each finding include:
 6. Mathematical impact: if applicable, note inference/model risk
 7. Solver/inference-engine impact: if applicable, note translation/custom-engine implications
 8. Fix: boundary-corrected remediation
+9. Boundary justification: why this should remain a separate module, or why consolidation is safer
 
 ## Review Output Contract
 

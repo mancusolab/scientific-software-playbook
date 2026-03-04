@@ -30,6 +30,12 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Save plans to:** `docs/implementation-plans/YYYY-MM-DD-<feature-name>/phase_##.md`
 
+## Mandatory First Actions
+
+1. Load and apply required plan-structuring skills before turning design components into file-level tasks:
+- `scientific-house-style:python-module-design`
+2. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
+
 ## Critical: Design Plans Provide Direction, Not Code
 
 **Design plans are intentionally high-level.** They describe components, modules, and contracts — not implementation code. This is by design.
@@ -43,6 +49,10 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 - Your code must work with the codebase as it exists NOW
 
 **The design plan tells you WHERE you're going. Codebase investigation tells you HOW to get there from where you are.**
+
+**Important:** Design-plan paths are architectural guidance, not automatic file-creation commitments.
+Before turning a design component into a `Create:` or `Modify:` entry, apply `python-module-design`.
+If adjacent design components can be implemented in one cohesive module without losing a real boundary, prefer consolidation.
 
 ## Before Starting
 
@@ -127,6 +137,22 @@ Review investigator findings and note any differences from design assumptions.
 
 **If codebase state differs from design assumptions:** Document the difference and adjust the implementation plan accordingly.
 
+### 3b. Module Boundary Verification
+
+Before writing tasks for a phase, apply `python-module-design` to the design's proposed components.
+
+For each proposed new file or path, decide:
+1. Is this a real boundary or just a named concept?
+2. Would the implementation be clearer if adjacent responsibilities stayed in one module?
+3. Is this path public/shared/side-effectful enough to deserve its own file?
+4. Is the design over-specifying a passive type/helper/exception boundary that should remain local?
+
+If the boundary is weak:
+- keep the task at module responsibility level, or
+- consolidate adjacent work into one file path in the implementation plan
+
+Do not preserve design-time file splits purely because the design named them.
+
 ### 4. External Dependency Research
 
 **When phases involve external libraries or dependencies, research them before writing tasks.**
@@ -196,6 +222,9 @@ Include external research findings alongside codebase verification:
 
 **Each step is one action (2-5 minutes).**
 
+Bite-sized tasks do not require bite-sized files.
+Task granularity and module granularity are separate decisions.
+
 For functionality tasks:
 - "Write the failing test" - step
 - "Run it to make sure it fails" - step
@@ -212,6 +241,11 @@ For infrastructure tasks:
 - Task N requires helper function? Task N-1 creates it.
 - Task N requires bootstrap credentials? Prior task provisions them.
 - Never write code that assumes "this will exist somehow."
+
+When listing files for a task:
+- prefer the fewest files consistent with clean boundaries
+- avoid creating standalone `types`, `schemas`, `helpers`, `validation`, or `base` files unless they are clearly reused or contract-critical
+- if a task can be completed by extending an existing cohesive module, prefer that over introducing a new file
 
 ## Task Types: Infrastructure vs Functionality
 

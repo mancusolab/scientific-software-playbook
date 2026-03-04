@@ -25,6 +25,7 @@ Optional inputs:
 
 1. Load and apply required review skills before evaluating artifacts:
 - `scientific-house-style:functional-core-imperative-shell`
+- `scientific-house-style:python-module-design`
 - `scientific-plan-execute:verification-before-completion`
 2. Load additional project/domain skills when review scope indicates they apply:
 - `scientific-house-style:jax-equinox-numerics` and `scientific-house-style:jax-project-engineering` (numerics/JAX/Equinox and project-engineering scope)
@@ -37,8 +38,9 @@ Optional inputs:
 1. Verify implemented behavior aligns with approved plan scope and requirements.
 2. Run and report verification-command evidence before making approval decisions.
 3. Audit profile-aware boundary contracts (`compact-workflow` or `modular-domain`) for numerics safety.
-4. Validate coverage quality and TDD evidence for behavior-changing updates.
-5. Return severity-ranked findings with concrete, minimally invasive fixes.
+4. Audit Python module/package design for unjustified fragmentation, weak file boundaries, and low-value abstractions.
+5. Validate coverage quality and TDD evidence for behavior-changing updates.
+6. Return severity-ranked findings with concrete, minimally invasive fixes.
 
 ## Review Process
 
@@ -53,8 +55,14 @@ Optional inputs:
 - multi-input tabular sources are reconciled by explicit entity-key joins in adapters before array conversion
 - reconciliation behavior is explicit (join type, duplicate/missing-key policy, deterministic row order, dropped-row accounting)
 - numerics APIs remain array/PyTree-only
-5. Audit test quality and coverage evidence for changed behavior.
-6. Classify findings by severity and provide concrete fixes.
+5. Audit Python module/package design:
+- new files have clear boundary justification
+- passive containers (dataclasses, result bundles, config objects, exceptions) are colocated unless reused or contract-critical
+- no proliferation of one-function, one-class, or one-exception modules
+- package structure is organized around workflows or real shared boundaries, not taxonomic micro-layers
+- adjacent modules are not kept separate solely because the implementation plan listed them separately
+6. Audit test quality and coverage evidence for changed behavior.
+7. Classify findings by severity and provide concrete fixes.
 
 ## Severity Rules
 
@@ -74,9 +82,12 @@ Optional inputs:
 3. `medium`
 - incomplete edge-case coverage
 - maintainability or performance concern needing follow-up
+- unjustified module/file fragmentation that materially increases navigation cost or duplicates passive abstractions
+- weak file boundaries where adjacent modules should be merged for cohesion
 
 4. `low`
 - naming/style/readability improvements
+- minor consolidation opportunities that do not materially affect maintainability
 
 ## Output Contract
 
@@ -109,6 +120,8 @@ Critical: <n> | High: <n> | Medium: <n> | Low: <n>
 - Numerics array/PyTree-only: ✅ / ❌
 - Validation/conversion before numerics dispatch: ✅ / ❌
 - Multi-input reconciliation before numerics (when applicable): ✅ / ❌
+- Python module boundaries justified: ✅ / ❌
+- Passive container placement cohesive: ✅ / ❌
 
 ## Decision
 `APPROVED FOR NEXT PHASE` or `BLOCKED - FIX REQUIRED`
@@ -119,3 +132,4 @@ Critical: <n> | High: <n> | Medium: <n> | Low: <n>
 1. Do not approve when any `critical` or `high` findings remain unresolved.
 2. Do not approve without explicit verification command evidence.
 3. Do not accept plan drift silently; require explicit rationale or plan update.
+4. Do not silently ignore substantial module fragmentation when it creates duplicated passive abstractions or weak boundaries; report it at least as `medium`.

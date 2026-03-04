@@ -30,6 +30,12 @@ Complete the design document by appending validated design from brainstorming to
 
 **Context:** Design document already exists with Title, Summary placeholder, confirmed Definition of Done, and Glossary placeholder. This skill appends the body and fills in placeholders.
 
+## Mandatory First Actions
+
+1. Load and apply required design-structure skills before writing module or file boundaries:
+- `scientific-house-style:python-module-design`
+2. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
+
 ## Level of Detail: Design vs Implementation
 
 **Design plans are directional and archival.** They can be checked into git and referenced months later. Other design plans may depend on contracts specified here.
@@ -42,9 +48,20 @@ Complete the design document by appending validated design from brainstorming to
 |---------|---------|
 | Module and directory structure | Task-level breakdowns |
 | Component names and responsibilities | Implementation code |
-| File paths (from investigation) | Function bodies |
+| Stable file or directory paths when investigation justifies them | File-per-concept decomposition |
 | Dependencies between components | Step-by-step instructions |
 | "Done when" verification criteria | Test code |
+
+**Important:** "Module and directory structure" means cohesive boundaries, not an inventory of tiny files.
+
+Use exact file paths only when at least one of these is true:
+- the path already exists and investigation confirmed it
+- the boundary is expected to remain stable after implementation
+- the path represents a public/shared contract or a distinct side-effect boundary
+- the path is needed for readability because an existing module would otherwise become too large
+
+Do **not** name a new file in the design just because a concept has a name.
+Passive types, tiny helpers, one-off exceptions, and local result/config containers usually belong inside a nearby module description, not as standalone planned files.
 
 **Exception: Contracts get full specification.** When a component exposes an interface that other systems depend on, specify the contract fully:
 
@@ -138,7 +155,7 @@ Break implementation into discrete phases (<=8 recommended).
 ### Phase 1: [Name]
 **Goal:** What this phase achieves
 
-**Components:** What gets built/modified (exact paths from investigator)
+**Components:** What gets built/modified (module responsibilities first; include exact paths only for stable or already-verified boundaries)
 
 **Dependencies:** What must exist first
 
@@ -182,7 +199,8 @@ See "After Writing: Generating Summary and Glossary" below for the extraction pr
 - Achieve one cohesive goal
 - Build on previous phases (explicit dependencies)
 - End with a working build and clear "done" criteria
-- Use exact file paths and component names from codebase investigation
+- Use exact component names from codebase investigation
+- Use exact file paths only for justified module boundaries, not as a default expression of every concept
 
 ## Phase Verification
 
@@ -212,9 +230,8 @@ Good structure (component-level):
 **Goal:** Token generation and session management
 
 **Components:**
-- TokenService in `src/services/auth/` — generates and validates JWT tokens
-- SessionManager in `src/services/auth/` — creates, validates, and invalidates sessions
-- Types in `src/types/auth.ts` — TokenClaims, SessionData interfaces
+- Authentication service module in `src/services/auth/` — generates and validates JWT tokens and manages session lifecycle
+- Shared auth contract types — token claims and session data, colocated with the auth service unless reuse requires a separate shared contract module
 
 **Dependencies:** Phase 1 (project setup)
 
@@ -259,6 +276,17 @@ Add note to Additional Considerations:
 ## Using Codebase Investigation Findings
 
 **Include paths and component descriptions from investigation. Do NOT include implementation details.**
+
+## Module Granularity Check
+
+Before finalizing each phase, apply `python-module-design` and confirm:
+
+1. The phase describes cohesive module boundaries, not a file inventory.
+2. Any exact file paths named are stable and justified.
+3. Passive containers (dataclasses, config objects, result bundles, exceptions) are not being split into standalone modules without reuse or contract value.
+4. The design is not using taxonomic micro-layers (`schemas`, `types`, `helpers`, `base`, `validation`) as a substitute for real architecture.
+
+If a proposed boundary is weak, describe the responsibility at the module/component level instead of naming a new file.
 
 Good Phase definitions:
 

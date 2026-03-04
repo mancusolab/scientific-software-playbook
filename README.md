@@ -65,44 +65,20 @@ Most sessions only use the router plus the main phase commands:
 
 Validation, status transitions, simulation setup, and direct scaffolding commands are manual utilities used inside an active workflow.
 
-## Kickoff: the bootstrap path for fresh scientific projects
+## Straightforward use case: start from the router
 
-### What kickoff does
+If you are working in a downstream project and want to add or change something, start with the router command for your runtime:
 
-`/start-scientific-kickoff` (Claude Code) and `$scientific-kickoff` (Codex) select exactly one scientific delivery path before design planning continues.
+- Claude Code: `/start-plan-and-execute`
+- Codex: `using-plan-and-execute`
 
-The router sends you here when you still need to decide where the model comes from or what existing implementation you are matching.
-If the model and software contract are already established and you are working on a scoped feature, the router should send you directly to design planning instead.
-
-You can also jump to kickoff directly when you already know the repo is in a fresh or unresolved-model state.
-
-Kickoff forces a single mode:
-1. `provided-model`: you already have model equations/artifacts and (optionally) update rules.
-2. `suggested-model`: the system proposes model-family options with citations, and you explicitly select one.
-3. `existing-codebase-port`: you provide an existing source implementation and define behavior/parity targets.
-
-Kickoff writes `.scientific/kickoff.md` with required readiness state (`model_path_decided`, codebase-investigation state for ports, and synthetic-data-validation-contract state when synthetic-data validation is in scope). Handover instructions for the next phase are provided by kickoff itself.
-
-### Example 1: choosing a model path before implementation
-
-> "We need a Bayesian model for longitudinal biomarker data. I have partial equations, but I’m not sure whether we should reuse an existing model family."
-
-Recommended kickoff option:
-- `provided-model`
-
-### Example 2: porting an existing scientific codebase
-
-> "We already have a NumPy prototype. We want a JAX implementation with parity checks before switching over."
-
-Recommended kickoff option:
-- `existing-codebase-port`
-
-### Example 3: existing project feature iteration
+Then provide a short request, for example:
 
 > "Add simulation-based calibration checks to the current inference workflow and keep existing CLI behavior stable."
 
-Recommended entrypoint:
-- Start with design planning directly; kickoff is not required
+The router selects the next step for you (design planning, kickoff when needed, or implementation flow if you are resuming).
+
+For detailed kickoff/porting walkthroughs and full end-to-end examples, see [here](docs/tutorial-kickoff-and-design-plan.md).
 
 ## Installation
 For full setup and troubleshooting, use `docs/INSTALLATION.md`.
@@ -116,6 +92,8 @@ bash scripts/install-codex-home.sh --force
 ```
 
 ### ![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?style=flat-square&logo=claude&logoColor=white)
+
+ **NB: WILL REMOVE THE TOKEN SECTION WHEN WE MAKE REPO PUBLIC**
 
 Because this is a private repository, Claude Code needs a GitHub token to fetch the plugin.
 
@@ -150,7 +128,7 @@ Because this is a private repository, Claude Code needs a GitHub token to fetch 
 ## Where to go next
 
 1. Day-1 workflow guide: `docs/ONBOARDING.md`
-2. Tutorial (LDSC JAX port walkthrough): `docs/Tutorial-an-example-walkthrough.md`
+2. Tutorial (kickoff and design walkthrough): `docs/tutorial-kickoff-and-design-plan.md`
 3. Installation and troubleshooting: `docs/INSTALLATION.md`
 4. Internal contracts and hard stops: `AGENTS.md`
 

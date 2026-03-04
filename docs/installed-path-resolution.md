@@ -7,7 +7,7 @@ Use this contract to avoid duplicating Codex/Claude install-path logic.
 Prefer logical IDs over filesystem paths whenever runtime tools support them:
 - Skills: `using-plan-and-execute`, `starting-a-design-plan`, `new-design-plan`, `scientific-kickoff`, `starting-an-implementation-plan`, `executing-an-implementation-plan`
 - Agents: `scientific-architecture-reviewer`, `scientific-code-reviewer`
-- Commands: `start-design-plan`, `start-implementation-plan`, `execute-implementation-plan`
+- Commands: `start-plan-and-execute`, `start-design-plan`, `start-implementation-plan`, `execute-implementation-plan`
 
 Do not encode repository-relative skill/agent paths in workflow logic.
 

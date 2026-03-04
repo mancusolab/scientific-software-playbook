@@ -10,7 +10,7 @@ if [[ ${#required_skills[@]} -eq 0 ]]; then
   required_skills=(
     "jax-equinox-numerics"
     "jax-project-engineering"
-    "howto-functional-vs-imperative"
+    "functional-core-imperative-shell"
     "python-module-design"
   )
 fi

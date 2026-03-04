@@ -43,7 +43,7 @@ This skill is not the source of truth for:
 For those concerns use:
 - `../jax-equinox-numerics/SKILL.md`
 - `../jax-project-engineering/SKILL.md`
-- `../howto-functional-vs-imperative/SKILL.md`
+- `../functional-core-imperative-shell/SKILL.md`
 
 ## Path Contract (Unambiguous)
 

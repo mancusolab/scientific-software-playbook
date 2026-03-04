@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "description": "Scientific workflow loop: architecture, planning, execution, validation, and review orchestration.",
   "commands": [
+    "./commands/start-plan-and-execute.md",
     "./commands/start-design-plan.md",
     "./commands/start-implementation-plan.md",
     "./commands/execute-implementation-plan.md",
-    "./commands/flesh-it-out.md",
     "./commands/how-to-customize.md",
     "./commands/start-scientific-kickoff.md",
     "./commands/start-simulation-validation.md",

@@ -102,6 +102,13 @@ Here is what each step looks like in practice.
 
 ### Step 1: Start kickoff
 
+Default start:
+```
+/start-plan-and-execute
+```
+
+For this focused kickoff walkthrough, jump straight to kickoff:
+
 Claude Code:
 ```
 /start-scientific-kickoff
@@ -541,15 +548,16 @@ These are covered in separate documentation. The key point: everything downstrea
 
 ### Commands used in this tutorial
 
-| Step | Claude Code command | What it does |
-|------|-------------------|-------------|
-| Start kickoff | `/start-scientific-kickoff` | Select model path, capture readiness state |
-| Start design | `/start-design-plan <slug>` | Orchestrate design from kickoff through documentation |
-| Validate (review) | `/validate-design-plan <path> --phase in-review` | Check plan completeness |
-| Validate (approval) | `/validate-design-plan <path> --phase approval` | Enforce hard-stop readiness gates |
-| Set status | `/set-design-plan-status <path> approved-for-implementation` | Approve plan for implementation |
-| Implementation plan | `/start-implementation-plan <path>` | Generate task-level implementation files |
-| Execute | `/execute-implementation-plan <plan-dir> <working-dir>` | Phase-by-phase execution with TDD |
+| Category | Step | Claude Code command | What it does |
+|----------|------|-------------------|-------------|
+| Primary workflow | Entry point | `/start-plan-and-execute` | Route to kickoff or design based on current state |
+| Bootstrap | Start kickoff | `/start-scientific-kickoff` | Select model path, capture readiness state |
+| Primary workflow | Start design | `/start-design-plan <slug>` | Orchestrate design from kickoff through documentation |
+| Manual utility | Validate (review) | `/validate-design-plan <path> --phase in-review` | Check plan completeness |
+| Manual utility | Validate (approval) | `/validate-design-plan <path> --phase approval` | Enforce hard-stop readiness gates |
+| Manual utility | Set status | `/set-design-plan-status <path> approved-for-implementation` | Approve plan for implementation |
+| Primary workflow | Implementation plan | `/start-implementation-plan <path>` | Generate task-level implementation files |
+| Primary workflow | Execute | `/execute-implementation-plan <plan-dir> <working-dir>` | Phase-by-phase execution with TDD |
 
 ### Readiness states for `existing-codebase-port`
 

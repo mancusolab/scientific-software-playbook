@@ -22,13 +22,13 @@ Apply this translation before following the remaining steps.
 
 ## Overview
 
-Complete the design document by appending validated design from brainstorming to the existing file (created during `start-design-plan`) and filling in the Summary and Glossary placeholders.
+Complete the design document by filling the scaffolded scientific design template created during `start-design-plan`, preserving the confirmed Definition of Done, and replacing the Summary and Glossary placeholders after the body is written.
 
-**Core principle:** Append body to existing document. Generate Summary and Glossary. Commit for permanence.
+**Core principle:** Fill the shared scaffold instead of inventing structure ad hoc. Generate Summary and Glossary after the body is complete. Commit for permanence.
 
 **Announce at start:** "I'm using the writing-design-plans skill to complete the design document."
 
-**Context:** Design document already exists with Title, Summary placeholder, confirmed Definition of Done, and Glossary placeholder. This skill appends the body and fills in placeholders.
+**Context:** Design document already exists from the shared `new-design-plan.sh` scaffold with metadata, scientific workflow sections, a confirmed Definition of Done, and placeholders that must be filled without duplicating section headers.
 
 ## Mandatory First Actions
 
@@ -100,7 +100,7 @@ The first defines what the boundary looks like. The second implements behavior â
 
 **File location:** `docs/design-plans/YYYY-MM-DD-<topic>.md`
 
-The file is created during `start-design-plan`. This skill appends to that file.
+The file is created during `start-design-plan`. This skill fills and updates that file.
 
 **Expected naming convention:**
 - Good: `docs/design-plans/2025-01-18-oauth2-svc-authn.md`
@@ -110,16 +110,31 @@ The file is created during `start-design-plan`. This skill appends to that file.
 
 ## Document Structure
 
-**The design document already exists** from `start-design-plan` with this structure:
+**The design document already exists** from `start-design-plan` via the shared scientific template. At minimum it already includes:
 
 ```markdown
 # [Feature Name] Design
 
+## Status
+Draft
+
+## Metadata
+[Already written by scaffold]
+
 ## Summary
 <!-- TO BE GENERATED after body is written -->
 
+## Problem Statement
+[Seeded during Phase 3, refine as needed]
+
 ## Definition of Done
 [Already written - confirmed in Phase 3]
+
+## Existing Patterns
+[Fill from investigation and design work]
+
+## Implementation Phases
+<!-- TO BE GENERATED with START_PHASE / END_PHASE markers -->
 
 ## Acceptance Criteria
 <!-- TO BE GENERATED and validated before glossary -->
@@ -128,27 +143,21 @@ The file is created during `start-design-plan`. This skill appends to that file.
 <!-- TO BE GENERATED after body is written -->
 ```
 
-**This skill appends the body sections:**
+**This skill fills the scaffolded sections without duplicating headings already present in the template.**
+
+Populate or refine the relevant scientific sections, including:
+- Problem Statement
+- Goals and Non-Goals
+- Model Acquisition Path and Required Workflow States
+- Existing codebase port sections when applicable
+- Existing Patterns
+- Layer Contracts, validation strategy, and testing strategy
+- Implementation Phases
+- Additional Considerations (only when relevant)
+
+**Implementation phases must appear in the existing `## Implementation Phases` section using this structure:**
 
 ```markdown
-## Architecture
-[Approach selected in brainstorming Phase 2]
-
-[Key components and how they interact]
-
-[Data flow and system boundaries]
-
-## Existing Patterns
-[Document codebase patterns discovered by investigator that this design follows]
-
-[If introducing new patterns, explain why and note divergence from existing code]
-
-[If no existing patterns found, state that explicitly]
-
-## Implementation Phases
-
-Break implementation into discrete phases (<=8 recommended).
-
 **REQUIRED: Wrap each phase in HTML comment markers:**
 
 <!-- START_PHASE_1 -->
@@ -170,11 +179,6 @@ Break implementation into discrete phases (<=8 recommended).
 ...continue for each phase...
 
 **Why markers:** These enable writing-implementation-plans to parse phases individually, reducing context usage and enabling granular task tracking across compaction boundaries.
-
-## Additional Considerations
-[Error handling, edge cases, future extensibility - only if relevant]
-
-[Don't include hypothetical "nice to have" features]
 ```
 
 **Then this skill:**
@@ -681,15 +685,16 @@ This skill completes the design document started in Phase 3:
 ```
 Phase 3 (Definition of Done) completes
   -> User confirms Definition of Done
-  -> File created with Title, Summary placeholder, DoD, AC placeholder, Glossary placeholder
-  -> DoD captured at full fidelity
+  -> File created from shared scientific template
+  -> DoD and initial problem statement captured at full fidelity
+  -> Summary, Implementation Phases, Acceptance Criteria, and Glossary placeholders remain for later completion
 
 Brainstorming (Phase 4) completes
   -> Validated design exists in conversation
   -> User approved incrementally
 
 Writing Design Plans (this skill)
-  -> Append body: Architecture, Existing Patterns, Implementation Phases, Additional Considerations
+  -> Fill scaffolded scientific sections without duplicating headings
   -> Add exact paths from investigation
   -> Create discrete phases (<=8)
   -> Generate Acceptance Criteria inline (success + failure cases for each DoD item)

@@ -16,6 +16,7 @@ __pycache__/*
 
 # sometimes symlink to make for easier indexing
 ed3d-plugins
+tmp
 
 
 # Project files

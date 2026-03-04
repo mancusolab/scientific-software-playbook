@@ -48,8 +48,16 @@ Installation can be done from any directory:
 ## Running Workflows (Claude Code)
 
 Open Claude Code in your scientific project directory, then start:
-- New project/model-path selection: `/start-scientific-kickoff`
-- Existing project/iteration: `/new-design-plan <slug>`
+- Default entrypoint: `/start-plan-and-execute`
+- Main phase commands after routing: `/start-design-plan <slug>`, `/start-implementation-plan <design-plan-path>`, `/execute-implementation-plan <plan-dir> <working-dir>`
+- Router-selected bootstrap for fresh/model-path/parity work: `/start-scientific-kickoff`
+
+Manual utilities inside an active workflow:
+- `/new-design-plan <slug>` for direct plan scaffolding
+- `/validate-design-plan <plan-path> --phase <in-review|approval>`
+- `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
+- `/start-simulation-validation <plan-path>` when simulation-based inference checks are in scope
+- `/how-to-customize` for installing project-specific guidance files
 
 ## Codex Installation (Native)
 
@@ -70,7 +78,7 @@ bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 ```
 3. Open the downstream target project root in Codex.
 4. Invoke `using-plan-and-execute` to choose the correct entrypoint.
-5. For general design work, invoke `starting-a-design-plan`.
+5. Follow the routed next step (`scientific-kickoff` for fresh/model-path bootstrap work, `starting-a-design-plan` for established design work).
 
 What Codex install provides:
 1. Skills in `${CODEX_HOME:-$HOME/.codex}/skills/`
@@ -100,24 +108,27 @@ Core scientific workflow skills:
 ## Usage Example (Downstream Project)
 
 Claude Code path:
-1. For fresh-project/model-path tracks, run `/start-scientific-kickoff` first.
-2. Continue with `/start-design-plan <example-slug>` and ingest `.scientific/kickoff.md` when present.
-3. Use `asking-clarifying-questions` and `brainstorming` to refine scope and alternatives.
-4. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
+1. Run `/start-plan-and-execute`.
+2. If the router selects kickoff, complete `/start-scientific-kickoff`, then continue with `/start-design-plan <example-slug>` and ingest `.scientific/kickoff.md`.
+3. If the router selects design planning directly, continue with `/start-design-plan <example-slug>`.
+4. Use `asking-clarifying-questions` and `brainstorming` to refine scope and alternatives.
+5. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
    - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
    - Pass kickoff output (`.scientific/kickoff.md`) into the design flow.
-5. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
-6. `scientific-internet-research-pass` (external/scientific/API claims)
-7. `/validate-design-plan <plan-path> --phase in-review`
-8. `/set-design-plan-status <plan-path> approved-for-implementation`
-9. `/start-implementation-plan <plan-path>`
-10. Start a fresh session/context (recommended).
-11. `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+6. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
+7. `scientific-internet-research-pass` (external/scientific/API claims)
+8. `/validate-design-plan <plan-path> --phase in-review`
+9. `/set-design-plan-status <plan-path> approved-for-implementation`
+10. `/start-implementation-plan <plan-path>`
+11. Start a fresh session/context (recommended).
+12. `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+
+The normal Claude workflow is router -> design -> implementation plan -> execute. Validation, status changes, simulation setup, and direct plan scaffolding are manual utilities used within that flow when needed.
 
 Codex path:
 1. Invoke `using-plan-and-execute`.
-2. For fresh-project/model-path tracks, invoke `scientific-kickoff` first.
-3. Invoke `starting-a-design-plan` and ingest `.scientific/kickoff.md` when present.
+2. If the router selects kickoff, invoke `scientific-kickoff` first, then continue to `starting-a-design-plan` and ingest `.scientific/kickoff.md`.
+3. If the router selects design planning directly, invoke `starting-a-design-plan`.
 4. Invoke `asking-clarifying-questions` and `brainstorming` during architecture kickoff.
 5. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
    - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
@@ -132,6 +143,8 @@ Codex path:
 11. Invoke `starting-an-implementation-plan`.
 12. Start a fresh session/context (recommended).
 13. Invoke `executing-an-implementation-plan` with absolute implementation plan and working-directory paths.
+
+The normal Codex workflow is router -> design -> implementation plan -> execute. `new-design-plan`, `validate-design-plan`, `set-design-plan-status`, and `simulation-for-inference-validation` are manual utilities used within an active plan.
 
 ## Compatibility Policy
 

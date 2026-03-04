@@ -30,6 +30,15 @@ This skill is kickoff-agnostic. If kickoff artifacts already exist, ingest and c
 
 **Announce at start:** "I'm using the starting-a-design-plan skill to guide us through the design process."
 
+## Path Contract (Unambiguous)
+
+1. When creating the initial design document, use the shared `new-design-plan.sh` scaffolder rather than hand-writing an ad hoc file.
+2. Resolve the scaffolder through the shared resolver only:
+- Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/resolve-plugin-path.sh`
+- Claude Code plugin install: `${CLAUDE_PLUGIN_ROOT}/scripts/resolve-plugin-path.sh`
+3. Do not use repository-local `scripts/...` paths directly.
+4. Project-local outputs still belong under the active downstream project root (`docs/design-plans/...`).
+
 ## Quick Reference
 
 | Phase | Key Activities | Output |
@@ -219,7 +228,15 @@ Examples of clarifying questions:
 
 ##### Step 1: Get Design Plan Name
 
-The slug becomes part of all acceptance criteria identifiers (e.g., `my-feature.AC1.1`) and appears in test names. Ask the user to choose it explicitly.
+The slug becomes part of all acceptance criteria identifiers (e.g., `my-feature.AC1.1`) and appears in test names.
+
+**If a slug was already supplied by the entry command or latest user message:**
+- Validate it first.
+- Valid format: lowercase hyphenated `a-z`, `0-9`, `-`.
+- If valid, use it directly and do not ask again.
+- If the user supplied a mixed-case ticket or descriptive phrase, normalize it to lowercase hyphenated form before file creation (for example `PROJ-1234` -> `proj-1234`, `My Cool Feature` -> `my-cool-feature`) and confirm only if the normalization changes meaning.
+
+**If no usable slug was supplied already:** ask the user to choose it explicitly.
 
 **Generate 2-3 suggested slugs** based on the conversation context. Good slugs are:
 - Lowercase with hyphens (no spaces, underscores, or special characters)
@@ -240,36 +257,29 @@ Options:
 ```
 
 **If user selects "Other":** They can provide any name. Normalize it:
-- Ticket names (pattern: `UPPERCASE-DIGITS`, e.g., `PROJ-1234`): keep as-is
+- Ticket names (pattern: `UPPERCASE-DIGITS`, e.g., `PROJ-1234`): lowercase and keep hyphenated (for example `proj-1234`)
 - Descriptive names: lowercase, hyphens for spaces, strip invalid characters (e.g., "My Cool Feature" → `my-cool-feature`)
 
 ##### Step 2: Create File
 
 **File location:** `docs/design-plans/YYYY-MM-DD-{slug}.md`
 
-Use today's date and the user-chosen slug.
+Use today's date and the validated slug.
 
-**Initial file contents:**
+**Create the initial file through the shared scaffolder:**
 
-```markdown
-# [Feature Name] Design
-
-## Summary
-<!-- TO BE GENERATED after body is written -->
-
-## Definition of Done
-[The confirmed Definition of Done - copy exactly as confirmed with user]
-
-## Scientific Kickoff Handoff (Optional)
-<!-- Include only when `.scientific/kickoff.md` was ingested -->
-<!-- Record mode + readiness fields + key evidence from kickoff -->
-
-## Acceptance Criteria
-<!-- TO BE GENERATED and validated before glossary -->
-
-## Glossary
-<!-- TO BE GENERATED after body is written -->
-```
+1. Resolve the installed script path:
+- `RESOLVER_PATH="${CLAUDE_PLUGIN_ROOT:-${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute}/scripts/resolve-plugin-path.sh"`
+- fail if `"$RESOLVER_PATH"` does not exist.
+- `SCRIPT_PATH="$(bash "$RESOLVER_PATH" --plan-execute-script "new-design-plan.sh")"`
+2. Run the scaffolder with the validated slug and a title derived from the feature name or confirmed Definition of Done:
+- `bash "$SCRIPT_PATH" "<slug>" "<title>"`
+3. If the plan already exists, stop and ask whether to reuse/update it instead of creating a second file.
+4. Immediately replace scaffold placeholders with the highest-fidelity information already known:
+- `## Definition of Done`: copy the confirmed Definition of Done exactly.
+- `## Problem Statement`: replace the placeholder with a concise problem statement from Phases 1-2.
+- `## Model Acquisition Path` and `## Required Workflow States`: fill these immediately when kickoff handoff was ingested.
+5. Leave Summary, Acceptance Criteria, Implementation Phases, and Glossary placeholders for Phase 5.
 
 **Why write immediately:**
 - Captures Definition of Done at peak resolution (right after user confirmation)
@@ -316,14 +326,17 @@ Use `update_plan` updates (or `TaskUpdate` where available) to mark Phase 5 as i
 Announce: "I'm using the writing-design-plans skill to complete the design document."
 
 **Important:** The design document already exists from Phase 3 with:
-- Title
+- Title and metadata from the shared scientific design template
 - Summary placeholder
+- Problem Statement seeded from gathered context
 - Confirmed Definition of Done
+- Scientific model/readiness sections scaffolded for later completion
+- Implementation Phases placeholder
 - Acceptance Criteria placeholder
 - Glossary placeholder
 
 The writing-design-plans skill will:
-- Append body sections (Architecture, Existing Patterns, Implementation Phases, Additional Considerations) to the existing file
+- Fill the scaffolded scientific design sections and add implementation phases
 - Structure with implementation phases (<=8 recommended)
   - DO NOT pad out phases in order to reach the number of 8. 8 is the maximum, not the target.
 - Document existing patterns followed

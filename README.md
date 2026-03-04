@@ -46,14 +46,35 @@ Implementation planning  ───────► Implementation plan (phase fil
 Phase execution loop  ──────────► Working code (reviewed & committed)
 ```
 
-## Kickoff: when model provenance or parity still needs to be decided
+## Start Here
+
+Begin each new workflow session with the router:
+
+- Claude Code: `/start-plan-and-execute`
+- Codex: `using-plan-and-execute`
+
+The router chooses the right next step for the current state:
+- kickoff, when model provenance, model selection, or parity targets are still unsettled
+- design planning, when the model/software contract is already established
+- implementation planning or execution, when you are resuming a later phase
+
+Most sessions only use the router plus the main phase commands:
+- `/start-design-plan`
+- `/start-implementation-plan`
+- `/execute-implementation-plan`
+
+Validation, status transitions, simulation setup, and direct scaffolding commands are manual utilities used inside an active workflow.
+
+## Kickoff: the bootstrap path for fresh scientific projects
 
 ### What kickoff does
 
 `/start-scientific-kickoff` (Claude Code) and `$scientific-kickoff` (Codex) select exactly one scientific delivery path before design planning continues.
 
-Use kickoff when you still need to decide where the model comes from or what existing implementation you are matching.
-If the model and software contract are already established and you are working on a scoped feature, start with design planning instead.
+The router sends you here when you still need to decide where the model comes from or what existing implementation you are matching.
+If the model and software contract are already established and you are working on a scoped feature, the router should send you directly to design planning instead.
+
+You can also jump to kickoff directly when you already know the repo is in a fresh or unresolved-model state.
 
 Kickoff forces a single mode:
 1. `provided-model`: you already have model equations/artifacts and (optionally) update rules.

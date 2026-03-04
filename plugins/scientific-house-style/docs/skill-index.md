@@ -8,7 +8,7 @@ independently or alongside `scientific-plan-execute`.
 1. `jax-equinox-numerics`
 2. `jax-project-engineering`
 3. `polars-data-engineering`
-4. `functional-core-imperative-shell` (installed at `howto-functional-vs-imperative`)
+4. `functional-core-imperative-shell`
 5. `property-based-testing`
 6. `python-module-design`
 7. `writing-for-a-technical-audience`

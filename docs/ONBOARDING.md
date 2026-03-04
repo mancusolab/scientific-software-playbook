@@ -20,12 +20,21 @@ Plugin prerequisite:
 For Codex reuse across repositories, use the global install + downstream bootstrap
 steps from `docs/INSTALLATION.md` first.
 
+Normal Codex workflow:
+1. `using-plan-and-execute`
+2. `scientific-kickoff` only when the router says the project still needs model-path/bootstrap work
+3. `starting-a-design-plan`
+4. `starting-an-implementation-plan`
+5. `executing-an-implementation-plan`
+
+`new-design-plan`, `validate-design-plan`, `set-design-plan-status`, and `simulation-for-inference-validation` are manual utilities used inside an active workflow.
+
 ### Phase Workflow
 
 1. Architecture kickoff
 - Use `using-plan-and-execute` first to choose the correct entrypoint.
-- Run `scientific-kickoff` first only when model provenance, model selection, or existing-codebase parity must be established.
-- Otherwise start with `starting-a-design-plan` (see `AGENTS.md`).
+- The router sends fresh/model-path/parity work to `scientific-kickoff`.
+- Otherwise the router sends established work directly to `starting-a-design-plan` (see `AGENTS.md`).
 - Playbook scripts/templates are loaded from `CODEX_HOME`, while plan/review outputs are created in the current project.
 - Run `scientific-kickoff` only when the project still needs one mode (`provided-model`, `suggested-model`, `existing-codebase-port`) selected before full architecture expansion.
 - Pass kickoff output (`.scientific/kickoff.md`) into `starting-a-design-plan`; design workflow should ingest this handoff when present.
@@ -87,9 +96,9 @@ steps from `docs/INSTALLATION.md` first.
 - Run `verification-before-completion` before any "done" claim.
 - Verify fresh test/check command evidence before claiming completion.
 
-### Plan Utilities
+### Manual Utilities
 
-1. Create plan + artifact stubs:
+1. Create plan + artifact stubs directly:
 - invoke `new-design-plan` with a slug
 - Use `writing-design-plans` to expand/refine design sections after scaffolding.
 
@@ -123,9 +132,19 @@ steps from `docs/INSTALLATION.md` first.
 
 ### Phase Workflow
 
+Normal Claude Code workflow:
+1. `/start-plan-and-execute`
+2. `/start-scientific-kickoff` only when the router says the project still needs model-path/bootstrap work
+3. `/start-design-plan <slug>`
+4. `/start-implementation-plan <design-plan-path>`
+5. `/execute-implementation-plan <plan-dir> <working-dir>`
+
+`/new-design-plan`, `/validate-design-plan`, `/set-design-plan-status`, and `/start-simulation-validation` are manual utilities used inside an active workflow.
+
 1. Architecture kickoff
-- When model provenance or existing-codebase parity still needs to be established: run `/start-scientific-kickoff` first, then `/start-design-plan <slug>`.
-- Otherwise start directly with `/start-design-plan <slug>`.
+- Start with `/start-plan-and-execute`.
+- When the router selects kickoff, run `/start-scientific-kickoff` first, then `/start-design-plan <slug>`.
+- Otherwise the router should send you directly to `/start-design-plan <slug>`.
 - Run `asking-clarifying-questions` to resolve contradictions and narrow scope.
 - Run `brainstorming` to compare alternatives and validate a direction.
 - When model provenance or model selection is still unresolved, choose one model path early:
@@ -183,9 +202,9 @@ steps from `docs/INSTALLATION.md` first.
 - Run `verification-before-completion` before any "done" claim.
 - Verify fresh test/check command evidence before claiming completion.
 
-### Plan Utilities
+### Manual Utilities
 
-1. Create plan + artifact stubs:
+1. Create plan + artifact stubs directly:
 - `/new-design-plan <slug>`
 - Use `writing-design-plans` to expand/refine design sections after scaffolding.
 

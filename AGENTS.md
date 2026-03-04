@@ -65,7 +65,7 @@ Dependency contract:
 - `jax-equinox-numerics`: `plugins/scientific-house-style/skills/jax-equinox-numerics/SKILL.md`
 - `jax-project-engineering`: `plugins/scientific-house-style/skills/jax-project-engineering/SKILL.md`
 - `polars-data-engineering`: `plugins/scientific-house-style/skills/polars-data-engineering/SKILL.md`
-- `functional-core-imperative-shell`: `plugins/scientific-house-style/skills/howto-functional-vs-imperative/SKILL.md`
+- `functional-core-imperative-shell`: `plugins/scientific-house-style/skills/functional-core-imperative-shell/SKILL.md`
 - `property-based-testing`: `plugins/scientific-house-style/skills/property-based-testing/SKILL.md`
 - `python-module-design`: `plugins/scientific-house-style/skills/python-module-design/SKILL.md`
 - `writing-for-a-technical-audience`: `plugins/scientific-house-style/skills/writing-for-a-technical-audience/SKILL.md`
@@ -152,11 +152,11 @@ bash scripts/install-codex-home.sh --plugin scientific-house-style --force
 Run a downstream project:
 
 1. Open the target project root in Codex.
-2. Choose entrypoint with `using-plan-and-execute`, then continue with the suggested workflow skill/command.
+2. Choose entrypoint with `using-plan-and-execute` (or `start-plan-and-execute` command wrapper in Claude Code), then continue with the suggested workflow skill/command.
 
 ## Workflow
 
-1. Choose workflow entrypoint with `using-plan-and-execute`.
+1. Choose workflow entrypoint with `using-plan-and-execute` (or `start-plan-and-execute` command wrapper in Claude Code).
 2. For general design requests, start with `starting-a-design-plan` (or `start-design-plan` command wrapper). Use `new-design-plan` when plan scaffolding is needed directly.
 3. Run `scientific-kickoff` only when model provenance, model selection, or existing-codebase parity targets must be established before design can proceed. In those cases choose exactly one model path:
    - `provided-model` (user-supplied model/update rules), or

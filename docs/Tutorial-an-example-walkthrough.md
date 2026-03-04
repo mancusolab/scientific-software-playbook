@@ -15,7 +15,7 @@ The playbook plugins must be installed. See `docs/INSTALLATION.md`.
 Start by invoking the router:
 
 ```
-/using-plan-and-execute
+/start-plan-and-execute
 ```
 
 Describe your goal:
@@ -95,7 +95,7 @@ The system writes `.scientific/kickoff.md` with all readiness states set to `yes
 
 ### Step 8: Handoff
 
-Start a fresh session and run `/using-plan-and-execute` again. The router detects kickoff is complete and automatically starts design planning.
+Start a fresh session and run `/start-plan-and-execute` again. The router detects kickoff is complete and routes you into design planning.
 
 ---
 
@@ -304,14 +304,14 @@ jax-ldsc/
 
 ### Commands
 
-| Step | Command | What it does |
-|------|---------|-------------|
-| Entry point | `/using-plan-and-execute` | Router for workflow entry |
-| Start kickoff | `/start-scientific-kickoff` | Model path selection |
-| Validate | `/validate-design-plan <path> --phase <phase>` | Check readiness |
-| Approve | `/set-design-plan-status <path> approved-for-implementation` | Approve for implementation |
-| Implementation | `/start-implementation-plan <path>` | Create task files |
-| Execute | `/execute-implementation-plan <plan-dir> <working-dir>` | Run implementation |
+| Category | Step | Command | What it does |
+|----------|------|---------|-------------|
+| Primary workflow | Entry point | `/start-plan-and-execute` | Router for workflow entry |
+| Bootstrap | Start kickoff | `/start-scientific-kickoff` | Model path selection |
+| Manual utility | Validate | `/validate-design-plan <path> --phase <phase>` | Check readiness |
+| Manual utility | Approve | `/set-design-plan-status <path> approved-for-implementation` | Approve for implementation |
+| Primary workflow | Implementation | `/start-implementation-plan <path>` | Create task files |
+| Primary workflow | Execute | `/execute-implementation-plan <plan-dir> <working-dir>` | Run implementation |
 
 ### Readiness states for `existing-codebase-port`
 

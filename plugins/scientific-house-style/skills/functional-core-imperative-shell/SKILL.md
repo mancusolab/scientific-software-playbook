@@ -24,7 +24,7 @@ Apply this translation before following the remaining steps.
 ## Path Contract (Unambiguous)
 
 1. This skill has no installation-local file dependencies and is valid in either runtime.
-2. Skill ID is `functional-core-imperative-shell` even though the installation directory is `howto-functional-vs-imperative`.
+2. Skill ID and installation directory are both `functional-core-imperative-shell`.
 
 
 ## Overview

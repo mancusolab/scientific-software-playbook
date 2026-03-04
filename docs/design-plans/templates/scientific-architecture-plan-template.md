@@ -14,6 +14,9 @@ Draft
 - Slug: __SLUG__
 - Artifact Directory: `__ARTIFACT_DIR__`
 
+## Summary
+<!-- TO BE GENERATED after body is written -->
+
 ## Problem Statement
 Describe the scientific problem and why this software artifact is needed.
 
@@ -28,6 +31,9 @@ List concrete outcomes that must be true for completion.
 ### Non-Goals
 - Non-goal 1
 - Non-goal 2
+
+## Existing Patterns
+Describe confirmed codebase patterns, constraints, or intentional divergences.
 
 ## Model Acquisition Path
 - Path: `provided-model` | `suggested-model` | `existing-codebase-port`
@@ -129,6 +135,9 @@ For each source format, record copy mode (`zero-copy`, `mmap`, `single-copy fall
 - Regression strategy:
 - Verification commands:
 
+## Implementation Phases
+<!-- TO BE GENERATED with START_PHASE / END_PHASE markers -->
+
 ## Simulation And Inference-Consistency Validation
 - In scope: yes|no
 - Simulate entrypoint/signature:
@@ -151,10 +160,14 @@ For each source format, record copy mode (`zero-copy`, `mmap`, `single-copy fall
 | --- | --- | --- | --- | --- |
 | R1 | | | | |
 
+## Additional Considerations
+<!-- Optional: include only when relevant -->
+
 ## Acceptance Criteria
-1. AC1
-2. AC2
-3. AC3
+<!-- TO BE GENERATED and validated before glossary -->
+
+## Glossary
+<!-- TO BE GENERATED after body is written -->
 
 ## Status Transition Log
 | Date | From | To | Why | By |

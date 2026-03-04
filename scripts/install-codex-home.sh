@@ -178,6 +178,7 @@ done
 # leave stale directories behind.
 retired_skills=(
   "install-scientific-software-playbook-home"
+  "howto-functional-vs-imperative"
 )
 for skill in "${retired_skills[@]}"; do
   rm -rf "${skills_dst}/${skill}"

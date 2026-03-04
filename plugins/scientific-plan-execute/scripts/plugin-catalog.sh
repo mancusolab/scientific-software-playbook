@@ -45,7 +45,7 @@ EOF
 jax-equinox-numerics
 jax-project-engineering
 polars-data-engineering
-howto-functional-vs-imperative
+functional-core-imperative-shell
 property-based-testing
 python-module-design
 writing-for-a-technical-audience

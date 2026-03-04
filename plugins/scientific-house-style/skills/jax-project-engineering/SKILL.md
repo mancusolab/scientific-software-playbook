@@ -248,6 +248,38 @@ def main(argv=None):
 ```
 - Allowed break: Internal scripts where all inputs are controlled by trusted code.
 
+### Rule: Configure JAX platform and x64 with direct `jax.config.update(...)` calls
+- Do: Set `jax.config.update("jax_platform_name", args.device)` or the equivalent parsed CLI field directly in `main()` after argument parsing and before the first real JAX execution.
+- Do: Set `jax.config.update("jax_enable_x64", True)` directly when the workflow expects 64-bit numerics by default.
+- Do: Keep the logic inline when the policy is simple, for example a one-branch TPU exception.
+- Don’t: Introduce wrapper classes, config dataclasses, environment-resolution layers, or helper functions just to call two JAX config updates.
+- Don’t: Hide this policy deep in numerics modules when it is really a CLI/runtime choice.
+- Why: These are startup configuration decisions, not an architecture boundary. Overengineering them makes the code harder to audit and easier to misapply.
+- Minimal pattern:
+```python
+import jax
+
+def main(argv=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--device", choices=["cpu", "gpu", "tpu"], default="cpu")
+    args = parser.parse_args(argv)
+
+    jax.config.update("jax_platform_name", args.device)
+    if args.device == "tpu":
+        jax.config.update("jax_enable_x64", False)
+    else:
+        jax.config.update("jax_enable_x64", True)
+
+    return run(args)
+```
+- Good simple fixed-platform variant:
+```python
+jax.config.update("jax_enable_x64", True)
+jax.config.update("jax_platform_name", "cpu")
+```
+- Reference pattern: `tmp/jaxqtl/src/jaxqtl/cli.py` sets platform directly from parsed args and only adds a small TPU-specific x64 exception; `sim_bulk.py` and `sim_sc.py` use the fixed-platform variant.
+- Escalate beyond this only when there is a real cross-entrypoint policy contract to share, such as multiple executables that must apply the exact same validated backend-selection rules.
+
 ### Rule: Define stable stdout/stderr and exit-code contracts
 - Do: Reserve `stdout` for primary results (plain text  `--json`) and route diagnostics/errors to `stderr`.
 - Do: Document exit-code semantics (for example: `0` success, `2` usage errors, `1` runtime failures).

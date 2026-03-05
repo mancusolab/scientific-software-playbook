@@ -48,6 +48,36 @@ Use `update_plan` (or `TaskCreate` where available) to create todos for each pha
 
 Use `update_plan` updates (or `TaskUpdate` where available) to mark each phase as in_progress when working on it, completed when finished (or `TodoWrite` in runtimes that still expose it).
 
+## Delegate Contract
+
+Preferred delegate mechanism:
+- use installed agent definitions from the `scientific-research` plugin bundle
+- dispatch them through the runtime's generic agent-spawning mechanism when plugin-specific delegate IDs are unavailable
+
+Canonical agent definitions used by this skill:
+- `codebase-investigator` -> `scientific-research/agents/codebase-investigator.md`
+- `internet-researcher` -> `scientific-research/agents/internet-researcher.md`
+- `combined-researcher` -> `scientific-research/agents/combined-researcher.md`
+
+Resolve agent-definition paths through the shared plugin resolver. Do not encode repository-relative `plugins/.../agents/...` paths in workflow logic.
+
+If the runtime supports direct agent IDs and these names resolve, you may use them. Otherwise, resolve the installed agent-definition file and delegate through a generic agent using that definition as the governing instructions.
+
+If a required research-agent definition cannot be resolved from the installed plugin bundle, fall back to direct local investigation or web research only for the specific step that allows it.
+
+### Agent Path Resolution
+
+Use the shared resolver from the installed plugin bundle:
+
+```bash
+RESOLVER_PATH="${CLAUDE_PLUGIN_ROOT:-${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute}/scripts/resolve-plugin-path.sh"
+CODEBASE_INVESTIGATOR_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/codebase-investigator.md)"
+INTERNET_RESEARCHER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/internet-researcher.md)"
+COMBINED_RESEARCHER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/combined-researcher.md)"
+```
+
+Fail if a required path for a delegated step does not exist and no step-specific fallback is allowed.
+
 ## Research Agents
 
 **DO NOT perform deep research yourself. Delegate to specialized agents.**
@@ -69,7 +99,7 @@ Action: Dispatch codebase-investigator with: "Find authentication implementation
 
 ### When to Use internet-researcher
 
-**Use `internet-researcher` when available. Otherwise use WebSearch/WebFetch aggressively.**
+Prefer resolving `INTERNET_RESEARCHER_AGENT_PATH` and dispatching the installed `internet-researcher` agent definition. Otherwise use WebSearch/WebFetch aggressively.
 
 **Use internet research when you need to:**
 - Find current API documentation for external services

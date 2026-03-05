@@ -1,6 +1,6 @@
 ---
 name: requesting-code-review
-description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements - runs code-reviewer workflow (delegate or direct), handles retries and timeouts, and manages the review-fix loop until zero issues
+description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements - runs the canonical reviewer workflow, handles retries and timeouts, and manages the review-fix loop until zero issues
 user-invocable: false
 ---
 
@@ -19,8 +19,36 @@ When executing this definition in Codex or another runtime, apply this mapping:
 Apply this translation before following the remaining steps.
 <!-- SYNC:END runtime-compatibility -->
 
+## Delegate Contract
 
-Run the scientific-plan-execute:scientific-code-reviewer workflow to catch issues before they cascade (delegate if available; otherwise execute directly).
+Preferred delegate mechanism:
+- use installed agent definitions from the `scientific-plan-execute` plugin bundle
+- dispatch them through the runtime's generic agent-spawning mechanism when plugin-specific delegate IDs are unavailable
+
+Canonical agent definitions for this skill:
+- `scientific-code-reviewer` -> `agents/scientific-code-reviewer.md`
+- `scientific-task-bug-fixer` -> `agents/scientific-task-bug-fixer.md`
+
+Resolve agent-definition paths through the shared plugin resolver. Do not encode repository-relative `plugins/.../agents/...` paths in workflow logic.
+
+If the runtime supports direct agent IDs and these names resolve, you may use them. Otherwise, resolve the installed agent-definition file and delegate through a generic agent using that definition as the governing instructions.
+
+If a required agent definition cannot be resolved from the installed plugin bundle, STOP and report `blocked` instead of silently reviewing or fixing inline.
+
+### Agent Path Resolution
+
+Use the shared resolver from the installed plugin bundle:
+
+```bash
+RESOLVER_PATH="${CLAUDE_PLUGIN_ROOT:-${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute}/scripts/resolve-plugin-path.sh"
+CODE_REVIEWER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-plan-execute agents/scientific-code-reviewer.md)"
+BUG_FIXER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-plan-execute agents/scientific-task-bug-fixer.md)"
+```
+
+Fail if any required path does not exist.
+
+
+Run the canonical `scientific-code-reviewer` workflow to catch issues before they cascade.
 
 **Core principle:** Review early, review often. Fix ALL issues before proceeding.
 
@@ -34,7 +62,7 @@ This skill is baseline-only:
 ## When to Request Review
 
 **Mandatory:**
-- After each task in plan execution
+- After each phase in `executing-an-implementation-plan`
 - After completing major feature
 - Before merge to main
 
@@ -76,13 +104,13 @@ BASE_SHA=$(git rev-parse HEAD~1)  # or commit before task
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
-**Run code-reviewer (delegate if available):**
+**Run `scientific-code-reviewer`:**
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-code-reviewer</parameter>
-<parameter name="description">Reviewing [what was implemented]</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [CODE_REVIEWER_AGENT_PATH]
+description: Reviewing [what was implemented]
+prompt: |
   Use template at requesting-code-review/code-reviewer.md
 
   WHAT_WAS_IMPLEMENTED: [summary of implementation]
@@ -90,8 +118,6 @@ HEAD_SHA=$(git rev-parse HEAD)
   BASE_SHA: [commit before work]
   HEAD_SHA: [current commit]
   DESCRIPTION: [brief summary]
-</parameter>
-</invoke>
 ```
 
 **Code reviewer returns:** Strengths, Issues (Critical/Important/Minor), Assessment
@@ -99,16 +125,16 @@ HEAD_SHA=$(git rev-parse HEAD)
 ## Step 2: Handle Reviewer Response
 
 ### If Zero Issues
-All categories empty → proceed to next task.
+All categories empty → return control to the calling workflow.
 
 ### If Any Issues Found
-Regardless of category (Critical, Important, or Minor), dispatch bug-fixer:
+Regardless of category (Critical, Important, or Minor), dispatch `scientific-task-bug-fixer`:
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-task-bug-fixer</parameter>
-<parameter name="description">Fixing review issues</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [BUG_FIXER_AGENT_PATH]
+description: Fixing review issues
+prompt: |
   Fix issues from code review.
 
   Code reviewer found these issues:
@@ -125,8 +151,6 @@ Regardless of category (Critical, Important, or Minor), dispatch bug-fixer:
 
   Fix ALL issues — including every Minor issue. The goal is ZERO issues on re-review.
   Minor issues are not optional. Do not skip them.
-</parameter>
-</invoke>
 ```
 
 After fixes, proceed to Step 3.
@@ -136,10 +160,10 @@ After fixes, proceed to Step 3.
 **CRITICAL:** Track prior issues across review cycles.
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-code-reviewer</parameter>
-<parameter name="description">Re-reviewing after fixes (cycle N)</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [CODE_REVIEWER_AGENT_PATH]
+description: Re-reviewing after fixes (cycle N)
+prompt: |
   Use template at requesting-code-review/code-reviewer.md
 
   WHAT_WAS_IMPLEMENTED: [from bug-fixer's report]
@@ -157,8 +181,6 @@ After fixes, proceed to Step 3.
   3. Any new issues in the changed code
 
   Report which prior issues are now fixed and which (if any) remain.
-</parameter>
-</invoke>
 ```
 
 **Tracking prior issues:**

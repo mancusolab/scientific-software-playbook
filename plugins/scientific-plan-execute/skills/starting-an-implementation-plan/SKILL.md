@@ -298,7 +298,7 @@ If neither `/clear` nor `/new` is available, open a new session/conversation in 
 
 (3) Paste and run the copied command in the fresh session.
 
-The `executing-an-implementation-plan` skill (or `/execute-implementation-plan` command wrapper) will implement the plan task-by-task with code review between tasks.
+The `executing-an-implementation-plan` skill (or `/execute-implementation-plan` command wrapper) will implement the plan phase-by-phase with code review after each phase.
 ```
 
 **Use the real paths from Step 1, not placeholders.** The example above shows the format — substitute your actual verified paths.
@@ -369,8 +369,8 @@ Starting Implementation Plan (this skill)
 
 Execute Implementation Plan (next step)
   -> Reads implementation plan
-  -> Implements task-by-task
-  -> Code review between tasks
+  -> Implements phase-by-phase task execution
+  -> Code review after each phase
 ```
 
 **Purpose:** Bridge design and execution with appropriate branch isolation, granular task tracking that survives compaction, and context restoration.

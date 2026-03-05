@@ -36,6 +36,14 @@ Complete the design document by filling the scaffolded scientific design templat
 - `scientific-house-style:python-module-design`
 2. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
+## Delegate Contract
+
+Preferred delegate mechanism:
+- use a runtime-native generic agent for bounded extraction work when one is available
+- otherwise perform the extraction directly in-session
+
+Do not hard-code runtime-specific delegate IDs in this workflow.
+
 ## Level of Detail: Design vs Implementation
 
 **Design plans are directional and archival.** They can be checked into git and referenced months later. Other design plans may depend on contracts specified here.
@@ -577,13 +585,12 @@ The body has been appended and Acceptance Criteria validated:
 
 **Step 2: Run extraction (delegate or direct)**
 
-Use the delegation tool to generate Summary and Glossary. If no general-purpose delegate is available, generate both sections directly in-session.
+Use a runtime-native generic agent to generate Summary and Glossary when one is available. If no suitable generic delegate exists, generate both sections directly in-session.
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">[available-general-purpose-delegate]</parameter>
-<parameter name="description">Generating Summary and Glossary for design document</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+description: Generating Summary and Glossary for design document
+prompt: |
 Read the design document at [file path].
 
 Generate two sections to replace the placeholders in the document:
@@ -608,8 +615,6 @@ Generate two sections to replace the placeholders in the document:
 
 Return all three sections. The first two are markdown ready to insert; the
 third is for transparency about what was excluded.
-</parameter>
-</invoke>
 ```
 
 **Step 3: Review omitted terms with user**

@@ -36,6 +36,42 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 - `scientific-house-style:python-module-design`
 2. If a required skill cannot be loaded, stop and report `blocked` with missing skill IDs and install guidance.
 
+## Delegate Contract
+
+Preferred delegate mechanism:
+- use installed agent definitions from the plugin bundles
+- dispatch them through the runtime's generic agent-spawning mechanism when plugin-specific delegate IDs are unavailable
+
+Canonical agent definitions used by this skill:
+- `codebase-investigator` -> `scientific-research/agents/codebase-investigator.md`
+- `internet-researcher` -> `scientific-research/agents/internet-researcher.md`
+- `remote-code-researcher` -> `scientific-research/agents/remote-code-researcher.md`
+- `combined-researcher` -> `scientific-research/agents/combined-researcher.md`
+- `scientific-code-reviewer` -> `scientific-plan-execute/agents/scientific-code-reviewer.md`
+- `scientific-test-analyst` -> `scientific-plan-execute/agents/scientific-test-analyst.md`
+
+Resolve agent-definition paths through the shared plugin resolver. Do not encode repository-relative `plugins/.../agents/...` paths in workflow logic.
+
+If the runtime supports direct agent IDs and these names resolve, you may use them. Otherwise, resolve the installed agent-definition file and delegate through a generic agent using that definition as the governing instructions.
+
+If a required agent definition cannot be resolved from the installed plugin bundle, report `blocked` unless the runtime provides no delegation mechanism at all and the skill explicitly allows direct in-session fallback for that step.
+
+### Agent Path Resolution
+
+Use the shared resolver from the installed plugin bundle:
+
+```bash
+RESOLVER_PATH="${CLAUDE_PLUGIN_ROOT:-${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute}/scripts/resolve-plugin-path.sh"
+CODEBASE_INVESTIGATOR_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/codebase-investigator.md)"
+INTERNET_RESEARCHER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/internet-researcher.md)"
+REMOTE_CODE_RESEARCHER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/remote-code-researcher.md)"
+COMBINED_RESEARCHER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/combined-researcher.md)"
+CODE_REVIEWER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-plan-execute agents/scientific-code-reviewer.md)"
+TEST_ANALYST_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-plan-execute agents/scientific-test-analyst.md)"
+```
+
+Fail if a required path for a delegated step does not exist.
+
 ## Critical: Design Plans Provide Direction, Not Code
 
 **Design plans are intentionally high-level.** They describe components, modules, and contracts — not implementation code. This is by design.
@@ -96,7 +132,7 @@ Options:
 
 **Provide the agent with design assumptions so it can report discrepancies:**
 
-Run one codebase-investigator pass to understand testing behavior for this project (delegate if available; otherwise do this directly).
+Run one codebase-investigator pass to understand testing behavior for this project. Prefer resolving `CODEBASE_INVESTIGATOR_AGENT_PATH` and dispatching the installed agent definition; only do this directly when the runtime truly has no delegation mechanism.
 - **DO NOT prescribe new requirements around testing. Follow how the codebase does it.**
    - For example: do NOT stipulate TDD unless you understand the scope of the problem to be a predominantly functional one OR you receive direction from a human otherwise and do not assume that mocking databases or other external dependencies is acceptable. 
 - If you find problems that are difficult to test in isolation with mocks, you should surface questions to the human operator as to how they want to proceed.
@@ -859,10 +895,10 @@ After all phase D tasks are completed, mark the Finalization task as in_progress
 ### Step 1: Dispatch code-reviewer
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-code-reviewer</parameter>
-<parameter name="description">Validating implementation plan against design</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [CODE_REVIEWER_AGENT_PATH]
+description: Validating implementation plan against design
+prompt: |
   Review the implementation plan for completeness and alignment with the design.
 
   DESIGN_PLAN: [path to design plan, e.g., docs/design-plans/YYYY-MM-DD-feature.md]
@@ -904,8 +940,6 @@ After all phase D tasks are completed, mark the Finalization task as in_progress
   - MISALIGNMENTS: [list any divergence from design]
   - ISSUES: [Critical/Important/Minor issues in the plan itself]
   - ASSESSMENT: APPROVED / NEEDS_REVISION
-</parameter>
-</invoke>
 ```
 
 ### Step 2: Fix ALL issues (including minor ones)
@@ -959,13 +993,13 @@ Test requirements map acceptance criteria to specific automated tests, and ident
 
 **Step 1: Generate via delegate (or direct)**
 
-Use `scientific-plan-execute:scientific-test-analyst` when available. If unavailable, generate directly in-session.
+Prefer resolving `TEST_ANALYST_AGENT_PATH` and dispatching the installed `scientific-test-analyst` agent definition. Only generate directly in-session when the runtime truly has no delegation mechanism.
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-test-analyst</parameter>
-<parameter name="description">Generating test requirements from Acceptance Criteria</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [TEST_ANALYST_AGENT_PATH]
+description: Generating test requirements from Acceptance Criteria
+prompt: |
 Read the design at [DESIGN_PATH] and implementation phases in [PLAN_DIR].
 
 Generate test-requirements.md mapping each acceptance criterion to:
@@ -973,8 +1007,6 @@ Generate test-requirements.md mapping each acceptance criterion to:
 - Human verification: criteria that can't be automated, with justification and verification approach
 
 Rationalize against implementation decisions made during planning. Every acceptance criterion must map to either an automated test or documented human verification.
-</parameter>
-</invoke>
 ```
 
 **Step 2: Handle based on review mode**

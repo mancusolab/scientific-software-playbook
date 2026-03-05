@@ -47,7 +47,33 @@ Do NOT use for:
 
 Try to answer your own questions and disambiguate from the context of the working directory. Use available delegate agents, such as `codebase-investigator`, to explore existing work that can explain the subject under clarification. When you recognize elements such as common technologies or proper nouns, use `combined-researcher` to synthesize both codebase and internet findings.
 
-You may have other skills or MCPs containing useful information, such as connections to remote datastores used for product management purposes. You should run `haiku-general-purpose` delegate agents for that investigation when appropriate. In Codex-only runtimes, use `chatgpt5-3-codex-general-purpose` with a haiku-equivalent prompt profile.
+If other runtime-native generic agents or MCP-backed tools are available for non-plugin investigation, you may use them. Do not hard-code runtime-specific delegate IDs in this workflow. If no suitable delegate exists, perform the investigation directly with the available tools.
+
+## Delegate Contract
+
+Preferred delegate mechanism:
+- use installed agent definitions from the `scientific-research` plugin bundle
+- dispatch them through the runtime's generic agent-spawning mechanism when plugin-specific delegate IDs are unavailable
+
+Canonical agent definitions used by this skill:
+- `codebase-investigator` -> `scientific-research/agents/codebase-investigator.md`
+- `combined-researcher` -> `scientific-research/agents/combined-researcher.md`
+
+Resolve agent-definition paths through the shared plugin resolver. Do not encode repository-relative `plugins/.../agents/...` paths in workflow logic.
+
+If the runtime supports direct agent IDs and these names resolve, you may use them. Otherwise, resolve the installed agent-definition file and delegate through a generic agent using that definition as the governing instructions.
+
+If a required research-agent definition cannot be resolved from the installed plugin bundle, fall back to direct local investigation or web research for that step.
+
+### Agent Path Resolution
+
+Use the shared resolver from the installed plugin bundle:
+
+```bash
+RESOLVER_PATH="${CLAUDE_PLUGIN_ROOT:-${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute}/scripts/resolve-plugin-path.sh"
+CODEBASE_INVESTIGATOR_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/codebase-investigator.md)"
+COMBINED_RESEARCHER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-research agents/combined-researcher.md)"
+```
 
 ## What to Clarify
 

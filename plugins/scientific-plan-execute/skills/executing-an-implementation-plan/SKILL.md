@@ -1,6 +1,6 @@
 ---
 name: executing-an-implementation-plan
-description: Use when executing implementation plans with independent tasks in the current session - runs fresh delegated execution for each task (or direct execution), reviews once per phase, and loads phases just-in-time to minimize context usage
+description: Use when executing implementation plans with independent tasks in the current session - runs fresh delegated execution for each task, reviews once per phase, and loads phases just-in-time to minimize context usage
 user-invocable: false
 ---
 
@@ -18,6 +18,39 @@ When executing this definition in Codex or another runtime, apply this mapping:
 
 Apply this translation before following the remaining steps.
 <!-- SYNC:END runtime-compatibility -->
+
+## Delegate Contract
+
+Preferred delegate mechanism:
+- use installed agent definitions from the `scientific-plan-execute` plugin bundle
+- dispatch them through the runtime's generic agent-spawning mechanism when plugin-specific delegate IDs are unavailable
+
+Canonical agent definitions for this workflow:
+- `scientific-task-implementor-fast` -> `agents/scientific-task-implementor-fast.md`
+- `scientific-task-bug-fixer` -> `agents/scientific-task-bug-fixer.md`
+- `scientific-code-reviewer` -> `agents/scientific-code-reviewer.md`
+- `scientific-test-analyst` -> `agents/scientific-test-analyst.md`
+
+Resolve agent-definition paths through the shared plugin resolver. Do not encode repository-relative `plugins/.../agents/...` paths in workflow logic.
+
+If the runtime supports direct agent IDs and these names resolve, you may use them. Otherwise, resolve the installed agent-definition file and delegate through a generic agent using that definition as the governing instructions.
+
+If an agent definition cannot be resolved from the installed plugin bundle, STOP and report `blocked` with the missing agent name/path-resolution failure.
+Do not silently treat agent-resolution failure as permission to implement, fix, review, or analyze tests inline.
+
+### Agent Path Resolution
+
+Use the shared resolver from the installed plugin bundle:
+
+```bash
+RESOLVER_PATH="${CLAUDE_PLUGIN_ROOT:-${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute}/scripts/resolve-plugin-path.sh"
+IMPLEMENTOR_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-plan-execute agents/scientific-task-implementor-fast.md)"
+BUG_FIXER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-plan-execute agents/scientific-task-bug-fixer.md)"
+CODE_REVIEWER_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-plan-execute agents/scientific-code-reviewer.md)"
+TEST_ANALYST_AGENT_PATH="$(bash "$RESOLVER_PATH" scientific-plan-execute agents/scientific-test-analyst.md)"
+```
+
+Fail if any required path does not exist.
 
 
 Execute plan phase-by-phase, loading each phase just-in-time to minimize context usage.
@@ -43,7 +76,7 @@ Execute plan phase-by-phase, loading each phase just-in-time to minimize context
 
 **When you delegate work, the human cannot see delegate output directly. You are their window into the work.**
 
-After EVERY delegate-agent run completes (task-implementor, bug-fixer, code-reviewer), you MUST:
+After EVERY delegate-agent run completes (`scientific-task-implementor-fast`, `scientific-task-bug-fixer`, `scientific-code-reviewer`, or `scientific-test-analyst`), you MUST:
 
 1. **Print the delegate output in full** to the user before taking any other action
 2. **Do not summarize or paraphrase** - show the exact output
@@ -195,7 +228,7 @@ Before dispatching task implementors for a phase, define the phase skill set fro
 
 If any required skill for the phase cannot be loaded, STOP and report blocked with the missing skill IDs and installation guidance.
 
-Pass this skill list explicitly in every `task-implementor-fast` and `task-bug-fixer` dispatch prompt, and require each delegate to report `Skills Applied`.
+Pass this skill list explicitly in every `scientific-task-implementor-fast` and `scientific-task-bug-fixer` dispatch prompt, and require each delegate to report `Skills Applied`.
 
 ### 3. Execute Each Phase
 
@@ -225,13 +258,13 @@ If a functionality task (code that does something) has no tests specified:
 
 Do NOT implement functionality without tests. Missing tests = plan gap, not something to skip.
 
-**Execute all tasks in sequence.** For each task, dispatch `task-implementor-fast` with the phase file path:
+**Execute all tasks in sequence.** For each task, resolve `IMPLEMENTOR_AGENT_PATH` and dispatch the installed `scientific-task-implementor-fast` agent definition with the phase file path:
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-task-implementor-fast</parameter>
-<parameter name="description">Implementing Phase X, Task Y: [description]</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [IMPLEMENTOR_AGENT_PATH]
+description: Implementing Phase X, Task Y: [description]
+prompt: |
   Implement Task N from the phase file.
 
   Phase file: [absolute path to phase file]
@@ -255,17 +288,15 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
   Work from: [directory]
 
   Provide complete report per your agent instructions.
-</parameter>
-</invoke>
 ```
 
-**For subcomponents** (grouped tasks), dispatch once for all tasks in the subcomponent:
+**For subcomponents** (grouped tasks), resolve `IMPLEMENTOR_AGENT_PATH` and dispatch once for all tasks in the subcomponent:
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-task-implementor-fast</parameter>
-<parameter name="description">Implementing Phase X, Subcomponent A (Tasks 3-5): [description]</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [IMPLEMENTOR_AGENT_PATH]
+description: Implementing Phase X, Subcomponent A (Tasks 3-5): [description]
+prompt: |
   Implement Subcomponent A (Tasks 3, 4, 5) from the phase file.
 
   Phase file: [absolute path to phase file]
@@ -289,11 +320,9 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
   Work from: [directory]
 
   Provide complete report covering all tasks.
-</parameter>
-</invoke>
 ```
 
-**Print each task-implementor's response** before moving to the next task.
+**Print each `scientific-task-implementor-fast` response** before moving to the next task.
 
 **No code review between tasks.** Execute all tasks in the phase first.
 
@@ -340,13 +369,13 @@ The phase changed too much for a single review. Chunk the review:
 
    **Copy issue descriptions VERBATIM**, even if long. After compaction, the task description is all that remains — it must contain the full issue details for the bug-fixer to understand what to fix.
 
-2. **Dispatch `task-bug-fixer`** with the phase file:
+2. **Resolve `BUG_FIXER_AGENT_PATH` and dispatch the installed `scientific-task-bug-fixer` agent definition** with the phase file:
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-task-bug-fixer</parameter>
-<parameter name="description">Fixing review issues for Phase X</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [BUG_FIXER_AGENT_PATH]
+description: Fixing review issues for Phase X
+prompt: |
   Fix issues from code review for Phase X.
 
   Phase file: [absolute path to phase file]
@@ -374,8 +403,6 @@ The phase changed too much for a single review. Chunk the review:
 
   Fix ALL issues — including every Minor issue. The goal is ZERO issues on re-review.
   Minor issues are not optional. Do not skip them.
-</parameter>
-</invoke>
 ```
 
 3. **Mark "Fix issues" complete**, then re-review per the `requesting-code-review` skill.
@@ -459,13 +486,13 @@ The test-analyst agent performs two sequential tasks with shared analysis:
 1. Validate coverage against acceptance criteria
 2. Generate human test plan (only if coverage passes)
 
-Dispatch the test-analyst agent:
+Resolve `TEST_ANALYST_AGENT_PATH` and dispatch the installed test-analyst agent definition:
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">scientific-plan-execute:scientific-test-analyst</parameter>
-<parameter name="description">Analyzing test coverage and generating test plan</parameter>
-<parameter name="prompt">
+<dispatch generic agent>
+agent_definition_path: [TEST_ANALYST_AGENT_PATH]
+description: Analyzing test coverage and generating test plan
+prompt: |
 Analyze test implementation against acceptance criteria.
 
 TEST_REQUIREMENTS_PATH: [absolute path to test-requirements.md]
@@ -477,18 +504,16 @@ Phase 1: Validate that automated tests exist for all acceptance criteria.
 Phase 2: If coverage passes, generate human test plan using your analysis.
 
 Return coverage validation result. If PASS, include the human test plan.
-</parameter>
-</invoke>
 ```
 
 **If analyst returns coverage FAIL:**
 
 1. Dispatch bug-fixer to add missing tests:
    ```
-   <invoke name="Task">
-   <parameter name="subagent_type">scientific-plan-execute:scientific-task-bug-fixer</parameter>
-   <parameter name="description">Adding missing test coverage</parameter>
-   <parameter name="prompt">
+   <dispatch generic agent>
+   agent_definition_path: [BUG_FIXER_AGENT_PATH]
+   description: Adding missing test coverage
+   prompt: |
    Add missing tests identified by the test analyst.
 
    Missing coverage:
@@ -509,8 +534,6 @@ Return coverage validation result. If PASS, include the human test plan.
    7. Report back with evidence, including "Skills Applied"
 
    Work from: [directory]
-   </parameter>
-   </invoke>
    ```
 
 2. Re-run test-analyst
@@ -582,10 +605,10 @@ You: I'm using the `executing-an-implementation-plan` skill.
 
 [Mark 1a complete, 1b in_progress]
 
-[Dispatch task-implementor-fast for Task 1]
+[Dispatch scientific-task-implementor-fast for Task 1]
 → Created package.json, tsconfig.json.
 
-[Dispatch task-implementor-fast for Task 2]
+[Dispatch scientific-task-implementor-fast for Task 2]
 → Created config files. Build succeeds.
 
 [Mark 1b complete, 1c in_progress]
@@ -637,4 +660,4 @@ You: I'm using the `executing-an-implementation-plan` skill.
 | "I'll review after each task to catch issues early" | No. Review once per phase. Task-level review wastes context. |
 | "Context error on review, I'll skip the review" | No. Chunk the review into halves. Never skip review. |
 | "Minor issues can wait" | No. Fix ALL issues including Minor. |
-| "I'll skip loading skills and just implement quickly" | No. Enforce the phase skill-activation gate and require `Skills Applied` evidence from task-implementor and task-bug-fixer. |
+| "I'll skip loading skills and just implement quickly" | No. Enforce the phase skill-activation gate and require `Skills Applied` evidence from `scientific-task-implementor-fast` and `scientific-task-bug-fixer`. |

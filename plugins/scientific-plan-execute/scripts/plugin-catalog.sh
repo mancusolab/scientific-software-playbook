@@ -5,6 +5,7 @@ ssp_valid_plugins() {
 scientific-plan-execute
 scientific-research
 scientific-house-style
+scientific-agent-tools
 EOF
 }
 
@@ -52,6 +53,17 @@ writing-for-a-technical-audience
 writing-good-tests
 EOF
       ;;
+    scientific-agent-tools)
+      cat <<'EOF'
+creating-a-plugin
+creating-an-agent
+maintaining-project-context
+testing-skills-with-subagents
+writing-claude-directives
+writing-claude-md-files
+writing-skills
+EOF
+      ;;
     *)
       return 1
       ;;
@@ -85,6 +97,16 @@ EOF
 .claude-plugin/plugin.json
 skills
 docs
+EOF
+      ;;
+    scientific-agent-tools)
+      cat <<'EOF'
+.claude-plugin/plugin.json
+agents
+skills
+docs
+LICENSE
+LICENSE.ed3d
 EOF
       ;;
     *)

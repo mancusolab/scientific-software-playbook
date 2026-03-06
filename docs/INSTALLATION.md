@@ -1,10 +1,11 @@
 # Installation and Usage Guide
 
-This repository hosts three plugins in one codebase:
+This repository hosts four plugins in one codebase:
 
 1. `scientific-plan-execute`
 2. `scientific-research`
 3. `scientific-house-style`
+4. `scientific-agent-tools`
 
 Day-to-day usage is command/skill driven inside Claude Code or Codex. The only
 user-facing shell command is the Codex install step (`install-codex-home.sh`).
@@ -21,9 +22,10 @@ Audience and scope:
 2. `scientific-research` is required for external-fact validation gates.
 3. `scientific-house-style` is required for workflow execution and review gates.
    - It includes numerics, module/package-design, and project-engineering house-style guidance used by plan-execute agents.
-4. Default install (`--force` with no `--plugin`) installs all plugins.
-5. If only `scientific-house-style` is installed, workflow commands are not available.
-6. Installing `scientific-plan-execute` via Codex installer auto-adds `scientific-research` and `scientific-house-style`.
+4. `scientific-agent-tools` is optional maintainer tooling for plugin authoring and context maintenance. It is not required for downstream scientific workflow execution.
+5. Default install (`--force` with no `--plugin`) installs all plugins.
+6. If only `scientific-house-style` is installed, workflow commands are not available.
+7. Installing `scientific-plan-execute` via Codex installer auto-adds `scientific-research` and `scientific-house-style`.
 
 ## Prerequisites
 
@@ -42,7 +44,9 @@ Installation can be done from any directory:
 - `/plugin install scientific-research@scientific-software-playbook`
 4. Install house-style plugin:
 - `/plugin install scientific-house-style@scientific-software-playbook`
-5. Reload plugin:
+5. Install maintainer-tools plugin when needed:
+- `/plugin install scientific-agent-tools@scientific-software-playbook`
+6. Reload plugin:
 - `/plugin reload`
 
 ## Running Workflows (Claude Code)
@@ -75,6 +79,7 @@ Optional selective installs:
 bash scripts/install-codex-home.sh --plugin scientific-plan-execute --force
 bash scripts/install-codex-home.sh --plugin scientific-research --force
 bash scripts/install-codex-home.sh --plugin scientific-house-style --force
+bash scripts/install-codex-home.sh --plugin scientific-agent-tools --force
 ```
 3. Open the downstream target project root in Codex.
 4. Invoke `using-plan-and-execute` to choose the correct entrypoint.
@@ -86,6 +91,7 @@ What Codex install provides:
 3. Runtime behavior:
 - Plan-execute assets are resolved from the installed plugin bundle in `CODEX_HOME`.
 - Workflow outputs (design plans, implementation plans, reviews) are written into the downstream project under `docs/`.
+- `scientific-agent-tools` installs optional maintainer skills and the `project-claude-librarian` agent.
 
 ## Installed Skill Inventory
 
@@ -168,4 +174,5 @@ Claude Code:
    - `/plugin install scientific-plan-execute@scientific-software-playbook`
    - `/plugin install scientific-research@scientific-software-playbook`
    - `/plugin install scientific-house-style@scientific-software-playbook`
+   - `/plugin install scientific-agent-tools@scientific-software-playbook` (optional)
 3. Run `/plugin reload`.

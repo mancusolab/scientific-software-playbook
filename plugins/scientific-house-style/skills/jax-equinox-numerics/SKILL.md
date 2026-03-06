@@ -28,9 +28,14 @@ implementation details.
 
 ## Scope boundary (authoritative split)
 
-This skill is authoritative for numerics runtime semantics:
+This skill is authoritative for numerics runtime semantics and Equinox module
+rules that affect traced execution:
 - JIT boundaries and static/dynamic partitioning
 - PyTree and dtype stability in traced execution
+- `eqx.Module` inheritance/composition rules for numerics code
+- `eqx.Module` field semantics that affect tracing (`converter`, `static=True`,
+  `AbstractVar`, `AbstractClassVar`)
+- init-time invariant checks for numerics modules (`__check_init__`)
 - solver/result/failure semantics for numerics surfaces
 - traced-kernel error signaling (`result` channels and/or `eqx.error_if`)
 - AD/batching/transform correctness checks
@@ -90,7 +95,11 @@ Use these snippets as implementation starters when they match the task.
 - Dynamic data: array leaves that vary per call and flow through JIT.
 - PyTree stability: identical treedef and leaf shapes/dtypes across iterations and calls.
 - Abstract module: `eqx.Module` with `abc.abstractmethod` or `eqx.AbstractVar`.
+- Abstract class attribute: `eqx.AbstractClassVar[...]` declared on an abstract module.
 - Final module: concrete `eqx.Module` with no further overrides or subclassing.
+- Converter field: `eqx.field(converter=...)` used to normalize constructor inputs into a canonical runtime representation.
+- Static field: `eqx.field(static=True)` field stored in PyTree structure, not as a traced leaf.
+- Invariant check: `__check_init__`, used to validate module invariants after initialization without mutating fields.
 
 ## Abstract-vs-Final Module Pattern (Required)
 
@@ -108,17 +117,71 @@ Trigger this section when any of these apply:
 - extending/reusing an existing module family
 - reviewing subclass-based customization in numerics code
 
+## `eqx.Module` Field And Init Rules (Required)
+
+Apply these rules whenever a numerics design introduces or edits an `eqx.Module`.
+
+### Rule: Keep fields and initialization in one concrete class
+- Do: declare concrete fields on the concrete module that owns runtime behavior.
+- Do: use abstract modules only for interface requirements (`abc.abstractmethod`,
+  `eqx.AbstractVar`, `eqx.AbstractClassVar`).
+- Don't: split concrete dataclass fields, initialization responsibilities, or
+  concrete method behavior across a subclass hierarchy.
+- Why: Equinox module initialization is clearer and safer when concrete state
+  lives in one class.
+
+### Rule: Use converters to normalize constructor inputs into canonical runtime values
+- Do: use `eqx.field(converter=...)` when callers may provide Python scalars or
+  similar host values but the module should store a canonical representation.
+- Do: keep the converter side-effect-free and deterministic.
+- Don't: scatter ad hoc coercion logic across call sites or traced functions.
+- Why: input normalization belongs at construction time, not inside hot numerics
+  paths.
+- Example use cases:
+  - `eqx.field(converter=jnp.asarray)` for numeric scalars that should become arrays
+  - dtype or enum normalization for configuration fields consumed at boundaries
+
+### Rule: Use `static=True` sparingly and only for true non-array metadata
+- Do: mark a field static only when it is genuinely part of module structure and
+  should never participate in JAX transforms.
+- Do: prefer `eqx.partition`/`eqx.combine` when you just need to separate array
+  from non-array content at a boundary.
+- Don't: mark JAX arrays static.
+- Don't: treat `static=True` as the default way to keep configuration out of a transform.
+- Why: static fields become part of PyTree structure; overuse increases trace
+  fragility and can hide incorrect runtime contracts.
+
+### Rule: Use `__check_init__` for invariants, not mutation
+- Do: validate shape, dtype, range, and cross-field invariants in `__check_init__`
+  when they are intrinsic module properties.
+- Do: rely on `__check_init__` instead of `__post_init__` when subclassing or
+  custom `__init__` behavior could bypass checks.
+- Don't: mutate fields in `__check_init__`.
+- Don't: defer invariant validation until the first traced call when the module
+  can reject invalid state earlier.
+- Why: module invariants should fail fast at construction, and `__check_init__`
+  is designed for safe invariant enforcement across inheritance.
+
+### Rule: Use abstract attributes deliberately
+- Do: use `eqx.AbstractVar[...]` for required instance attributes and
+  `eqx.AbstractClassVar[...]` for required class-level constants on abstract modules.
+- Do: document whether a requirement is per-instance state or class-level metadata.
+- Don't: use `hasattr`-style probing to simulate abstract contracts.
+- Why: explicit abstract attributes make module contracts readable and checkable.
+
 ## `eqx.Module` vs `typing.NamedTuple` (Decision Rule)
 
 Use `eqx.Module` when:
 - the state is coupled to behavior/methods that should travel with that state
 - you need abstract/final module interfaces or composition patterns across model components
+- you need Equinox field features such as converters, static fields, or `__check_init__`
 - explicit module-level extension points/contracts are part of the design
 
 Use `typing.NamedTuple` when:
 - the object is a lightweight immutable container (parameters, result bundle, metadata, config snapshot)
 - fields are fixed and behavior-free
 - no module inheritance/composition contract is required
+- no field conversion or invariant-check hook is required
 - you want a simple PyTree-compatible carrier that can still flow through numerics paths
 
 Avoid representing the same conceptual entity as both `eqx.Module` and `NamedTuple`

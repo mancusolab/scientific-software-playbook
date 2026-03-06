@@ -29,6 +29,13 @@
       "description": "House-style engineering guidance for JAX/Equinox scientific software.",
       "version": "0.1.0",
       "category": "scientific-computing"
+    },
+    {
+      "name": "scientific-agent-tools",
+      "source": "./plugins/scientific-agent-tools",
+      "description": "Optional maintainer-facing tools for authoring plugins, skills, agents, directives, and repository context files.",
+      "version": "0.1.0",
+      "category": "developer-tools"
     }
   ]
 }

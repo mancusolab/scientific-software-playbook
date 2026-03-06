@@ -22,6 +22,22 @@ Apply this translation before following the remaining steps.
 
 Guidance for software engineering practices around numerical/JAX codebases.
 
+## Scope boundary (authoritative split)
+
+This skill is authoritative for project-level engineering contracts:
+- public API stability and compatibility policy
+- CLI/user-facing interface contracts
+- docs/docstring policy
+- type-checking and CI gates
+- packaging/versioning/serialization policy
+
+This skill is not the source of truth for numerics runtime semantics. For:
+- JIT/PyTree/static-dynamic rules
+- solver failure-channel semantics inside numerics surfaces
+- traced-kernel error signaling (`result`/`eqx.error_if`) behavior
+- AD/batching/transform correctness
+use `../jax-equinox-numerics/SKILL.md`.
+
 ## Path Contract (Unambiguous)
 
 1. All relative paths in this file resolve from this skill directory (the directory containing this `SKILL.md`).
@@ -52,22 +68,6 @@ Use these snippets as implementation starters when they match the task.
 - Before implementation: start from the closest snippet and align it with repository conventions.
 - During implementation: keep public API shape, docs style, and error semantics consistent with this skill.
 - Before completion: remove placeholders and verify snippet-derived code is fully integrated.
-
-## Scope boundary (authoritative split)
-
-This skill is authoritative for project-level engineering contracts:
-- public API stability and compatibility policy
-- CLI/user-facing interface contracts
-- docs/docstring policy
-- type-checking and CI gates
-- packaging/versioning/serialization policy
-
-This skill is not the source of truth for numerics runtime semantics. For:
-- JIT/PyTree/static-dynamic rules
-- solver failure-channel semantics inside numerics surfaces
-- traced-kernel error signaling (`result`/`eqx.error_if`) behavior
-- AD/batching/transform correctness
-use `../jax-equinox-numerics/SKILL.md`.
 
 ## Public API stability
 

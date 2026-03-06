@@ -1,0 +1,13 @@
+Upstream attribution for `scientific-agent-tools`
+
+This plugin was bootstrapped from material derived from:
+
+https://github.com/ed3dai/ed3d-plugins/tree/main/plugins/ed3d-extending-claude
+
+The Scientific Software Playbook version adapts that material for:
+- plugin-scoped source-of-truth paths under `plugins/`
+- Codex global-install behavior under `CODEX_HOME`
+- AGENTS-first repository context maintenance
+- current runtime-compatibility sync and contract-check flows
+
+See `LICENSE` in this directory for the license applied to this plugin bundle.

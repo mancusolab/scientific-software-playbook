@@ -404,7 +404,7 @@ When Phase 3 is complete, announce:
 **You do NOT:**
 - Write design document (that's writing-design-plans)
 - Set up worktrees (that's later in workflow)
-- Create implementation plans (that's writing-plans)
+- Create implementation plans (that's writing-implementation-plans)
 
 **You DO:**
 - Hold validated design in conversation context

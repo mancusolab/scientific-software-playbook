@@ -49,7 +49,7 @@ This skill is kickoff-agnostic. If kickoff artifacts already exist, ingest and c
 | **3. Definition of Done** | Synthesize and confirm deliverables before brainstorming | Confirmed success criteria |
 | **4. Brainstorming** | Invoke brainstorming skill | Validated design (in conversation) |
 | **5. Design Documentation** | Invoke writing-design-plans skill | Committed design document |
-| **6. Planning Handoff** | Offer to invoke writing-plans skill | Implementation plan (optional) |
+| **6. Planning Handoff** | Offer to invoke writing-implementation-plans skill | Implementation plan (optional) |
 
 ## The Process
 

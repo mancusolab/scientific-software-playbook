@@ -14,13 +14,18 @@ but will be carefully included after additional testing and validation.
 
 ## What you get
 
-This repository ships three plugins that work together:
+This repository ships four plugins:
 
 1. `scientific-plan-execute`, Orchestrates kickoff, design planning, readiness validation, approval, implementation planning, and execution.
 
 2. `scientific-research`, Adds research workflows for internet, literature, and codebase evidence.
 
 3. `scientific-house-style`, Adds reusable engineering guidance for JAX/Equinox numerics, Python module/package design, and project-quality practices.
+
+4. `scientific-agent-tools`, Optional maintainer-facing tooling for authoring plugins, skills, agents, directives, and repository context files.
+
+Downstream workflow users usually need the first three. `scientific-agent-tools`
+is mainly for playbook authors and maintainers.
 
 In practice, this helps scientific teams reduce avoidable rework: fewer ambiguous requirements, fewer hidden model assumptions, and clearer completion evidence.
 
@@ -121,6 +126,7 @@ Because this is a private repository, Claude Code needs a GitHub token to fetch 
    /plugin install scientific-plan-execute@scientific-software-playbook
    /plugin install scientific-research@scientific-software-playbook
    /plugin install scientific-house-style@scientific-software-playbook
+   /plugin install scientific-agent-tools@scientific-software-playbook
    /plugin reload
    ```
 
@@ -140,3 +146,4 @@ that ecosystem's workflow patterns.
 1. Repository and plugin content license: `LICENSE`
 2. Upstream lineage license: `LICENSE.superpowers`
 3. Provenance details: `NOTICE`
+4. Plugin-local ed3d attribution example: `plugins/scientific-agent-tools/LICENSE.ed3d`

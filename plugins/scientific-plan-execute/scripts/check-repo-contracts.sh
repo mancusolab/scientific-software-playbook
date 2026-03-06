@@ -59,13 +59,19 @@ done < <(grep -oE 'plugins/[a-z0-9-]+/skills/[a-z0-9-]+/SKILL\.md' AGENTS.md | s
 [[ -f "plugins/scientific-plan-execute/.claude-plugin/plugin.json" ]] || fail "missing plan-execute plugin manifest"
 [[ -f "plugins/scientific-research/.claude-plugin/plugin.json" ]] || fail "missing scientific-research plugin manifest"
 [[ -f "plugins/scientific-house-style/.claude-plugin/plugin.json" ]] || fail "missing house-style plugin manifest"
+[[ -f "plugins/scientific-agent-tools/.claude-plugin/plugin.json" ]] || fail "missing scientific-agent-tools plugin manifest"
 [[ -f "plugins/scientific-plan-execute/LICENSE" ]] || fail "missing plan-execute LICENSE"
 [[ -f "plugins/scientific-plan-execute/LICENSE.superpowers" ]] || fail "missing plan-execute LICENSE.superpowers"
 [[ -f "plugins/scientific-research/LICENSE" ]] || fail "missing scientific-research LICENSE"
 [[ -f "plugins/scientific-house-style/LICENSE" ]] || fail "missing house-style LICENSE"
+[[ -f "plugins/scientific-agent-tools/LICENSE" ]] || fail "missing scientific-agent-tools LICENSE"
+[[ -f "plugins/scientific-agent-tools/LICENSE.ed3d" ]] || fail "missing scientific-agent-tools LICENSE.ed3d"
+[[ -f "plugins/scientific-agent-tools/NOTICE.ed3d" ]] || fail "missing scientific-agent-tools NOTICE.ed3d"
 [[ -f "plugins/scientific-plan-execute/hooks/hooks.json" ]] || fail "missing plan-execute hooks manifest"
 [[ -f "plugins/scientific-research/skills/scientific-internet-research-pass/SKILL.md" ]] || fail "missing scientific research skill"
 [[ -f "plugins/scientific-research/skills/scientific-codebase-investigation-pass/SKILL.md" ]] || fail "missing codebase research skill"
+[[ -f "plugins/scientific-agent-tools/skills/maintaining-project-context/SKILL.md" ]] || fail "missing maintaining-project-context skill"
+[[ -f "plugins/scientific-agent-tools/docs/skill-index.md" ]] || fail "missing scientific-agent-tools skill index"
 [[ ! -e "plugins/scientific-plan-execute/skills/scientific-internet-research-pass" ]] || fail "research skill must not live in plan-execute plugin"
 python3 - <<'PY'
 import json
@@ -77,6 +83,8 @@ with open("plugins/scientific-research/.claude-plugin/plugin.json", "r", encodin
     research_manifest = json.load(fh)
 with open("plugins/scientific-house-style/.claude-plugin/plugin.json", "r", encoding="utf-8") as fh:
     house_manifest = json.load(fh)
+with open("plugins/scientific-agent-tools/.claude-plugin/plugin.json", "r", encoding="utf-8") as fh:
+    agent_tools_manifest = json.load(fh)
 with open(".claude-plugin/marketplace.json", "r", encoding="utf-8") as fh:
     marketplace = json.load(fh)
 
@@ -84,6 +92,7 @@ manifest_versions = {
     "scientific-plan-execute": plan_manifest.get("version"),
     "scientific-research": research_manifest.get("version"),
     "scientific-house-style": house_manifest.get("version"),
+    "scientific-agent-tools": agent_tools_manifest.get("version"),
 }
 for name, version in manifest_versions.items():
     if not version:
@@ -127,6 +136,9 @@ for research_agent in \
   grep -Fq "./agents/${research_agent}.md" "plugins/scientific-research/.claude-plugin/plugin.json" \
     || fail "scientific-research manifest missing agent entry: ${research_agent}"
 done
+[[ -f "plugins/scientific-agent-tools/agents/project-claude-librarian.md" ]] || fail "missing scientific-agent-tools agent: project-claude-librarian"
+grep -Fq "./agents/project-claude-librarian.md" "plugins/scientific-agent-tools/.claude-plugin/plugin.json" \
+  || fail "scientific-agent-tools manifest missing agent entry: project-claude-librarian"
 
 # Plan-execute agents must reference skills by skill ID, not repo-local skill file paths.
 if find "plugins/scientific-plan-execute/agents" -type f -name '*.md' -print0 | xargs -0 grep -nE 'skills/[a-z0-9-]+/SKILL\.md' >/dev/null 2>&1; then

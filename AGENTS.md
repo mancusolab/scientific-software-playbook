@@ -13,10 +13,11 @@ This repository supports one operational mode:
 
 1. Global install mode (install into `CODEX_HOME` and run workflows directly in downstream projects).
 
-Scope note: this repository hosts three plugins:
+Scope note: this repository hosts four plugins:
 1. `scientific-plan-execute`
 2. `scientific-research`
 3. `scientific-house-style`
+4. `scientific-agent-tools`
 
 Operational workflow remains centered on `scientific-plan-execute`.
 
@@ -33,6 +34,7 @@ Dependency contract:
 6. Mandatory scientific correctness constraints remain in `scientific-plan-execute`:
    - `simulation-for-inference-validation`
 7. `scientific-house-style` should carry reusable implementation-style guidance, while `scientific-plan-execute` enforces orchestration and hard-stop gates.
+8. `scientific-agent-tools` is optional maintainer tooling for authoring plugins, skills, agents, and repository context files. It is not required for downstream scientific workflow execution.
 
 ## Plugin Assets (Source Of Truth)
 
@@ -71,6 +73,15 @@ Dependency contract:
 - `writing-for-a-technical-audience`: `plugins/scientific-house-style/skills/writing-for-a-technical-audience/SKILL.md`
 - `writing-good-tests`: `plugins/scientific-house-style/skills/writing-good-tests/SKILL.md`
 
+### Skills (`scientific-agent-tools`)
+- `creating-a-plugin`: `plugins/scientific-agent-tools/skills/creating-a-plugin/SKILL.md`
+- `creating-an-agent`: `plugins/scientific-agent-tools/skills/creating-an-agent/SKILL.md`
+- `maintaining-project-context`: `plugins/scientific-agent-tools/skills/maintaining-project-context/SKILL.md`
+- `testing-skills-with-subagents`: `plugins/scientific-agent-tools/skills/testing-skills-with-subagents/SKILL.md`
+- `writing-claude-directives`: `plugins/scientific-agent-tools/skills/writing-claude-directives/SKILL.md`
+- `writing-claude-md-files`: `plugins/scientific-agent-tools/skills/writing-claude-md-files/SKILL.md`
+- `writing-skills`: `plugins/scientific-agent-tools/skills/writing-skills/SKILL.md`
+
 ### Assets
 - Plan-execute agents: `plugins/scientific-plan-execute/agents/`
 - Plan-execute commands: `plugins/scientific-plan-execute/commands/`
@@ -85,6 +96,8 @@ Dependency contract:
 - Research agents: `plugins/scientific-research/agents/`
 - Research docs: `plugins/scientific-research/docs/`
 - House-style docs: `plugins/scientific-house-style/docs/`
+- Agent-tools agents: `plugins/scientific-agent-tools/agents/`
+- Agent-tools docs: `plugins/scientific-agent-tools/docs/`
 
 Breaking-change contract:
 1. Repository-root compatibility links are removed.
@@ -111,6 +124,9 @@ Research delegates:
 
 Simulation delegate:
 1. `scientific-simulation-designer`
+
+Maintenance delegate:
+1. `project-claude-librarian`
 
 Script policy:
 1. User-facing script usage is limited to `scripts/install-codex-home.sh`.
@@ -147,6 +163,7 @@ Optional selective install:
 bash scripts/install-codex-home.sh --plugin scientific-plan-execute --force
 bash scripts/install-codex-home.sh --plugin scientific-research --force
 bash scripts/install-codex-home.sh --plugin scientific-house-style --force
+bash scripts/install-codex-home.sh --plugin scientific-agent-tools --force
 ```
 
 Run a downstream project:

@@ -16,6 +16,7 @@ Notes:
 3. Workflow research gates require `scientific-research`.
 4. Workflow execution and review gates require `scientific-house-style`.
 5. `scientific-plan-execute` and `scientific-house-style` versions must match.
+6. `scientific-agent-tools` is optional and compatible with any supported combination above. It adds maintainer-facing authoring/context tooling only.
 
 ## Breaking Change (Applied)
 
@@ -35,6 +36,7 @@ Effective February 23, 2026:
    - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/...`
    - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-research/...`
    - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-house-style/...`
+   - `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-agent-tools/...`
 
 ## Migration Steps
 

@@ -1,0 +1,17 @@
+Scientific Agent Tools Upstream Notice
+
+This plugin incorporates and adapts maintainer-facing authoring and context
+maintenance patterns from:
+- https://github.com/ed3dai/ed3d-plugins
+- https://github.com/ed3dai/ed3d-plugins/tree/main/plugins/ed3d-extending-claude
+
+The initial draft of this plugin directory was copied from a modified ed3d
+plan and then refit for this repository's current contracts.
+
+Repo-specific adaptations include:
+- plugin-scoped source-of-truth paths under `plugins/`
+- `CODEX_HOME` installation layout for Codex
+- synchronized runtime-compatibility blocks
+- AGENTS-first context guidance with optional CLAUDE companion files
+- local skill namespaces such as `scientific-plan-execute:*` and
+  `scientific-agent-tools:*`

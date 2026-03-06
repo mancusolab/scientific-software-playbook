@@ -7,6 +7,7 @@ Primary derivation mapping:
 - `scientific-plan-execute` <- `ed3d-plan-and-execute`
 - `scientific-research` <- `ed3d-research-agents`
 - `scientific-house-style` <- `ed3d-house-style` patterns and related house-style conventions
+- `scientific-agent-tools` <- `ed3d-extending-claude` patterns adapted for maintainer tooling
 
 Upstream lineage note:
 - `ed3d-plan-and-execute` includes material derived from

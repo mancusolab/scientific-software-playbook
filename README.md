@@ -83,8 +83,6 @@ Then provide a short request, for example:
 
 The router selects the next step for you (design planning, kickoff when needed, or implementation flow if you are resuming).
 
-For detailed kickoff/porting walkthroughs and full end-to-end examples, see [here](docs/tutorial-kickoff-and-design-plan.md).
-
 ## Installation
 For full setup and troubleshooting, use `docs/INSTALLATION.md`.
 
@@ -98,45 +96,21 @@ bash scripts/install-codex-home.sh --force
 
 ### ![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?style=flat-square&logo=claude&logoColor=white)
 
- **NB: WILL REMOVE THE TOKEN SECTION WHEN WE MAKE REPO PUBLIC**
-
-Because this is a private repository, Claude Code needs a GitHub token to fetch the plugin.
-
-1. **Create a GitHub Personal Access Token**
-   - Go to **GitHub → Settings → Developer settings → Personal access tokens**
-   - Choose **Tokens (classic)** with `repo` scope, or **Fine-grained tokens** with repository read access
-
-2. **Set the environment variable**
-
-   For the current session:
-   ```bash
-   export GITHUB_TOKEN=ghp_your_token_here
-   ```
-
-   For persistence, add the export to your shell profile (`~/.zshrc` or `~/.bashrc`):
-   ```bash
-   echo 'export GITHUB_TOKEN=ghp_your_token_here' >> ~/.zshrc
-   source ~/.zshrc
-   ```
-
-3. **Install the plugins in Claude Code**
-
-   ```text
-   /plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git
-   /plugin install scientific-plan-execute@scientific-software-playbook
-   /plugin install scientific-research@scientific-software-playbook
-   /plugin install scientific-house-style@scientific-software-playbook
-   /plugin install scientific-agent-tools@scientific-software-playbook
-   /plugin reload
-   ```
+```text
+/plugin marketplace add https://github.com/mancusolab/scientific-software-playbook.git
+/plugin install scientific-plan-execute@scientific-software-playbook
+/plugin install scientific-research@scientific-software-playbook
+/plugin install scientific-house-style@scientific-software-playbook
+/plugin install scientific-agent-tools@scientific-software-playbook
+/plugin reload
+```
 
 
 ## Where to go next
 
 1. Day-1 workflow guide: `docs/ONBOARDING.md`
-2. Tutorial (kickoff and design walkthrough): `docs/tutorial-kickoff-and-design-plan.md`
-3. Installation and troubleshooting: `docs/INSTALLATION.md`
-4. Internal contracts and hard stops: `AGENTS.md`
+2. Installation and troubleshooting: `docs/INSTALLATION.md`
+3. Internal contracts and hard stops: `AGENTS.md`
 
 ## License and attribution
 

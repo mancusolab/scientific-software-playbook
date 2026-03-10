@@ -52,16 +52,16 @@ Installation can be done from any directory:
 ## Running Workflows (Claude Code)
 
 Open Claude Code in your scientific project directory, then start:
-- Default entrypoint: `/start-plan-and-execute`
-- Main phase commands after routing: `/start-design-plan <slug>`, `/start-implementation-plan <design-plan-path>`, `/execute-implementation-plan <plan-dir> <working-dir>`
-- Router-selected bootstrap for fresh/model-path/parity work: `/start-scientific-kickoff`
+- Default entrypoint: `/scientific-plan-execute:start-plan-and-execute`
+- Main phase commands after routing: `/scientific-plan-execute:start-design-plan <slug>`, `/scientific-plan-execute:start-implementation-plan <design-plan-path>`, `/scientific-plan-execute:execute-implementation-plan <plan-dir> <working-dir>`
+- Router-selected bootstrap for fresh/model-path/parity work: `/scientific-plan-execute:start-scientific-kickoff`
 
 Manual utilities inside an active workflow:
-- `/new-design-plan <slug>` for direct plan scaffolding
-- `/validate-design-plan <plan-path> --phase <in-review|approval>`
-- `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
-- `/start-simulation-validation <plan-path>` when simulation-based inference checks are in scope
-- `/how-to-customize` for installing project-specific guidance files
+- `/scientific-plan-execute:new-design-plan <slug>` for direct plan scaffolding
+- `/scientific-plan-execute:validate-design-plan <plan-path> --phase <in-review|approval>`
+- `/scientific-plan-execute:set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
+- `/scientific-plan-execute:start-simulation-validation <plan-path>` when simulation-based inference checks are in scope
+- `/scientific-plan-execute:how-to-customize` for installing project-specific guidance files
 
 ## Codex Installation (Native)
 
@@ -114,20 +114,20 @@ Core scientific workflow skills:
 ## Usage Example (Downstream Project)
 
 Claude Code path:
-1. Run `/start-plan-and-execute`.
-2. If the router selects kickoff, complete `/start-scientific-kickoff`, then continue with `/start-design-plan <example-slug>` and ingest `.scientific/kickoff.md`.
-3. If the router selects design planning directly, continue with `/start-design-plan <example-slug>`.
+1. Run `/scientific-plan-execute:start-plan-and-execute`.
+2. If the router selects kickoff, complete `/scientific-plan-execute:start-scientific-kickoff`, then continue with `/scientific-plan-execute:start-design-plan <example-slug>` and ingest `.scientific/kickoff.md`.
+3. If the router selects design planning directly, continue with `/scientific-plan-execute:start-design-plan <example-slug>`.
 4. Use `asking-clarifying-questions` and `brainstorming` to refine scope and alternatives.
 5. For fresh-project/model-path tracks, choose model path early: `provided-model`, `suggested-model`, or `existing-codebase-port`.
    - For `existing-codebase-port`, run `scientific-codebase-investigation-pass` before approval and capture file-level evidence.
    - Pass kickoff output (`.scientific/kickoff.md`) into the design flow.
-6. `/start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
+6. `/scientific-plan-execute:start-simulation-validation <plan-path>` (when simulation-based inference checks are in scope)
 7. `scientific-internet-research-pass` (external/scientific/API claims)
-8. `/validate-design-plan <plan-path> --phase in-review`
-9. `/set-design-plan-status <plan-path> approved-for-implementation`
-10. `/start-implementation-plan <plan-path>`
+8. `/scientific-plan-execute:validate-design-plan <plan-path> --phase in-review`
+9. `/scientific-plan-execute:set-design-plan-status <plan-path> approved-for-implementation`
+10. `/scientific-plan-execute:start-implementation-plan <plan-path>`
 11. Start a fresh session/context (recommended).
-12. `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+12. `/scientific-plan-execute:execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
 
 The normal Claude workflow is router -> design -> implementation plan -> execute. Validation, status changes, simulation setup, and direct plan scaffolding are manual utilities used within that flow when needed.
 

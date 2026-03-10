@@ -55,7 +55,7 @@ Phase execution loop  ──────────► Working code (reviewed &
 
 Begin each new workflow session with the router:
 
-- Claude Code: `/start-plan-and-execute`
+- Claude Code: `/scientific-plan-execute:start-plan-and-execute`
 - Codex: `using-plan-and-execute`
 
 The router chooses the right next step for the current state:
@@ -64,9 +64,9 @@ The router chooses the right next step for the current state:
 - implementation planning or execution, when you are resuming a later phase
 
 Most sessions only use the router plus the main phase commands:
-- `/start-design-plan`
-- `/start-implementation-plan`
-- `/execute-implementation-plan`
+- `/scientific-plan-execute:start-design-plan`
+- `/scientific-plan-execute:start-implementation-plan`
+- `/scientific-plan-execute:execute-implementation-plan`
 
 Validation, status transitions, simulation setup, and direct scaffolding commands are manual utilities used inside an active workflow.
 
@@ -74,7 +74,7 @@ Validation, status transitions, simulation setup, and direct scaffolding command
 
 If you are working in a downstream project and want to add or change something, start with the router command for your runtime:
 
-- Claude Code: `/start-plan-and-execute`
+- Claude Code: `/scientific-plan-execute:start-plan-and-execute`
 - Codex: `using-plan-and-execute`
 
 Then provide a short request, for example:

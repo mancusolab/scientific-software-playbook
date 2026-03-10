@@ -368,7 +368,7 @@ Ready to create the implementation plan? This requires fresh context to work eff
 
 Claude Code:
 ```
-/start-implementation-plan @docs/design-plans/<full-filename>.md
+/scientific-plan-execute:start-implementation-plan @docs/design-plans/<full-filename>.md
 ```
 
 Codex:
@@ -392,7 +392,7 @@ If neither `/clear` nor `/new` is available, open a new session/conversation in 
 
 (3) Paste and run the copied command in the fresh session.
 
-The `starting-an-implementation-plan` skill (or `/start-implementation-plan` command wrapper) will create detailed tasks, set up a branch, and prepare for execution.
+The `starting-an-implementation-plan` skill (or `/scientific-plan-execute:start-implementation-plan` command wrapper) will create detailed tasks, set up a branch, and prepare for execution.
 
 **Why fresh context instead of continuing:**
 - Implementation planning needs fresh context for codebase investigation

@@ -146,7 +146,7 @@ Handoff snippet contract:
    - start fresh context (recommended)
    - paste/run command in fresh session
 2. Handoff snippets must include both runtime forms when applicable:
-   - Claude Code command wrapper (for example `/start-design-plan`, `/start-implementation-plan`, `/execute-implementation-plan`)
+   - Claude Code command wrapper (for example `/scientific-plan-execute:start-design-plan`, `/scientific-plan-execute:start-implementation-plan`, `/scientific-plan-execute:execute-implementation-plan`)
    - Codex skill/command form (for example `$starting-a-design-plan`, `$starting-an-implementation-plan`, `$executing-an-implementation-plan`)
 
 ## Global Install Mode (Required)
@@ -169,12 +169,12 @@ bash scripts/install-codex-home.sh --plugin scientific-agent-tools --force
 Run a downstream project:
 
 1. Open the target project root in Codex.
-2. Choose entrypoint with `using-plan-and-execute` (or `start-plan-and-execute` command wrapper in Claude Code), then continue with the suggested workflow skill/command.
+2. Choose entrypoint with `using-plan-and-execute` (or `/scientific-plan-execute:start-plan-and-execute` in Claude Code), then continue with the suggested workflow skill/command.
 
 ## Workflow
 
-1. Choose workflow entrypoint with `using-plan-and-execute` (or `start-plan-and-execute` command wrapper in Claude Code).
-2. For general design requests, start with `starting-a-design-plan` (or `start-design-plan` command wrapper). Use `new-design-plan` when plan scaffolding is needed directly.
+1. Choose workflow entrypoint with `using-plan-and-execute` (or `/scientific-plan-execute:start-plan-and-execute` in Claude Code).
+2. For general design requests, start with `starting-a-design-plan` (or `/scientific-plan-execute:start-design-plan` in Claude Code). Use `new-design-plan` when plan scaffolding is needed directly.
 3. Run `scientific-kickoff` only when model provenance, model selection, or existing-codebase parity targets must be established before design can proceed. In those cases choose exactly one model path:
    - `provided-model` (user-supplied model/update rules), or
    - `suggested-model` (literature-backed model candidates + explicit user selection), or
@@ -190,8 +190,8 @@ Run a downstream project:
    - use `simulation-for-inference-validation` when simulation-based checks are required.
 8. Validate in review phase with `validate-design-plan` (`phase=in-review`).
 9. Approve only after explicit user sign-off using `set-design-plan-status` (`approved-for-implementation`).
-10. Create implementation phases and traceability with `starting-an-implementation-plan` (or `start-implementation-plan` command wrapper).
-11. Execute phase-by-phase with `executing-an-implementation-plan` (or `execute-implementation-plan` command wrapper).
+10. Create implementation phases and traceability with `starting-an-implementation-plan` (or `/scientific-plan-execute:start-implementation-plan` in Claude Code).
+11. Execute phase-by-phase with `executing-an-implementation-plan` (or `/scientific-plan-execute:execute-implementation-plan` in Claude Code).
 12. During phase execution, apply layer skills in order when relevant:
    - `jax-equinox-numerics` (from `scientific-house-style`)
    - `polars-data-engineering` (from `scientific-house-style`) for Polars/LazyFrame/DataFrame/adapter-boundary work

@@ -274,7 +274,7 @@ Ready to execute? This requires fresh context to work effectively.
 
 Claude Code:
 ```
-/execute-implementation-plan /Users/ed/project/.worktrees/oauth2-feature/docs/implementation-plans/2025-01-17-oauth2-feature/ /Users/ed/project/.worktrees/oauth2-feature/
+/scientific-plan-execute:execute-implementation-plan /Users/ed/project/.worktrees/oauth2-feature/docs/implementation-plans/2025-01-17-oauth2-feature/ /Users/ed/project/.worktrees/oauth2-feature/
 ```
 
 Codex:
@@ -298,7 +298,7 @@ If neither `/clear` nor `/new` is available, open a new session/conversation in 
 
 (3) Paste and run the copied command in the fresh session.
 
-The `executing-an-implementation-plan` skill (or `/execute-implementation-plan` command wrapper) will implement the plan phase-by-phase with code review after each phase.
+The `executing-an-implementation-plan` skill (or `/scientific-plan-execute:execute-implementation-plan` command wrapper) will implement the plan phase-by-phase with code review after each phase.
 ```
 
 **Use the real paths from Step 1, not placeholders.** The example above shows the format — substitute your actual verified paths.
@@ -333,7 +333,7 @@ This skill sits between design and execution:
 
 ```
 Design Plan (in docs/design-plans/)
-  -> User runs `/start-implementation-plan` (Claude Code) or `$starting-an-implementation-plan` (Codex) with design path
+  -> User runs `/scientific-plan-execute:start-implementation-plan` (Claude Code) or `$starting-an-implementation-plan` (Codex) with design path
 
 Starting Implementation Plan (this skill)
   -> Step 0: Create orchestration tasks

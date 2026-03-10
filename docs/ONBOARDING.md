@@ -133,18 +133,18 @@ Normal Codex workflow:
 ### Phase Workflow
 
 Normal Claude Code workflow:
-1. `/start-plan-and-execute`
-2. `/start-scientific-kickoff` only when the router says the project still needs model-path/bootstrap work
-3. `/start-design-plan <slug>`
-4. `/start-implementation-plan <design-plan-path>`
-5. `/execute-implementation-plan <plan-dir> <working-dir>`
+1. `/scientific-plan-execute:start-plan-and-execute`
+2. `/scientific-plan-execute:start-scientific-kickoff` only when the router says the project still needs model-path/bootstrap work
+3. `/scientific-plan-execute:start-design-plan <slug>`
+4. `/scientific-plan-execute:start-implementation-plan <design-plan-path>`
+5. `/scientific-plan-execute:execute-implementation-plan <plan-dir> <working-dir>`
 
-`/new-design-plan`, `/validate-design-plan`, `/set-design-plan-status`, and `/start-simulation-validation` are manual utilities used inside an active workflow.
+`/scientific-plan-execute:new-design-plan`, `/scientific-plan-execute:validate-design-plan`, `/scientific-plan-execute:set-design-plan-status`, and `/scientific-plan-execute:start-simulation-validation` are manual utilities used inside an active workflow.
 
 1. Architecture kickoff
-- Start with `/start-plan-and-execute`.
-- When the router selects kickoff, run `/start-scientific-kickoff` first, then `/start-design-plan <slug>`.
-- Otherwise the router should send you directly to `/start-design-plan <slug>`.
+- Start with `/scientific-plan-execute:start-plan-and-execute`.
+- When the router selects kickoff, run `/scientific-plan-execute:start-scientific-kickoff` first, then `/scientific-plan-execute:start-design-plan <slug>`.
+- Otherwise the router should send you directly to `/scientific-plan-execute:start-design-plan <slug>`.
 - Run `asking-clarifying-questions` to resolve contradictions and narrow scope.
 - Run `brainstorming` to compare alternatives and validate a direction.
 - When model provenance or model selection is still unresolved, choose one model path early:
@@ -153,7 +153,7 @@ Normal Claude Code workflow:
   - `existing-codebase-port`: user supplies a local directory or GitHub URL and defines a pinned source + behavior parity contract.
   - for `existing-codebase-port`, run `scientific-codebase-investigation-pass` and record file-level findings before approval.
 - If inference validation should include synthetic-data checks, define a synthetic-data validation contract:
-  - `/start-simulation-validation <plan-path>`
+  - `/scientific-plan-execute:start-simulation-validation <plan-path>`
 - If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
 - Delegate `internet-researcher` for general/API internet research needs.
 - Delegate `scientific-literature-researcher` when literature support is needed.
@@ -167,14 +167,14 @@ Normal Claude Code workflow:
   - `solver-feasibility-matrix.md`
   - `Simulation And Inference-Consistency Validation` section in the design plan (when in scope)
 - Validate readiness before approval:
-  - `/validate-design-plan <plan-path> --phase in-review`
+  - `/scientific-plan-execute:validate-design-plan <plan-path> --phase in-review`
 - Move status to approved only when architecture and math checks are acceptable:
-  - `/set-design-plan-status <plan-path> approved-for-implementation`
+  - `/scientific-plan-execute:set-design-plan-status <plan-path> approved-for-implementation`
 - If approved plans are revised later, move back to review:
-  - `/set-design-plan-status <plan-path> in-review`
+  - `/scientific-plan-execute:set-design-plan-status <plan-path> in-review`
 
 3. Build implementation orchestration artifacts
-- `/start-implementation-plan <design-plan-path>`
+- `/scientific-plan-execute:start-implementation-plan <design-plan-path>`
 - Outcome:
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
   - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
@@ -184,7 +184,7 @@ Normal Claude Code workflow:
 - Recommended: start a fresh session/context before execution.
 
 4. Execute implementation phases
-- `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+- `/scientific-plan-execute:execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
 - Outcome: phase-by-phase implementation with TDD, reviewer/fix loops, and traceability coverage checks.
 - During execution, surface delegate evidence after each delegate run (tests, findings, blockers, commits).
 
@@ -205,17 +205,17 @@ Normal Claude Code workflow:
 ### Manual Utilities
 
 1. Create plan + artifact stubs directly:
-- `/new-design-plan <slug>`
+- `/scientific-plan-execute:new-design-plan <slug>`
 - Use `writing-design-plans` to expand/refine design sections after scaffolding.
 
 2. Clarify and explore before architecture lock-in:
 - invoke `asking-clarifying-questions` then `brainstorming`.
 
 3. Change plan status:
-- `/set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
+- `/scientific-plan-execute:set-design-plan-status <plan-path> <draft|in-review|approved-for-implementation>`
 
 4. Validate plan readiness:
-- `/validate-design-plan <plan-path> --phase in-review`
+- `/scientific-plan-execute:validate-design-plan <plan-path> --phase in-review`
 
 5. Run external research pass when triggered:
 - `scientific-internet-research-pass` for external claims
@@ -223,14 +223,14 @@ Normal Claude Code workflow:
 - delegate `scientific-literature-researcher` for paper-backed support
 
 6. Define a synthetic-data validation contract when in scope:
-- `/start-simulation-validation <plan-path>`
+- `/scientific-plan-execute:start-simulation-validation <plan-path>`
 
 7. Start implementation planning:
-- `/start-implementation-plan <design-plan-path>`
+- `/scientific-plan-execute:start-implementation-plan <design-plan-path>`
 - Use `writing-implementation-plans` to flesh out phase/task detail and traceability.
 
 8. Execute implementation plan:
-- `/execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
+- `/scientific-plan-execute:execute-implementation-plan <absolute-implementation-plan-dir> <absolute-working-dir>`
 
 ---
 

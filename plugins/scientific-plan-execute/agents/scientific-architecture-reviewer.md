@@ -69,8 +69,8 @@ Does not own final judgment for:
 - `implementation-gate`: require `Approved for Implementation`.
 4. Verify model-path decision and path-specific required sections.
 5. Run readiness validator when plan exists:
-- `/validate-design-plan <plan-path> --phase in-review` (or `validate-design-plan` in Codex) for `pre-implementation`.
-- `/validate-design-plan <plan-path> --phase approval` (or `validate-design-plan` in Codex) for `implementation-gate`.
+- `/scientific-plan-execute:validate-design-plan <plan-path> --phase in-review` (or `validate-design-plan` in Codex) for `pre-implementation`.
+- `/scientific-plan-execute:validate-design-plan <plan-path> --phase approval` (or `validate-design-plan` in Codex) for `implementation-gate`.
 6. Trace one representative path from boundary input to numerics dispatch and confirm validation/conversion placement.
 7. Audit package/module boundaries for architectural cohesion.
 8. Record any specialist-domain risks as explicit escalation requirements.

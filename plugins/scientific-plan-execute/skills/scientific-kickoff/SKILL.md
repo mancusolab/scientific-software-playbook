@@ -101,7 +101,7 @@ Set state:
 
 After kickoff output is written, guide the user to start design planning with kickoff handoff ingestion.
 
-**Do NOT run full design orchestration from this skill.** Hand off to `starting-a-design-plan` (or `/start-design-plan`) explicitly.
+**Do NOT run full design orchestration from this skill.** Hand off to `starting-a-design-plan` (or `/scientific-plan-execute:start-design-plan`) explicitly.
 
 Announce kickoff completion and provide next steps:
 
@@ -115,7 +115,7 @@ Ready to start design planning?
 
 Claude Code:
 ```
-/start-design-plan <slug>
+/scientific-plan-execute:start-design-plan <slug>
 ```
 
 Codex:
@@ -139,7 +139,7 @@ If neither `/clear` nor `/new` is available, open a new session/conversation in 
 
 (3) Paste and run the copied command in the fresh session.
 
-`starting-a-design-plan` (or `/start-design-plan`) must ingest `.scientific/kickoff.md` before clarification/brainstorming proceeds.
+`starting-a-design-plan` (or `/scientific-plan-execute:start-design-plan`) must ingest `.scientific/kickoff.md` before clarification/brainstorming proceeds.
 
 ## Hard Stops
 

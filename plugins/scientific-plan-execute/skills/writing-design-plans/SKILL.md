@@ -1,6 +1,6 @@
 ---
 name: writing-design-plans
-description: Use when brainstorming is complete and a validated design must be documented - writes structured design plans to docs/design-plans/ with discrete implementation phases
+description: Use when brainstorming is complete and a validated design must be documented - writes structured design plans to .plans/design-plans/ with discrete implementation phases
 user-invocable: false
 ---
 
@@ -106,15 +106,15 @@ The first defines what the boundary looks like. The second implements behavior â
 
 ## File Location and Naming
 
-**File location:** `docs/design-plans/YYYY-MM-DD-<topic>.md`
+**File location:** `.plans/design-plans/YYYY-MM-DD-<topic>.md`
 
 The file is created during `start-design-plan`. This skill fills and updates that file.
 
 **Expected naming convention:**
-- Good: `docs/design-plans/2025-01-18-oauth2-svc-authn.md`
-- Good: `docs/design-plans/2025-01-18-user-prof-redesign.md`
-- Bad: `docs/design-plans/design.md`
-- Bad: `docs/design-plans/new-feature.md`
+- Good: `.plans/design-plans/2025-01-18-oauth2-svc-authn.md`
+- Good: `.plans/design-plans/2025-01-18-user-prof-redesign.md`
+- Bad: `.plans/design-plans/design.md`
+- Bad: `.plans/design-plans/new-feature.md`
 
 ## Document Structure
 
@@ -638,7 +638,7 @@ Briefly review the generated sections for accuracy. The extraction pass may miss
 **Commit the design document:**
 
 ```bash
-git add docs/design-plans/YYYY-MM-DD-<topic>.md
+git add .plans/design-plans/YYYY-MM-DD-<topic>.md
 git commit -m "$(cat <<'EOF'
 docs: add [feature name] design plan
 
@@ -652,7 +652,7 @@ EOF
 
 **Announce completion:**
 
-"Design plan documented in `docs/design-plans/YYYY-MM-DD-<topic>.md` and committed."
+"Design plan documented in `.plans/design-plans/YYYY-MM-DD-<topic>.md` and committed."
 
 ## Common Rationalizations - STOP
 

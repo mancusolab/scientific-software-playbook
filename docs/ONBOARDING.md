@@ -50,7 +50,7 @@ Normal Codex workflow:
 - If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
 - Delegate `internet-researcher` for general/API internet research needs.
 - Delegate `scientific-literature-researcher` when literature support is needed.
-- Outcome: design plan in `docs/design-plans/YYYY-MM-DD-<slug>.md`.
+- Outcome: design plan in `.plans/design-plans/YYYY-MM-DD-<slug>.md`.
 - Typical status flow: `Draft` (initial scaffold) -> `In Review` (after first planning pass).
 
 2. Plan review and approval
@@ -69,9 +69,9 @@ Normal Codex workflow:
 3. Build implementation orchestration artifacts
 - invoke `starting-an-implementation-plan`
 - Outcome:
-  - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
-  - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
-  - `docs/implementation-plans/YYYY-MM-DD-<slug>/phase_XX.md`
+  - `.plans/implementation-plans/YYYY-MM-DD-<slug>/README.md`
+  - `.plans/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
+  - `.plans/implementation-plans/YYYY-MM-DD-<slug>/phase_XX.md`
   - simulation-validation phase file based on the installed template (when synthetic-data validation scope is `yes`)
   - absolute implementation plan path for execution handoff
 - Recommended: start a fresh session/context before execution.
@@ -157,7 +157,7 @@ Normal Claude Code workflow:
 - If external facts are uncertain (API behavior, format specs, standards), run `scientific-internet-research-pass`.
 - Delegate `internet-researcher` for general/API internet research needs.
 - Delegate `scientific-literature-researcher` when literature support is needed.
-- Outcome: design plan in `docs/design-plans/YYYY-MM-DD-<slug>.md`.
+- Outcome: design plan in `.plans/design-plans/YYYY-MM-DD-<slug>.md`.
 - Typical status flow: `Draft` (initial scaffold) -> `In Review` (after first planning pass).
 
 2. Plan review and approval
@@ -176,9 +176,9 @@ Normal Claude Code workflow:
 3. Build implementation orchestration artifacts
 - `/scientific-plan-execute:start-implementation-plan <design-plan-path>`
 - Outcome:
-  - `docs/implementation-plans/YYYY-MM-DD-<slug>/README.md`
-  - `docs/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
-  - `docs/implementation-plans/YYYY-MM-DD-<slug>/phase_XX.md`
+  - `.plans/implementation-plans/YYYY-MM-DD-<slug>/README.md`
+  - `.plans/implementation-plans/YYYY-MM-DD-<slug>/test-requirements.md`
+  - `.plans/implementation-plans/YYYY-MM-DD-<slug>/phase_XX.md`
   - simulation-validation phase file based on the installed template (when synthetic-data validation scope is `yes`)
   - absolute implementation plan path for execution handoff
 - Recommended: start a fresh session/context before execution.

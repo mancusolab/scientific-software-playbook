@@ -111,7 +111,7 @@
    - `inference`: add `numerics-interface-auditor` and `scientific-inference-algorithm-reviewer`
    - `full`: add `scientific-architecture-reviewer`, `numerics-interface-auditor`, and `scientific-inference-algorithm-reviewer`
 3. Add specialist reviewers from the baseline code-review `Specialist Escalations` section (`needed: ✅` only).
-4. Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
+4. Safety fallback only: if architecture artifacts changed (`.plans/design-plans`, `.plans/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
 5. Run `scientific-test-analyst` checks for simulation traceability coverage.
 6. Evaluate boundary findings against the selected architecture profile (`compact-workflow` or `modular-domain`).
 7. Resolve blocking findings before phase status is `completed`.

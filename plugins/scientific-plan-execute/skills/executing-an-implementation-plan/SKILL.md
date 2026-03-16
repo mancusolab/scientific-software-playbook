@@ -98,11 +98,11 @@ Use AskUserQuestion when available (if unavailable, ask directly with the same o
 ```
 Question: "Which implementation plan should I execute?"
 Options:
-  - [list any plan directories you find in docs/implementation-plans/]
+  - [list any plan directories you find in .plans/implementation-plans/]
   - "Let me provide the path"
 ```
 
-If `docs/implementation-plans/` doesn't exist or is empty, ask the user to provide the path directly.
+If `.plans/implementation-plans/` doesn't exist or is empty, ask the user to provide the path directly.
 
 **Never assume, infer, or guess which plan to execute.** The user must explicitly tell you.
 
@@ -126,7 +126,7 @@ Reviewer selection must be deterministic. Use this exact process in this exact o
 
 3. Escalation reviewers:
 - Add any reviewer marked `needed: ✅` in baseline `scientific-code-reviewer` `Specialist Escalations`.
-- Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, or `CLAUDE.md`), add `scientific-architecture-reviewer`.
+- Safety fallback only: if architecture artifacts changed (`.plans/design-plans`, `.plans/implementation-plans`, `AGENTS.md`, or `CLAUDE.md`), add `scientific-architecture-reviewer`.
 - Do **not** add reviewers from keyword scanning or ad hoc guesses.
 
 4. Final reviewer set:
@@ -472,7 +472,7 @@ Continue the review loop until zero issues remain.
 Then run deterministic final specialized reviewers on the full diff/range:
 1. Build union baseline from phase profiles (treat overall final profile as `full`).
 2. Build union of `Specialist Escalations` that were marked `needed: ✅` across phase-level baseline code reviews.
-3. Apply architecture safety fallback from full-range changed files (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`).
+3. Apply architecture safety fallback from full-range changed files (`.plans/design-plans`, `.plans/implementation-plans`, `AGENTS.md`, `CLAUDE.md`).
 4. Compute final reviewer set from `Deterministic Reviewer Routing`.
 5. Run reviewers in fixed order and loop fixes per reviewer until all return zero issues.
 
@@ -550,7 +550,7 @@ The response will include the human test plan. Extract the "Human Test Plan" sec
 mkdir -p docs/test-plans
 
 # The filename uses the implementation plan directory name
-# e.g., impl plan dir: docs/implementation-plans/2025-01-24-oauth/
+# e.g., impl plan dir: .plans/implementation-plans/2025-01-24-oauth/
 #       test plan:     docs/test-plans/2025-01-24-oauth.md
 ```
 

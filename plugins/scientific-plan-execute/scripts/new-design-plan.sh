@@ -6,10 +6,10 @@ usage() {
 Usage: scripts/new-design-plan.sh <slug> [title]
 
 Creates:
-- docs/design-plans/YYYY-MM-DD-<slug>.md
-- docs/design-plans/artifacts/YYYY-MM-DD-<slug>/model-symbol-table.md
-- docs/design-plans/artifacts/YYYY-MM-DD-<slug>/equation-to-code-map.md
-- docs/design-plans/artifacts/YYYY-MM-DD-<slug>/solver-feasibility-matrix.md
+- .plans/design-plans/YYYY-MM-DD-<slug>.md
+- .plans/design-plans/artifacts/YYYY-MM-DD-<slug>/model-symbol-table.md
+- .plans/design-plans/artifacts/YYYY-MM-DD-<slug>/equation-to-code-map.md
+- .plans/design-plans/artifacts/YYYY-MM-DD-<slug>/solver-feasibility-matrix.md
 EOF
 }
 
@@ -30,8 +30,8 @@ date_str="$(date +%F)"
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 bundle_plan_template="${script_dir}/../docs/design-plans/templates/scientific-architecture-plan-template.md"
 bundle_artifact_templates_dir="${script_dir}/../docs/design-plans/templates/artifacts"
-local_plan_template="docs/design-plans/templates/scientific-architecture-plan-template.md"
-local_artifact_templates_dir="docs/design-plans/templates/artifacts"
+local_plan_template=".plans/design-plans/templates/scientific-architecture-plan-template.md"
+local_artifact_templates_dir=".plans/design-plans/templates/artifacts"
 
 if [[ -f "$local_plan_template" && -d "$local_artifact_templates_dir" ]]; then
   plan_template="$local_plan_template"
@@ -46,8 +46,8 @@ else
   exit 1
 fi
 
-plan_path="docs/design-plans/${date_str}-${slug}.md"
-artifact_dir="docs/design-plans/artifacts/${date_str}-${slug}"
+plan_path=".plans/design-plans/${date_str}-${slug}.md"
+artifact_dir=".plans/design-plans/artifacts/${date_str}-${slug}"
 
 if [[ -e "$plan_path" ]]; then
   echo "error: plan already exists at $plan_path" >&2

@@ -28,7 +28,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Announce at start:** "I'm using the writing-implementation-plans skill to create the implementation plan."
 
-**Save plans to:** `docs/implementation-plans/YYYY-MM-DD-<feature-name>/phase_##.md`
+**Save plans to:** `.plans/implementation-plans/YYYY-MM-DD-<feature-name>/phase_##.md`
 
 ## Mandatory First Actions
 
@@ -449,8 +449,8 @@ After verifying scope (≤8 phases), use TaskCreate to create granular sub-tasks
 **CRITICAL: Include absolute paths and set up dependencies.**
 
 Before creating tasks, capture absolute paths:
-- `DESIGN_PATH`: Absolute path to design plan (e.g., `/Users/ed/project/docs/design-plans/2025-01-24-feature.md`)
-- `PLAN_DIR`: Absolute path to implementation plan directory (e.g., `/Users/ed/project/docs/implementation-plans/2025-01-24-feature/`)
+- `DESIGN_PATH`: Absolute path to design plan (e.g., `/Users/ed/project/.plans/design-plans/2025-01-24-feature.md`)
+- `PLAN_DIR`: Absolute path to implementation plan directory (e.g., `/Users/ed/project/.plans/implementation-plans/2025-01-24-feature/`)
 
 **Read the Acceptance Criteria section from the design plan.** Acceptance criteria are numbered (AC1, AC1.1, AC1.2, etc.) and define what "done" means. When writing each phase:
 1. Identify which ACs this phase implements (look at design phase's "Done when" + component responsibilities)
@@ -486,33 +486,33 @@ Before creating the Finalization task, check if `.scientific/implementation-plan
       → blocked by: all Phase *D tasks
 ```
 
-**Example for a 3-phase design at `/Users/ed/project/docs/design-plans/2025-01-24-oauth.md`:**
+**Example for a 3-phase design at `/Users/ed/project/.plans/design-plans/2025-01-24-oauth.md`:**
 
 ```
-TaskCreate: "Phase 1A: Read Token Types from /Users/ed/project/docs/design-plans/2025-01-24-oauth.md"
+TaskCreate: "Phase 1A: Read Token Types from /Users/ed/project/.plans/design-plans/2025-01-24-oauth.md"
 TaskCreate: "Phase 1B: Investigate codebase for Phase 1 and activate relevant skills"
   → TaskUpdate: addBlockedBy: [1A]
 TaskCreate: "Phase 1C: Research external deps (Phase 1)"
   → TaskUpdate: addBlockedBy: [1B]
-TaskCreate: "Phase 1D: Write /Users/ed/project/docs/implementation-plans/2025-01-24-oauth/phase_01.md"
+TaskCreate: "Phase 1D: Write /Users/ed/project/.plans/implementation-plans/2025-01-24-oauth/phase_01.md"
   → TaskUpdate: addBlockedBy: [1C]
 
-TaskCreate: "Phase 2A: Read Token Service from /Users/ed/project/docs/design-plans/2025-01-24-oauth.md"
+TaskCreate: "Phase 2A: Read Token Service from /Users/ed/project/.plans/design-plans/2025-01-24-oauth.md"
   → TaskUpdate: addBlockedBy: [1D]
 TaskCreate: "Phase 2B: Investigate codebase for Phase 2 and activate relevant skills"
   → TaskUpdate: addBlockedBy: [2A]
 TaskCreate: "Phase 2C: Research external deps (Phase 2)"
   → TaskUpdate: addBlockedBy: [2B]
-TaskCreate: "Phase 2D: Write /Users/ed/project/docs/implementation-plans/2025-01-24-oauth/phase_02.md"
+TaskCreate: "Phase 2D: Write /Users/ed/project/.plans/implementation-plans/2025-01-24-oauth/phase_02.md"
   → TaskUpdate: addBlockedBy: [2C]
 
-TaskCreate: "Phase 3A: Read Session Manager from /Users/ed/project/docs/design-plans/2025-01-24-oauth.md"
+TaskCreate: "Phase 3A: Read Session Manager from /Users/ed/project/.plans/design-plans/2025-01-24-oauth.md"
   → TaskUpdate: addBlockedBy: [2D]
 TaskCreate: "Phase 3B: Investigate codebase for Phase 3 and activate relevant skills"
   → TaskUpdate: addBlockedBy: [3A]
 TaskCreate: "Phase 3C: Research external deps (Phase 3)"
   → TaskUpdate: addBlockedBy: [3B]
-TaskCreate: "Phase 3D: Write /Users/ed/project/docs/implementation-plans/2025-01-24-oauth/phase_03.md"
+TaskCreate: "Phase 3D: Write /Users/ed/project/.plans/implementation-plans/2025-01-24-oauth/phase_03.md"
   → TaskUpdate: addBlockedBy: [3C]
 
 TaskCreate: "Finalization: Run code-reviewer over all phase files, fix ALL issues including minor ones"
@@ -616,7 +616,7 @@ Use `update_plan` updates (or `TaskUpdate` where available) to mark each sub-tas
 
 7. **Task ND: Write phase file (if approved)**
    - Mark task ND as in_progress
-   - Write to `docs/implementation-plans/YYYY-MM-DD-<feature-name>/phase_##.md`
+   - Write to `.plans/implementation-plans/YYYY-MM-DD-<feature-name>/phase_##.md`
    - Plan document contains ONLY the implementation tasks (no verification findings)
    - Mark task ND as completed, continue to next phase
 
@@ -656,14 +656,14 @@ Use `update_plan` updates (or `TaskUpdate` where available) to mark each sub-tas
    - Identify which ACs this phase covers based on design phase's scope
    - Include the "Acceptance Criteria Coverage" section with literal AC copies from design
    - Write implementation tasks that implement and test each listed AC case
-   - Write directly to disk at `docs/implementation-plans/YYYY-MM-DD-<feature-name>/phase_##.md`
+   - Write directly to disk at `.plans/implementation-plans/YYYY-MM-DD-<feature-name>/phase_##.md`
    - Mark task ND as completed, continue to next phase
 
 **Do NOT emit phase content to the user before writing.** This conserves tokens.
 
 **After ALL phases are written:**
 
-Announce: "All [N] phase files written to `docs/implementation-plans/YYYY-MM-DD-<feature-name>/`. Let me know if any phases need revision."
+Announce: "All [N] phase files written to `.plans/implementation-plans/YYYY-MM-DD-<feature-name>/`. Let me know if any phases need revision."
 
 ---
 
@@ -901,7 +901,7 @@ description: Validating implementation plan against design
 prompt: |
   Review the implementation plan for completeness and alignment with the design.
 
-  DESIGN_PLAN: [path to design plan, e.g., docs/design-plans/YYYY-MM-DD-feature.md]
+  DESIGN_PLAN: [path to design plan, e.g., .plans/design-plans/YYYY-MM-DD-feature.md]
 
   IMPLEMENTATION_GUIDANCE: [absolute path to .scientific/implementation-plan-guidance.md, or "None" if file does not exist]
 
@@ -1038,4 +1038,4 @@ Write to `[PLAN_DIR]/test-requirements.md`. Mark task completed. Proceed to exec
 
 After Test Requirements generation completes, announce:
 
-**"Implementation plan complete and validated. Saved to [count] phase files + test-requirements.md in `docs/implementation-plans/YYYY-MM-DD-<feature-name>/`. The first phase file is `<full-path>`. Test requirements are in `<full-path>/test-requirements.md`."**
+**"Implementation plan complete and validated. Saved to [count] phase files + test-requirements.md in `.plans/implementation-plans/YYYY-MM-DD-<feature-name>/`. The first phase file is `<full-path>`. Test requirements are in `<full-path>/test-requirements.md`."**

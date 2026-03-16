@@ -69,7 +69,7 @@ Draft
 2. Select phase-level baseline reviewers from the phase review profile:
 - `minimal`, `api-cli`, `numerics`, `inference`, `full`.
 3. Add specialist reviewers from baseline code-review `Specialist Escalations` (`needed: ✅` only).
-4. Safety fallback only: if architecture artifacts changed (`docs/design-plans`, `docs/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
+4. Safety fallback only: if architecture artifacts changed (`.plans/design-plans`, `.plans/implementation-plans`, `AGENTS.md`, `CLAUDE.md`), add `scientific-architecture-reviewer`.
 5. Evaluate boundary findings against the selected architecture profile, not an implicit deep-layering assumption.
 6. Resolve all blocking findings before continuing.
 

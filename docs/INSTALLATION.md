@@ -90,7 +90,7 @@ What Codex install provides:
 2. Plugin bundles in `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/`
 3. Runtime behavior:
 - Plan-execute assets are resolved from the installed plugin bundle in `CODEX_HOME`.
-- Workflow outputs (design plans, implementation plans, reviews) are written into the downstream project under `docs/`.
+- Workflow plan outputs (design plans and implementation plans) are written into the downstream project under `.plans/`.
 - `scientific-agent-tools` installs optional maintainer skills and the `project-claude-librarian` agent.
 
 ## Installed Skill Inventory

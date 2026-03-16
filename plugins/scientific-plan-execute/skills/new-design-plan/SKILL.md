@@ -53,6 +53,6 @@ or with title:
 
 ## Output
 
-1. Plan path: `<project-root>/docs/design-plans/YYYY-MM-DD-<slug>.md`
+1. Plan path: `<project-root>/.plans/design-plans/YYYY-MM-DD-<slug>.md`
 2. Artifact directory:
-- `<project-root>/docs/design-plans/artifacts/YYYY-MM-DD-<slug>/`
+- `<project-root>/.plans/design-plans/artifacts/YYYY-MM-DD-<slug>/`

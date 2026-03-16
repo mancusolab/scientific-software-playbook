@@ -36,11 +36,11 @@ Use AskUserQuestion when available (if unavailable, ask directly with the same o
 ```
 Question: "Which design plan should I create an implementation plan for?"
 Options:
-  - [list any design plans you find in docs/design-plans/]
+  - [list any design plans you find in .plans/design-plans/]
   - "Let me provide the path"
 ```
 
-If `docs/design-plans/` doesn't exist or is empty, ask the user to provide the path directly.
+If `.plans/design-plans/` doesn't exist or is empty, ask the user to provide the path directly.
 
 **Never assume, infer, or guess which design plan to use.** The user must explicitly tell you.
 
@@ -82,7 +82,7 @@ Before planning, set up the branch and workspace for implementation work.
 Extract the **slug** from the design plan filename (everything after `YYYY-MM-DD-`, excluding `.md`). For example, `oauth2-svc-authn` from `2025-01-18-oauth2-svc-authn.md`.
 
 This slug is used for:
-1. Implementation plan directory name (`docs/implementation-plans/YYYY-MM-DD-{slug}/`)
+1. Implementation plan directory name (`.plans/implementation-plans/YYYY-MM-DD-{slug}/`)
 2. Worktree directory name (`.worktrees/{slug}`)
 3. **Scoping all AC identifiers** — every acceptance criterion uses the format `{slug}.AC{N}.{M}`
 
@@ -182,7 +182,7 @@ The writing-implementation-plans skill will:
 - Verify codebase state with investigator
 - Create phase-by-phase implementation tasks
 - Validate each phase with user before proceeding
-- Write implementation plan to `docs/implementation-plans/`
+- Write implementation plan to `.plans/implementation-plans/`
 
 **Output:** Complete implementation plan written to files, on appropriate branch.
 
@@ -254,7 +254,7 @@ Then construct and verify the implementation plan path exists:
 ```bash
 # Verify implementation plan directory exists
 # Replace YYYY-MM-DD-feature-name with the actual plan directory name
-ls -d "${WORKING_ROOT}/docs/implementation-plans/YYYY-MM-DD-feature-name"
+ls -d "${WORKING_ROOT}/.plans/implementation-plans/YYYY-MM-DD-feature-name"
 ```
 
 **Both commands must succeed.** If the plan directory doesn't exist, something went wrong during planning — investigate before proceeding.
@@ -274,12 +274,12 @@ Ready to execute? This requires fresh context to work effectively.
 
 Claude Code:
 ```
-/scientific-plan-execute:execute-implementation-plan /Users/ed/project/.worktrees/oauth2-feature/docs/implementation-plans/2025-01-17-oauth2-feature/ /Users/ed/project/.worktrees/oauth2-feature/
+/scientific-plan-execute:execute-implementation-plan /Users/ed/project/.worktrees/oauth2-feature/.plans/implementation-plans/2025-01-17-oauth2-feature/ /Users/ed/project/.worktrees/oauth2-feature/
 ```
 
 Codex:
 ```
-$executing-an-implementation-plan /Users/ed/project/.worktrees/oauth2-feature/docs/implementation-plans/2025-01-17-oauth2-feature/ /Users/ed/project/.worktrees/oauth2-feature/
+$executing-an-implementation-plan /Users/ed/project/.worktrees/oauth2-feature/.plans/implementation-plans/2025-01-17-oauth2-feature/ /Users/ed/project/.worktrees/oauth2-feature/
 ```
 
 (2) Start fresh context (recommended):
@@ -332,7 +332,7 @@ Mark "Execution handoff" task as completed.
 This skill sits between design and execution:
 
 ```
-Design Plan (in docs/design-plans/)
+Design Plan (in .plans/design-plans/)
   -> User runs `/scientific-plan-execute:start-implementation-plan` (Claude Code) or `$starting-an-implementation-plan` (Codex) with design path
 
 Starting Implementation Plan (this skill)
@@ -351,7 +351,7 @@ Starting Implementation Plan (this skill)
     -> Invoke writing-implementation-plans
     -> Creates granular tasks per phase (NA, NB, NC, ND)
     -> Creates Finalization task (code review, fix ALL issues)
-    -> Write to docs/implementation-plans/
+    -> Write to .plans/implementation-plans/
 
   -> After Planning: Update Dependencies
     -> Re-point "Re-read skill" to be blocked by Finalization task

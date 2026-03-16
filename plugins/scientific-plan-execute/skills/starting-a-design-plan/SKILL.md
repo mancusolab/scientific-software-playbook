@@ -37,7 +37,7 @@ This skill is kickoff-agnostic. If kickoff artifacts already exist, ingest and c
 - Codex install: `${CODEX_HOME:-$HOME/.codex}/scientific-software-playbook/plugins/scientific-plan-execute/scripts/resolve-plugin-path.sh`
 - Claude Code plugin install: `${CLAUDE_PLUGIN_ROOT}/scripts/resolve-plugin-path.sh`
 3. Do not use repository-local `scripts/...` paths directly.
-4. Project-local outputs still belong under the active downstream project root (`docs/design-plans/...`).
+4. Project-local outputs still belong under the active downstream project root (`.plans/design-plans/...`).
 
 ## Quick Reference
 
@@ -63,7 +63,7 @@ Use `update_plan` (or `TaskCreate` where available) to create todos for each pha
 - Phase 2: Clarification (requirements disambiguated)
 - Phase 3: Definition of Done (deliverables confirmed)
 - Phase 4: Brainstorming (design validated)
-- Phase 5: Design Documentation (design written to docs/design-plans/)
+- Phase 5: Design Documentation (design written to .plans/design-plans/)
 - Phase 6: Planning Handoff (implementation plan offered/created)
 
 Use `update_plan` updates (or `TaskUpdate` where available) to mark each phase as in_progress when working on it, completed when finished (or `TodoWrite` in runtimes that still expose it).
@@ -262,7 +262,7 @@ Options:
 
 ##### Step 2: Create File
 
-**File location:** `docs/design-plans/YYYY-MM-DD-{slug}.md`
+**File location:** `.plans/design-plans/YYYY-MM-DD-{slug}.md`
 
 Use today's date and the validated slug.
 
@@ -358,7 +358,7 @@ Use `update_plan` updates (or `TaskUpdate` where available) to mark Phase 6 as i
 
 Announce design completion and provide next steps:
 
-Design complete! Design document committed to `docs/design-plans/<filename>`.
+Design complete! Design document committed to `.plans/design-plans/<filename>`.
 
 Ready to create the implementation plan? This requires fresh context to work effectively.
 
@@ -368,12 +368,12 @@ Ready to create the implementation plan? This requires fresh context to work eff
 
 Claude Code:
 ```
-/scientific-plan-execute:start-implementation-plan @docs/design-plans/<full-filename>.md
+/scientific-plan-execute:start-implementation-plan @.plans/design-plans/<full-filename>.md
 ```
 
 Codex:
 ```
-$starting-an-implementation-plan docs/design-plans/<full-filename>.md
+$starting-an-implementation-plan .plans/design-plans/<full-filename>.md
 ```
 
 (2) Start fresh context (recommended):

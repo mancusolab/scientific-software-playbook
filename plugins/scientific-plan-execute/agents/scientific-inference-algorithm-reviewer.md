@@ -2,7 +2,7 @@
 name: scientific-inference-algorithm-reviewer
 description: Use when model objectives, update rules, solver behavior, or inference-validation logic changes and requires algorithmic correctness review against approved design artifacts.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: opus
 ---
 
 # Scientific Inference Algorithm Reviewer

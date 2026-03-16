@@ -2,7 +2,7 @@
 name: scientific-cli-api-reviewer
 description: Use when CLI or public API surfaces change and require contract-focused review for interface behavior, reproducibility controls, and compatibility risk.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: opus
 ---
 
 # Scientific CLI/API Reviewer

@@ -2,7 +2,7 @@
 name: scientific-architecture-reviewer
 description: Use when reviewing scientific architecture readiness and boundary contracts - validates model-path/design gates and architecture profile conformance, then reports severity-ranked findings.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: opus
 ---
 
 # Scientific Architecture Reviewer

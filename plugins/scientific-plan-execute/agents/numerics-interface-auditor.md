@@ -2,7 +2,7 @@
 name: numerics-interface-auditor
 description: Use when reviewing JAX or Equinox numerics for interface contract compliance, transform safety, explicit failure semantics (status channels or exceptions), and numerical-stability risks (including precision loss).
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: opus
 ---
 
 # Numerics Interface Auditor

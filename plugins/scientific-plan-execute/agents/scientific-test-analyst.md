@@ -2,7 +2,7 @@
 name: scientific-test-analyst
 description: Use when validating acceptance-criteria-to-test coverage for scientific implementation plans - audits traceability, checks execution evidence, reports coverage gaps, and produces a concrete human test plan when automated coverage passes.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: opus
 ---
 
 # Scientific Test Analyst

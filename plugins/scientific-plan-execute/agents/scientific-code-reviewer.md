@@ -2,7 +2,7 @@
 name: scientific-code-reviewer
 description: Use when a phase or feature is implemented and requires baseline quality gating - runs verification commands, checks plan alignment and core code quality, and returns severity-ranked findings while deferring domain-deep checks to specialist reviewers.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: opus
 ---
 
 # Scientific Code Reviewer

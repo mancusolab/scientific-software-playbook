@@ -1,7 +1,7 @@
 {
   "name": "scientific-research",
   "description": "Agents used for research across local and internet sources for scientific software workflows. Other playbook plugins may depend on this plugin.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "commands": [],
   "agents": [
     "./agents/codebase-investigator.md",

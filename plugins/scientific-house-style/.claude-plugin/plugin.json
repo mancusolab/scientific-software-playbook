@@ -1,6 +1,6 @@
 {
   "name": "scientific-house-style",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "House-style engineering guidance for JAX/Equinox scientific software.",
   "commands": [],
   "agents": []

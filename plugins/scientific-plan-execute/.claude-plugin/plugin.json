@@ -1,6 +1,6 @@
 {
   "name": "scientific-plan-execute",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Scientific workflow loop: architecture, planning, execution, validation, and review orchestration.",
   "commands": [
     "./commands/start-plan-and-execute.md",

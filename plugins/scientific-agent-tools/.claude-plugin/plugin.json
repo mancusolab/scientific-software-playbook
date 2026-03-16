@@ -1,6 +1,6 @@
 {
   "name": "scientific-agent-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Optional maintainer-facing tools for authoring plugins, skills, agents, directives, and repository context files.",
   "commands": [],
   "agents": [

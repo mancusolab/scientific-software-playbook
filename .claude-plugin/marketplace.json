@@ -13,28 +13,28 @@
       "name": "scientific-plan-execute",
       "source": "./plugins/scientific-plan-execute",
       "description": "Scientific workflow loop: architecture, planning, execution, validation, and review orchestration.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "category": "scientific-computing"
     },
     {
       "name": "scientific-research",
       "source": "./plugins/scientific-research",
       "description": "Ed3d-style research plugin with local/internet/remote-code/combined agents plus scientific literature support.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "category": "scientific-computing"
     },
     {
       "name": "scientific-house-style",
       "source": "./plugins/scientific-house-style",
       "description": "House-style engineering guidance for JAX/Equinox scientific software.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "category": "scientific-computing"
     },
     {
       "name": "scientific-agent-tools",
       "source": "./plugins/scientific-agent-tools",
       "description": "Optional maintainer-facing tools for authoring plugins, skills, agents, directives, and repository context files.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "category": "developer-tools"
     }
   ]

@@ -1,6 +1,6 @@
 ---
 description: Create implementation plan from design document
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch, Skill
 model: sonnet
 argument-hint: "<design-plan-path>"
 ---

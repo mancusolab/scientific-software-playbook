@@ -1,6 +1,6 @@
 ---
 description: Route the current request into the correct scientific workflow entrypoint
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch, Skill
 model: sonnet
 argument-hint: "[request-summary]"
 ---

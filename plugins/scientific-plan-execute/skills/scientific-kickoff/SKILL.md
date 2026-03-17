@@ -103,17 +103,23 @@ After kickoff output is written, guide the user to start design planning with ki
 
 **Do NOT run full design orchestration from this skill.** Hand off to `starting-a-design-plan` (or `/scientific-plan-execute:start-design-plan`) explicitly.
 
-Announce kickoff completion and provide next steps:
+Announce kickoff completion and provide next steps.
+
+**You MUST output the handoff block below VERBATIM — do not paraphrase, shorten, or omit the plugin prefix `scientific-plan-execute:` from any command.** Replace only `<slug>` with the actual slug value.
+
+Print this block exactly (with `<slug>` replaced):
+
+---
 
 Kickoff complete! Kickoff handoff saved to `.scientific/kickoff.md`.
 
 Ready to start design planning?
 
-**IMPORTANT: Copy the command for your runtime below BEFORE clearing context or starting a new session.**
+**Copy the FULL command for your runtime below BEFORE clearing context or starting a new session.**
 
-(1) Copy this command now:
+**(1) Copy this command now:**
 
-Claude Code:
+Claude Code — the full command including the `scientific-plan-execute:` prefix is required:
 ```
 /scientific-plan-execute:start-design-plan <slug>
 ```
@@ -123,21 +129,25 @@ Codex:
 $starting-a-design-plan <slug>
 ```
 
-(2) Start fresh context (recommended):
+> **Warning:** `/start-design-plan` alone will NOT work. You must include the plugin prefix: `/scientific-plan-execute:start-design-plan`
+
+**(2) Start fresh context (recommended):**
 
 Claude Code:
 ```
-/clear  # if your runtime supports it
+/clear
 ```
 
 Codex:
 ```
-/new  # if your runtime supports it
+/new
 ```
 
 If neither `/clear` nor `/new` is available, open a new session/conversation in the same repository.
 
-(3) Paste and run the copied command in the fresh session.
+**(3) Paste and run the copied command in the fresh session.**
+
+---
 
 `starting-a-design-plan` (or `/scientific-plan-execute:start-design-plan`) must ingest `.scientific/kickoff.md` before clarification/brainstorming proceeds.
 

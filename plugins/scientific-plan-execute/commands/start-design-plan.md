@@ -1,6 +1,6 @@
 ---
 description: Start collaborative design process; ingest scientific kickoff handoff when present
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch, Skill
 model: sonnet
 argument-hint: "<slug>"
 ---

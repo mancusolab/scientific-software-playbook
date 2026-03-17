@@ -1,6 +1,6 @@
 ---
 description: Start scientific kickoff to select model path and capture readiness state before design planning
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, WebSearch, WebFetch, Skill
 model: sonnet
 ---
 

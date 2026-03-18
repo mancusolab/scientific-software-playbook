@@ -149,7 +149,7 @@ If neither `/clear` nor `/new` is available, open a new session/conversation in 
 
 ---
 
-`starting-a-design-plan` must ingest `.scientific/kickoff.md` before clarification/brainstorming proceeds.
+`$starting-a-design-plan` (or `/scientific-plan-execute:start-design-plan` in Claude Code) must ingest `.scientific/kickoff.md` before clarification/brainstorming proceeds.
 
 ## Hard Stops
 

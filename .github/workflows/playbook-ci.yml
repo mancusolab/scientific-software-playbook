@@ -27,6 +27,11 @@ jobs:
           python3 -m json.tool plugins/scientific-house-style/.claude-plugin/plugin.json >/dev/null
           python3 -m json.tool plugins/scientific-plan-execute/hooks/hooks.json >/dev/null
 
+      - name: Plugin version consistency
+        run: |
+          set -euo pipefail
+          bash scripts/check-plugin-versions.sh
+
       - name: Repository contract checks
         run: |
           set -euo pipefail
@@ -105,3 +110,12 @@ jobs:
           test -f "$codex_home_house/skills/jax-project-engineering/SKILL.md"
           test ! -d "$codex_home_house/skills/howto-functional-vs-imperative"
           test ! -d "$codex_home_house/skills/starting-a-design-plan"
+
+      - name: Dry-run install smoke test
+        run: |
+          set -euo pipefail
+          output=$(bash scripts/install-codex-home.sh --dry-run)
+          echo "$output"
+          echo "$output" | grep -q "\[dry-run\]"
+          echo "$output" | grep -q "scientific-plan-execute"
+          echo "$output" | grep -q "No files were modified"

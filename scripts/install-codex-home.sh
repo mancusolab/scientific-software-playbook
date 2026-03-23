@@ -27,7 +27,7 @@ done < <(ssp_valid_plugins)
 
 usage() {
   cat <<USAGE
-Usage: scripts/install-codex-home.sh [--codex-home <path>] [--plugin <name>] [--force]
+Usage: scripts/install-codex-home.sh [--codex-home <path>] [--plugin <name>] [--force] [--dry-run]
 
 Installs playbook plugins into Codex home:
 1. Skills -> <codex-home>/skills/
@@ -37,6 +37,7 @@ Options:
   --codex-home <path>  Override CODEX_HOME (default: \$CODEX_HOME or ~/.codex)
   --plugin <name>      Plugin to install (repeatable). Default: all plugins
   --force              Overwrite existing installed playbook bundle
+  --dry-run            Print what would be installed without making changes
 
 Available plugins:
 USAGE
@@ -57,6 +58,7 @@ is_valid_plugin() {
 
 codex_home="${CODEX_HOME:-$HOME/.codex}"
 force=0
+dry_run=0
 selected_plugins=()
 
 while [[ $# -gt 0 ]]; do
@@ -86,6 +88,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --force)
       force=1
+      shift
+      ;;
+    --dry-run)
+      dry_run=1
       shift
       ;;
     -h|--help)
@@ -128,6 +134,20 @@ fi
 if [[ ! -d "$plugins_src_root" ]]; then
   echo "error: missing plugins directory at $plugins_src_root" >&2
   exit 1
+fi
+
+if [[ "$dry_run" -eq 1 ]]; then
+  echo "[dry-run] Would install to: ${codex_home}"
+  echo "[dry-run] Plugins:"
+  for plugin in "${selected_plugins[@]}"; do
+    echo "  - ${plugin}"
+    while IFS= read -r skill; do
+      [[ -n "$skill" ]] || continue
+      echo "    skill: ${skill}"
+    done < <(ssp_plugin_skills "$plugin")
+  done
+  echo "[dry-run] No files were modified."
+  exit 0
 fi
 
 skills_dst="${codex_home}/skills"
